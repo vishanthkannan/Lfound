@@ -423,9 +423,7 @@ const AdminPage = () => {
                       <i className="bi bi-flag"></i> Classification
                     </h6>
                     <div className="d-flex gap-2">
-                      <span className="badge bg-success">🟢 Strong Match (≥80%)</span>
-                      <span className="badge bg-warning">🟡 Possible Match (60-79%)</span>
-                      <span className="badge bg-danger">🔴 Weak Match (&lt;60%)</span>
+                     
                     </div>
                   </div>
                 </div>
