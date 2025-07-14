@@ -158,7 +158,7 @@ const HomePage = ({ user }) => {
                   <i className="bi bi-heart-fill"></i>
                 </div>
                 <h4>Reunite</h4>
-                <p>Get notified when matches are found and help reunite items with their rightful owners.</p>
+                <p>.</p>
               </div>
             </div>
           </div>
