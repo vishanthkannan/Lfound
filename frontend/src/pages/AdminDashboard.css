@@ -1,0 +1,371 @@
+/* Admin Dashboard Styles */
+.admin-dashboard {
+  min-height: 100vh;
+  background: var(--bg-primary);
+  padding: var(--spacing-xl);
+  color: var(--text-primary);
+}
+
+.admin-dashboard .container-fluid {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.admin-dashboard h2 {
+  color: var(--text-primary);
+  font-weight: 700;
+  margin-bottom: var(--spacing-xl);
+}
+
+/* Cards */
+.admin-dashboard .card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-primary);
+  border-radius: var(--radius-xl);
+  color: var(--text-primary);
+  box-shadow: var(--shadow-md);
+  margin-bottom: var(--spacing-lg);
+}
+
+.admin-dashboard .card-header {
+  background: var(--bg-tertiary);
+  border-bottom: 1px solid var(--border-primary);
+  padding: var(--spacing-lg);
+  color: var(--text-primary);
+}
+
+.admin-dashboard .card-header h5,
+.admin-dashboard .card-header h6 {
+  color: var(--text-primary);
+  font-weight: 600;
+  margin: 0;
+}
+
+.admin-dashboard .card-body {
+  padding: var(--spacing-lg);
+  color: var(--text-primary);
+}
+
+.admin-dashboard .card-body h6 {
+  color: var(--text-primary);
+  font-weight: 600;
+  margin-bottom: var(--spacing-md);
+  font-size: 1.125rem;
+}
+
+.admin-dashboard .card-body p,
+.admin-dashboard .card-body li {
+  color: var(--text-secondary);
+  margin-bottom: var(--spacing-sm);
+}
+
+.admin-dashboard .card-body ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.admin-dashboard .card-body ul li {
+  padding: var(--spacing-sm) 0;
+  color: var(--text-secondary);
+  font-size: 0.9375rem;
+  line-height: 1.6;
+}
+
+.admin-dashboard .card-body ul li strong {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+/* Stats Cards */
+.admin-dashboard .card.bg-primary,
+.admin-dashboard .card.bg-success,
+.admin-dashboard .card.bg-info,
+.admin-dashboard .card.bg-warning {
+  border: none;
+}
+
+.admin-dashboard .card.bg-primary {
+  background: var(--primary-gradient) !important;
+}
+
+.admin-dashboard .card.bg-success {
+  background: linear-gradient(135deg, var(--success) 0%, var(--success-light) 100%) !important;
+}
+
+.admin-dashboard .card.bg-info {
+  background: linear-gradient(135deg, var(--info) 0%, var(--info-light) 100%) !important;
+}
+
+.admin-dashboard .card.bg-warning {
+  background: linear-gradient(135deg, var(--warning) 0%, var(--warning-light) 100%) !important;
+}
+
+.admin-dashboard .card.text-white .card-title,
+.admin-dashboard .card.text-white .card-text {
+  color: white !important;
+}
+
+/* Tabs */
+.admin-dashboard .nav-tabs {
+  border-bottom: 2px solid var(--border-primary);
+  margin-bottom: var(--spacing-xl);
+}
+
+.admin-dashboard .nav-tabs .nav-link {
+  color: var(--text-secondary);
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  padding: var(--spacing-md) var(--spacing-lg);
+  font-weight: 500;
+  transition: all var(--transition-fast);
+  margin-right: var(--spacing-sm);
+}
+
+.admin-dashboard .nav-tabs .nav-link:hover {
+  color: var(--text-primary);
+  border-bottom-color: var(--border-primary);
+  background: var(--bg-tertiary);
+}
+
+.admin-dashboard .nav-tabs .nav-link.active {
+  color: var(--primary);
+  border-bottom-color: var(--primary);
+  background: transparent;
+  font-weight: 600;
+}
+
+/* Tables */
+.admin-dashboard .table {
+  color: var(--text-primary);
+  background: var(--bg-card);
+}
+
+.admin-dashboard .table thead {
+  background: var(--bg-tertiary);
+}
+
+.admin-dashboard .table th {
+  color: var(--text-primary);
+  font-weight: 600;
+  border-bottom: 2px solid var(--border-primary);
+  padding: var(--spacing-md);
+}
+
+.admin-dashboard .table td {
+  color: var(--text-secondary);
+  border-bottom: 1px solid var(--border-secondary);
+  padding: var(--spacing-md);
+  vertical-align: middle;
+}
+
+.admin-dashboard .table tbody tr:hover {
+  background: var(--bg-tertiary);
+}
+
+.admin-dashboard .table-striped tbody tr:nth-of-type(odd) {
+  background: var(--bg-secondary);
+}
+
+.admin-dashboard .table tbody tr td strong {
+  color: var(--text-primary);
+}
+
+.admin-dashboard .table tbody tr td small {
+  color: var(--text-muted);
+  font-size: 0.875rem;
+}
+
+/* Badges */
+.admin-dashboard .badge {
+  padding: 0.5rem 0.75rem;
+  font-weight: 600;
+  font-size: 0.8125rem;
+}
+
+.admin-dashboard .badge.bg-success {
+  background: var(--success) !important;
+  color: white;
+}
+
+.admin-dashboard .badge.bg-warning {
+  background: var(--warning) !important;
+  color: white;
+}
+
+.admin-dashboard .badge.bg-secondary {
+  background: var(--bg-tertiary) !important;
+  color: var(--text-secondary);
+  border: 1px solid var(--border-primary);
+}
+
+.admin-dashboard .badge.bg-danger {
+  background: var(--error) !important;
+  color: white;
+}
+
+/* Alerts */
+.admin-dashboard .alert {
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-lg);
+  margin-bottom: var(--spacing-lg);
+}
+
+.admin-dashboard .alert-danger {
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid var(--error);
+  color: var(--error-light);
+}
+
+.admin-dashboard .alert-success {
+  background: rgba(16, 185, 129, 0.1);
+  border: 1px solid var(--success);
+  color: var(--success-light);
+}
+
+/* Text Colors */
+.admin-dashboard .text-muted {
+  color: var(--text-muted) !important;
+}
+
+.admin-dashboard .text-center {
+  text-align: center;
+}
+
+/* Buttons */
+.admin-dashboard .btn {
+  border-radius: var(--radius-md);
+  font-weight: 500;
+  transition: all var(--transition-fast);
+}
+
+.admin-dashboard .btn-primary {
+  background: var(--primary-gradient);
+  border: none;
+  color: white;
+}
+
+.admin-dashboard .btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-primary);
+}
+
+.admin-dashboard .btn-outline-primary {
+  border: 1px solid var(--primary);
+  color: var(--primary);
+  background: transparent;
+}
+
+.admin-dashboard .btn-outline-primary:hover {
+  background: var(--primary);
+  color: white;
+}
+
+.admin-dashboard .btn-outline-success {
+  border: 1px solid var(--success);
+  color: var(--success);
+  background: transparent;
+}
+
+.admin-dashboard .btn-outline-success:hover {
+  background: var(--success);
+  color: white;
+}
+
+.admin-dashboard .btn-secondary {
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-primary);
+  color: var(--text-primary);
+}
+
+.admin-dashboard .btn-secondary:hover {
+  background: var(--bg-card);
+  border-color: var(--primary);
+}
+
+/* Modal */
+.admin-dashboard .modal-content {
+  background: var(--bg-card);
+  border: 1px solid var(--border-primary);
+  color: var(--text-primary);
+}
+
+.admin-dashboard .modal-header {
+  border-bottom: 1px solid var(--border-primary);
+  background: var(--bg-tertiary);
+}
+
+.admin-dashboard .modal-title {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.admin-dashboard .modal-body {
+  color: var(--text-primary);
+}
+
+.admin-dashboard .modal-body h6 {
+  color: var(--text-primary);
+  font-weight: 600;
+  margin-bottom: var(--spacing-md);
+}
+
+.admin-dashboard .modal-body p {
+  color: var(--text-secondary);
+  margin-bottom: var(--spacing-sm);
+}
+
+.admin-dashboard .modal-body p strong {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.admin-dashboard .modal-body ul {
+  color: var(--text-secondary);
+  padding-left: var(--spacing-lg);
+}
+
+.admin-dashboard .modal-body ul li {
+  color: var(--text-secondary);
+  margin-bottom: var(--spacing-xs);
+}
+
+.admin-dashboard .modal-footer {
+  border-top: 1px solid var(--border-primary);
+  background: var(--bg-tertiary);
+}
+
+.admin-dashboard .modal-backdrop {
+  background: rgba(0, 0, 0, 0.75);
+}
+
+.admin-dashboard .btn-close {
+  filter: invert(1) grayscale(100%) brightness(200%);
+}
+
+/* Spinner */
+.admin-dashboard .spinner-border {
+  color: var(--primary);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .admin-dashboard {
+    padding: var(--spacing-lg);
+  }
+
+  .admin-dashboard .card-body {
+    padding: var(--spacing-md);
+  }
+
+  .admin-dashboard .table {
+    font-size: 0.875rem;
+  }
+
+  .admin-dashboard .table th,
+  .admin-dashboard .table td {
+    padding: var(--spacing-sm);
+  }
+}
+

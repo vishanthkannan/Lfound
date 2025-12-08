@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
+import './AdminDashboard.css';
 
 const AdminDashboard = ({ user, token }) => {
   const [activeTab, setActiveTab] = useState('overview');
@@ -33,7 +34,7 @@ const AdminDashboard = ({ user, token }) => {
     setError('');
     try {
       // Load stats
-      const statsResponse = await fetch('http://localhost:5000/api/admin/stats', {
+      const statsResponse = await fetch('http://localhost:3001/api/admin/stats', {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       if (statsResponse.ok) {
@@ -41,7 +42,7 @@ const AdminDashboard = ({ user, token }) => {
         setStats(statsData);
       }
       // Load first 10 lost items
-      const lostResponse = await fetch('http://localhost:5000/api/lost?limit=10', {
+      const lostResponse = await fetch('http://localhost:3001/api/lost?limit=10', {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       if (lostResponse.ok) {
@@ -49,7 +50,7 @@ const AdminDashboard = ({ user, token }) => {
         setLostItems(lostData.items || lostData || []);
       }
       // Load first 10 found items
-      const foundResponse = await fetch('http://localhost:5000/api/found?limit=10', {
+      const foundResponse = await fetch('http://localhost:3001/api/found?limit=10', {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       if (foundResponse.ok) {
@@ -68,7 +69,7 @@ const AdminDashboard = ({ user, token }) => {
     setUsersLoading(true);
     setError('');
     try {
-      const usersResponse = await fetch('http://localhost:5000/api/admin/users', {
+      const usersResponse = await fetch('http://localhost:3001/api/admin/users', {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       if (usersResponse.ok) {
@@ -87,7 +88,7 @@ const AdminDashboard = ({ user, token }) => {
     setMatchesLoading(true);
     setError('');
     try {
-      const matchesResponse = await fetch('http://localhost:5000/api/matches/match', {
+      const matchesResponse = await fetch('http://localhost:3001/api/matches/match', {
         method: 'POST',
         headers: { 
           'Authorization': `Bearer ${token}`,
@@ -144,7 +145,7 @@ const AdminDashboard = ({ user, token }) => {
     setError('');
     
     try {
-      const response = await fetch('http://localhost:5000/api/admin/match-details', {
+      const response = await fetch('http://localhost:3001/api/admin/match-details', {
         method: 'POST',
         headers: { 
           'Authorization': `Bearer ${token}`,
@@ -178,7 +179,7 @@ const AdminDashboard = ({ user, token }) => {
     setError('');
     
     try {
-      const response = await fetch('http://localhost:5000/api/admin/send-email-notification', {
+      const response = await fetch('http://localhost:3001/api/admin/send-email-notification', {
         method: 'POST',
         headers: { 
           'Authorization': `Bearer ${token}`,
@@ -264,17 +265,17 @@ const AdminDashboard = ({ user, token }) => {
               <div className="col-md-6">
                 <h6>Recent Activity</h6>
                 <ul className="list-unstyled">
-                  <li>• Last matching run: {stats.lastMatchingRun || 'Never'}</li>
-                  <li>• Email notifications sent: {stats.emailNotificationsSent || 0}</li>
-                  <li>• High-confidence matches: {stats.highConfidenceMatches || 0}</li>
+                  <li><strong>• Last matching run:</strong> {stats.lastMatchingRun ? new Date(stats.lastMatchingRun).toLocaleString() : 'Never'}</li>
+                  <li><strong>• Email notifications sent:</strong> {stats.emailNotificationsSent || 0}</li>
+                  <li><strong>• High-confidence matches:</strong> {stats.highConfidenceMatches || 0}</li>
                 </ul>
               </div>
               <div className="col-md-6">
                 <h6>System Status</h6>
                 <ul className="list-unstyled">
-                  <li>• Database: <span className="badge bg-success">Connected</span></li>
-                  <li>• Email Service: <span className="badge bg-success">Active</span></li>
-                  <li>• Matching Engine: <span className="badge bg-success">Ready</span></li>
+                  <li><strong>• Database:</strong> <span className="badge bg-success">Connected</span></li>
+                  <li><strong>• Email Service:</strong> <span className="badge bg-success">Active</span></li>
+                  <li><strong>• Matching Engine:</strong> <span className="badge bg-success">Ready</span></li>
                 </ul>
               </div>
             </div>
@@ -484,10 +485,11 @@ const AdminDashboard = ({ user, token }) => {
   }
 
   return (
-    <div className="container-fluid mt-4">
-      <div className="row">
-        <div className="col-12">
-          <h2 className="mb-4">Admin Dashboard</h2>
+    <div className="admin-dashboard">
+      <div className="container-fluid">
+        <div className="row">
+          <div className="col-12">
+            <h2>Admin Dashboard</h2>
           {error && <div className="alert alert-danger">{error}</div>}
           
           <ul className="nav nav-tabs mb-4">
@@ -678,6 +680,7 @@ const AdminDashboard = ({ user, token }) => {
           {showDetailsModal && (
             <div className="modal-backdrop fade show" style={{ zIndex: 1040 }}></div>
           )}
+          </div>
         </div>
       </div>
     </div>
