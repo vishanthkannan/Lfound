@@ -65,12 +65,12 @@ const Signup = ({ onLogin }) => {
   };
 
   return (
-    <div className="container mt-5">
-      <div className="row justify-content-center">
-        <div className="col-md-6 col-lg-4">
-          <div className="card shadow">
+    <div style={{ minHeight: '100vh', background: '#18191a', color: '#fff', paddingTop: '40px' }}>
+      <div className="d-flex justify-content-center align-items-center" style={{ minHeight: '80vh' }}>
+        <div style={{ maxWidth: 400, width: '100%' }}>
+          <div className="card shadow-lg border-0 p-4" style={{ background: '#232526', borderRadius: '1.5rem', color: '#fff' }}>
             <div className="card-body p-4">
-              <h3 className="text-center text-primary mb-4">Sign Up</h3>
+              <h3 className="text-center mb-4" style={{ fontSize: '2rem', fontWeight: 'bold', color: '#fff' }}>Sign Up</h3>
               
               {error && (
                 <div className="alert alert-danger" role="alert">
@@ -78,64 +78,69 @@ const Signup = ({ onLogin }) => {
                 </div>
               )}
 
-              <form onSubmit={handleSubmit}>
+              <form onSubmit={handleSubmit} style={{ fontSize: '1.08rem' }}>
                 <div className="mb-3">
-                  <label htmlFor="name" className="form-label">Full Name</label>
+                  <label htmlFor="name" className="form-label" style={{ fontWeight: 600, color: '#fff' }}>Full Name</label>
                   <input
                     type="text"
-                    className="form-control"
+                    className="form-control signup-input"
                     id="name"
                     name="name"
                     value={formData.name}
                     onChange={handleChange}
                     required
+                    style={{ background: '#18191a', color: '#fff', border: '1px solid #444' }}
                   />
                 </div>
 
                 <div className="mb-3">
-                  <label htmlFor="email" className="form-label">Email</label>
+                  <label htmlFor="email" className="form-label" style={{ fontWeight: 600, color: '#fff' }}>Email</label>
                   <input
                     type="email"
-                    className="form-control"
+                    className="form-control signup-input"
                     id="email"
                     name="email"
                     value={formData.email}
                     onChange={handleChange}
                     required
+                    style={{ background: '#18191a', color: '#fff', border: '1px solid #444' }}
                   />
                 </div>
 
                 <div className="mb-3">
-                  <label htmlFor="password" className="form-label">Password</label>
+                  <label htmlFor="password" className="form-label" style={{ fontWeight: 600, color: '#fff' }}>Password</label>
                   <input
                     type="password"
-                    className="form-control"
+                    className="form-control signup-input"
                     id="password"
                     name="password"
                     value={formData.password}
                     onChange={handleChange}
                     required
                     minLength="6"
+                    style={{ background: '#18191a', color: '#fff', border: '1px solid #444' }}
                   />
-                  <div className="form-text">Password must be at least 6 characters long</div>
+                  <div className="form-text" style={{ color: '#bbb' }}>Password must be at least 6 characters long</div>
                 </div>
 
                 <div className="mb-3">
-                  <label htmlFor="confirmPassword" className="form-label">Confirm Password</label>
+                  <label htmlFor="confirmPassword" className="form-label" style={{ fontWeight: 600, color: '#fff' }}>Confirm Password</label>
                   <input
                     type="password"
-                    className="form-control"
+                    className="form-control signup-input"
                     id="confirmPassword"
                     name="confirmPassword"
                     value={formData.confirmPassword}
                     onChange={handleChange}
                     required
+                    style={{ background: '#18191a', color: '#fff', border: '1px solid #444' }}
                   />
                 </div>
 
                 <button
                   type="submit"
-                  className="btn btn-primary w-100"
+                  className="btn btn-primary w-100 btn-lg"
+                  style={{ borderRadius: '2rem', fontWeight: 600, fontSize: '1.1rem', letterSpacing: '1px' }}
                   disabled={loading}
                 >
                   {loading ? 'Creating Account...' : 'Sign Up'}
@@ -143,9 +148,9 @@ const Signup = ({ onLogin }) => {
               </form>
 
               <div className="text-center mt-3">
-                <p className="mb-0">
+                <p className="mb-0" style={{ color: '#bbb' }}>
                   Already have an account?{' '}
-                  <a href="/login" className="text-primary">Login</a>
+                  <a href="/login" style={{ color: '#0d6efd', textDecoration: 'underline' }}>Login</a>
                 </p>
               </div>
             </div>

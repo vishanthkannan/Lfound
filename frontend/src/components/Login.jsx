@@ -49,12 +49,12 @@ const Login = ({ onLogin }) => {
   };
 
   return (
-    <div className="container mt-5">
-      <div className="row justify-content-center">
-        <div className="col-md-6 col-lg-4">
-          <div className="card shadow">
+    <div style={{ minHeight: '100vh', background: '#18191a', color: '#fff', paddingTop: '40px' }}>
+      <div className="d-flex justify-content-center align-items-center" style={{ minHeight: '80vh' }}>
+        <div style={{ maxWidth: 400, width: '100%' }}>
+          <div className="card shadow-lg border-0 p-4" style={{ background: '#232526', borderRadius: '1.5rem', color: '#fff' }}>
             <div className="card-body p-4">
-              <h3 className="text-center text-primary mb-4">Login</h3>
+              <h3 className="text-center mb-4" style={{ fontSize: '2rem', fontWeight: 'bold', color: '#fff' }}>Login</h3>
               
               {error && (
                 <div className="alert alert-danger" role="alert">
@@ -62,36 +62,39 @@ const Login = ({ onLogin }) => {
                 </div>
               )}
 
-              <form onSubmit={handleSubmit}>
+              <form onSubmit={handleSubmit} style={{ fontSize: '1.08rem' }}>
                 <div className="mb-3">
-                  <label htmlFor="email" className="form-label">Email</label>
+                  <label htmlFor="email" className="form-label" style={{ fontWeight: 600, color: '#fff' }}>Email</label>
                   <input
                     type="email"
-                    className="form-control"
+                    className="form-control login-input"
                     id="email"
                     name="email"
                     value={formData.email}
                     onChange={handleChange}
                     required
+                    style={{ background: '#18191a', color: '#fff', border: '1px solid #444' }}
                   />
                 </div>
 
                 <div className="mb-3">
-                  <label htmlFor="password" className="form-label">Password</label>
+                  <label htmlFor="password" className="form-label" style={{ fontWeight: 600, color: '#fff' }}>Password</label>
                   <input
                     type="password"
-                    className="form-control"
+                    className="form-control login-input"
                     id="password"
                     name="password"
                     value={formData.password}
                     onChange={handleChange}
                     required
+                    style={{ background: '#18191a', color: '#fff', border: '1px solid #444' }}
                   />
                 </div>
 
                 <button
                   type="submit"
-                  className="btn btn-primary w-100"
+                  className="btn btn-primary w-100 btn-lg"
+                  style={{ borderRadius: '2rem', fontWeight: 600, fontSize: '1.1rem', letterSpacing: '1px' }}
                   disabled={loading}
                 >
                   {loading ? 'Logging in...' : 'Login'}
@@ -99,9 +102,9 @@ const Login = ({ onLogin }) => {
               </form>
 
               <div className="text-center mt-3">
-                <p className="mb-0">
+                <p className="mb-0" style={{ color: '#bbb' }}>
                   Don't have an account?{' '}
-                  <a href="/signup" className="text-primary">Sign up</a>
+                  <a href="/signup" style={{ color: '#0d6efd', textDecoration: 'underline' }}>Sign up</a>
                 </p>
               </div>
             </div>

@@ -39,8 +39,6 @@ const FoundForm = ({ user, token }) => {
 
   const handleCategoryChange = (e) => {
     const category = e.target.value;
-    setFormData({ ...formData, category });
-    // Reset category-specific fields when category changes
     setFormData(prev => ({
       ...prev,
       category,
@@ -73,7 +71,6 @@ const FoundForm = ({ user, token }) => {
     newInputs[index][field] = value;
     setDenominationInputs(newInputs);
     
-    // Calculate total amount in real-time
     if (formData.category === 'Money') {
       const validDenominations = newInputs
         .filter(input => input.denomination && input.count)
@@ -117,7 +114,6 @@ const FoundForm = ({ user, token }) => {
     setError('');
     setLoading(true);
 
-    // Category-specific validation
     let isValid = true;
     let errorMessage = '';
 
@@ -162,7 +158,6 @@ const FoundForm = ({ user, token }) => {
     try {
       const data = new FormData();
       
-      // Process money denominations if category is Money
       if (formData.category === 'Money') {
         const validDenominations = denominationInputs
           .filter(input => input.denomination && input.count)
@@ -177,17 +172,14 @@ const FoundForm = ({ user, token }) => {
         }
       }
       
-      // Always include category as it's required
       data.append('category', formData.category);
       
-      // Add other form data
       Object.entries(formData).forEach(([key, value]) => {
         if (key !== 'moneyDenominations' && key !== 'image' && key !== 'category' && value !== null && value !== undefined) {
           data.append(key, value);
         }
       });
 
-      // Add image if not Money category
       if (formData.image && formData.category !== 'Money') {
         data.append('image', formData.image);
       }
@@ -213,7 +205,6 @@ const FoundForm = ({ user, token }) => {
     }
   };
 
-  // Render category-specific fields
   const renderCategoryFields = () => {
     switch (formData.category) {
       case 'Money':
@@ -416,8 +407,7 @@ const FoundForm = ({ user, token }) => {
   };
 
   return (
-    <div className="container mt-4 d-flex justify-content-center">
-      <div className="card shadow p-4" style={{ maxWidth: 600, width: '100%' }}>
+    <div className="card shadow p-4" style={{ maxWidth: 600, width: '100%' }}>
         <h3 className="mb-3 text-primary text-center">Report Found Item</h3>
         {submitted && (
           <div className="alert alert-success">
@@ -517,7 +507,6 @@ const FoundForm = ({ user, token }) => {
             </button>
           </div>
         </form>
-      </div>
     </div>
   );
 };

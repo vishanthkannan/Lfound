@@ -39,8 +39,6 @@ const LostForm = ({ user, token }) => {
 
   const handleCategoryChange = (e) => {
     const category = e.target.value;
-    setFormData({ ...formData, category });
-    // Reset category-specific fields when category changes
     setFormData(prev => ({
       ...prev,
       category,
@@ -73,7 +71,6 @@ const LostForm = ({ user, token }) => {
     newInputs[index][field] = value;
     setDenominationInputs(newInputs);
     
-    // Calculate total amount in real-time
     if (formData.category === 'Money') {
       const validDenominations = newInputs
         .filter(input => input.denomination && input.count)
@@ -117,7 +114,6 @@ const LostForm = ({ user, token }) => {
     setError('');
     setLoading(true);
 
-    // Category-specific validation
     let isValid = true;
     let errorMessage = '';
 
@@ -162,7 +158,6 @@ const LostForm = ({ user, token }) => {
     try {
       const data = new FormData();
       
-      // Process money denominations if category is Money
       if (formData.category === 'Money') {
         const validDenominations = denominationInputs
           .filter(input => input.denomination && input.count)
@@ -177,17 +172,14 @@ const LostForm = ({ user, token }) => {
         }
       }
       
-      // Always include category as it's required
       data.append('category', formData.category);
       
-      // Add other form data
       Object.entries(formData).forEach(([key, value]) => {
         if (key !== 'moneyDenominations' && key !== 'image' && key !== 'category' && value !== null && value !== undefined) {
           data.append(key, value);
         }
       });
 
-      // Add image if not Money category
       if (formData.image && formData.category !== 'Money') {
         data.append('image', formData.image);
       }
@@ -213,7 +205,6 @@ const LostForm = ({ user, token }) => {
     }
   };
 
-  // Render category-specific fields
   const renderCategoryFields = () => {
     switch (formData.category) {
       case 'Money':
@@ -416,30 +407,29 @@ const LostForm = ({ user, token }) => {
   };
 
   return (
-    <div className="container mt-4 d-flex justify-content-center">
-      <div className="card shadow p-4" style={{ maxWidth: 600, width: '100%' }}>
-        <h3 className="mb-3 text-primary text-center">Report Lost Item</h3>
+  <div className="card shadow-lg border-0 p-4" style={{ maxWidth: 600, width: '100%', background: '#232526', borderRadius: '1.5rem', color: '#fff' }}>
+    <h3 className="mb-4 text-center" style={{ fontSize: '2.2rem', fontWeight: 'bold', letterSpacing: '1.5px', color: '#fff' }}>Report Lost Item</h3>
         {submitted && (
-          <div className="alert alert-success">
-            <h5>Form submitted successfully!</h5>
+          <div className="alert alert-success text-center" style={{ borderRadius: '1rem', fontSize: '1.1rem' }}>
+            <h5 style={{ color: '#198754', fontWeight: 700 }}>Form submitted successfully!</h5>
             {submittedItem && submittedItem.customId && (
               <p className="mb-0">
-                <strong>Your Lost Item ID:</strong> 
-                <span className="badge bg-primary ms-2 fs-6">{submittedItem.customId}</span>
+                <strong>Your Lost Item ID:</strong>
+                <span className="badge bg-success ms-2 fs-6">{submittedItem.customId}</span>
               </p>
             )}
             <p className="mb-0 mt-2">
-              <small>Please keep this ID for future reference.</small>
+              <small style={{ color: '#222' }}>Please keep this ID for future reference.</small>
             </p>
           </div>
         )}
         {error && (
-          <div className="alert alert-danger">{error}</div>
+          <div className="alert alert-danger text-center" style={{ borderRadius: '1rem' }}>{error}</div>
         )}
-        <form onSubmit={handleSubmit}>
+  <form onSubmit={handleSubmit} style={{ fontSize: '1.08rem' }}>
           <div className="mb-3">
-            <label className="form-label">Category <span className="text-danger">*</span></label>
-            <select name="category" className="form-select" value={formData.category} onChange={handleCategoryChange} required>
+            <label className="form-label" style={{ fontWeight: 600, color: '#fff' }}>Category <span className="text-danger">*</span></label>
+            <select name="category" className="form-select" style={{ background: '#18191a', color: '#fff', border: '1px solid #444' }} value={formData.category} onChange={handleCategoryChange} required>
               <option value="">Select Category</option>
               <option value="Money">Money</option>
               <option value="Electronics">Electronics</option>
@@ -453,11 +443,12 @@ const LostForm = ({ user, token }) => {
           {formData.category && renderCategoryFields()}
 
           <div className="mb-3">
-            <label className="form-label">Lost Place <span className="text-danger">*</span></label>
+            <label className="form-label" style={{ fontWeight: 600, color: '#fff' }}>Lost Place <span className="text-danger">*</span></label>
             <input
               type="text"
               name="lostPlace"
               className="form-control"
+              style={{ background: '#18191a', color: '#fff', border: '1px solid #444' }}
               value={formData.lostPlace}
               onChange={handleChange}
               placeholder="e.g., Library Building, Cafeteria"
@@ -466,21 +457,23 @@ const LostForm = ({ user, token }) => {
           </div>
 
           <div className="mb-3">
-            <label className="form-label">Date & Time Lost</label>
+            <label className="form-label" style={{ fontWeight: 600, color: '#fff' }}>Date & Time Lost</label>
             <input
               type="datetime-local"
               name="lostDateTime"
               className="form-control"
+              style={{ background: '#18191a', color: '#fff', border: '1px solid #444' }}
               value={formData.lostDateTime}
               onChange={handleChange}
             />
           </div>
 
           <div className="mb-3">
-            <label className="form-label">Description</label>
+            <label className="form-label" style={{ fontWeight: 600, color: '#fff' }}>Description</label>
             <textarea
               name="description"
               className="form-control"
+              style={{ background: '#18191a', color: '#fff', border: '1px solid #444' }}
               rows="3"
               value={formData.description}
               onChange={handleChange}
@@ -490,28 +483,29 @@ const LostForm = ({ user, token }) => {
 
           {formData.category && formData.category !== 'Money' && (
             <div className="mb-3">
-              <label className="form-label">Upload Image (Optional)</label>
+              <label className="form-label" style={{ fontWeight: 600, color: '#fff' }}>Upload Image (Optional)</label>
               <input
                 type="file"
                 name="image"
                 className="form-control"
+                style={{ background: '#18191a', color: '#fff', border: '1px solid #444' }}
                 accept="image/*"
                 onChange={handleChange}
               />
             </div>
           )}
 
-          <div className="d-grid">
+          <div className="d-grid mt-4">
             <button
               type="submit"
-              className="btn btn-primary"
+              className="btn btn-primary btn-lg"
+              style={{ borderRadius: '2rem', fontWeight: 600, fontSize: '1.1rem', letterSpacing: '1px' }}
               disabled={loading}
             >
               {loading ? 'Submitting...' : 'Submit Lost Item Report'}
             </button>
           </div>
         </form>
-      </div>
     </div>
   );
 };

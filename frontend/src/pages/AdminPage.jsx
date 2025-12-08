@@ -1,83 +1,53 @@
-import React, { useState, useEffect } from 'react';
-import 'bootstrap/dist/css/bootstrap.min.css';
+import React from 'react';
+import MatchList from '../components/MatchList';
 
 const AdminPage = () => {
-  const [lostItems, setLostItems] = useState([]);
-  const [foundItems, setFoundItems] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
-  const [matching, setMatching] = useState(false);
-  const [matchResults, setMatchResults] = useState(null);
+  return (
+    <div style={{ minHeight: '100vh', background: '#18191a', color: '#fff', paddingTop: '40px' }}>
+      <nav style={{
+        background: 'transparent',
+        padding: '1rem 2rem',
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center'
+      }}>
+        <div style={{ fontWeight: 'bold', fontSize: '1.5rem', letterSpacing: '2px' }}>
+          <span style={{ color: '#fff' }}>LOST&FOUND</span>
+        </div>
+        <div>
+          <a href="/" style={{ color: '#fff', margin: '0 1rem', textDecoration: 'none' }}>Home</a>
+          <a href="/lost" style={{ color: '#fff', margin: '0 1rem', textDecoration: 'none' }}>Lost</a>
+          <a href="/found" style={{ color: '#fff', margin: '0 1rem', textDecoration: 'none' }}>Found</a>
+        </div>
+      </nav>
+      <div className="d-flex justify-content-center align-items-center" style={{ minHeight: '80vh' }}>
+        <div style={{
+          background: '#232526',
+          borderRadius: '1.5rem',
+          boxShadow: '0 4px 32px rgba(0,0,0,0.2)',
+          padding: '2.5rem 2rem',
+          maxWidth: 1100,
+          width: '100%'
+        }}>
+          <h2 className="text-center mb-3" style={{
+            fontSize: '2.5rem',
+            fontWeight: 'bold',
+            letterSpacing: '2px',
+            color: '#fff'
+          }}>
+            Admin - Lost &amp; Found Management
+          </h2>
+          <p className="text-center mb-4" style={{ color: '#bbb', fontSize: '1.1rem' }}>
+            View, match, and manage all lost and found items in one place.
+          </p>
+          <MatchList />
+        </div>
+      </div>
+    </div>
+  );
+};
 
-  // Fetch data from backend
-  useEffect(() => {
-    fetchData();
-  }, []);
-
-  const fetchData = async () => {
-    try {
-      setLoading(true);
-      const [lostResponse, foundResponse] = await Promise.all([
-            fetch('http://localhost:5000/api/lost'),
-    fetch('http://localhost:5000/api/found')
-      ]);
-
-      if (lostResponse.ok && foundResponse.ok) {
-        const lostData = await lostResponse.json();
-        const foundData = await foundResponse.json();
-        setLostItems(lostData);
-        setFoundItems(foundData);
-      } else {
-        setError('Failed to fetch data from server');
-      }
-    } catch (err) {
-      setError('Error connecting to server: ' + err.message);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleMatch = async () => {
-    try {
-      setMatching(true);
-      setMatchResults(null);
-      
-      // First test the simple matches endpoint
-      const simpleTestResponse = await fetch('http://localhost:5000/api/matches/simple-test', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ test: 'data' })
-      });
-
-      if (simpleTestResponse.ok) {
-        console.log('Simple matches endpoint works, trying full match endpoint...');
-        
-        const response = await fetch('http://localhost:5000/api/matches/match', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          }
-        });
-
-        if (response.ok) {
-          const result = await response.json();
-          setMatchResults(result);
-        } else {
-          setError(`Failed to perform matching: ${response.status} ${response.statusText}`);
-        }
-      } else {
-        setError('Server connection failed');
-      }
-    } catch (err) {
-      setError('Error during matching: ' + err.message);
-    } finally {
-      setMatching(false);
-    }
-  };
-
-  const getItemDisplayName = (item) => {
+export default AdminPage;
     if (item.itemName) return item.itemName;
     if (item.otherName) return item.otherName;
     if (item.brand) return item.brand;

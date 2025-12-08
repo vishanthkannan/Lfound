@@ -3,200 +3,126 @@ import { Link } from 'react-router-dom';
 
 const HomePage = ({ user }) => {
   return (
-    <div className="homepage-container">
+    <div className="modern-homepage">
       {/* Hero Section */}
-      <div className="hero-section">
-        <div className="container">
-          <div className="row align-items-center min-vh-100">
-            <div className="col-lg-6">
-              <div className="hero-content">
-                <h1 className="hero-title">
-                  Lost & Found
-                  <span className="text-primary"> Management System</span>
-                </h1>
-                <p className="hero-subtitle">
-                  Reuniting people with their lost belongings through intelligent matching and community support.
-                </p>
-                
-                {user ? (
-                  <div className="welcome-section">
-                    <div className="welcome-card">
-                      <div className="welcome-icon">👋</div>
-                      <h3>Welcome back, {user.name}!</h3>
-                      <p>You're logged in and ready to help others find their lost items.</p>
-                      {user.role === 'admin' && (
-                        <div className="admin-badge">
-                          <span className="badge bg-warning text-dark">
-                            <i className="bi bi-shield-check"></i> Admin Access
-                          </span>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                ) : (
-                  <div className="cta-buttons">
-                    <Link to="/login" className="btn btn-primary btn-lg me-3">
-                      <i className="bi bi-box-arrow-in-right"></i> Login
-                    </Link>
-                    <Link to="/signup" className="btn btn-outline-primary btn-lg">
-                      <i className="bi bi-person-plus"></i> Sign Up
-                    </Link>
-                  </div>
+      <section className="hero-section">
+        <div className="hero-content">
+          <div className="hero-tagline">
+            We reunite people through
+          </div>
+          
+          <div className="hero-title-container">
+            <div className="creative-text">
+              <span className="letter letter-l">
+                <div className="letter-icon">📱</div>
+                L
+              </span>
+              <span className="letter letter-o">
+                <div className="letter-icon">🔍</div>
+                o
+              </span>
+              <span className="letter letter-s">
+                <div className="letter-icon">👤</div>
+                s
+              </span>
+              <span className="letter letter-t">
+                <div className="letter-icon">✨</div>
+                t
+              </span>
+              <span className="letter letter-space">&</span>
+              <span className="letter letter-f">
+                <div className="letter-icon">🎯</div>
+                F
+              </span>
+              <span className="letter letter-o2">
+                <div className="letter-icon">👥</div>
+                o
+              </span>
+              <span className="letter letter-u">
+                <div className="letter-icon">🏠</div>
+                u
+              </span>
+              <span className="letter letter-n">
+                <div className="letter-icon">💝</div>
+                n
+              </span>
+              <span className="letter letter-d">
+                <div className="letter-icon">🔄</div>
+                d
+              </span>
+            </div>
+          </div>
+          
+          <div className="hero-subtitle">
+            Exceptional results for students and communities through
+            <br />
+            smart matching, instant notifications and seamless technology.
+          </div>
+
+          {user ? (
+            <div className="user-welcome">
+              <div className="welcome-card">
+                <div className="welcome-icon">👋</div>
+                <h3>Welcome back, {user.name}!</h3>
+                <p>Ready to help reunite people with their belongings?</p>
+                {user.role === 'admin' && (
+                  <span className="admin-badge">Admin Access</span>
                 )}
               </div>
-            </div>
-            <div className="col-lg-6">
-              <div className="hero-image">
-                <div className="floating-cards">
-                  <div className="card-item lost-card">
-                    <i className="bi bi-search"></i>
-                    <span>Lost Items</span>
-                  </div>
-                  <div className="card-item found-card">
-                    <i className="bi bi-check-circle"></i>
-                    <span>Found Items</span>
-                  </div>
-                  <div className="card-item match-card">
-                    <i className="bi bi-heart"></i>
-                    <span>Smart Matching</span>
-                  </div>
-                </div>
+              <div className="action-buttons">
+                <Link to="/lost" className="btn btn-primary">Report Lost Item</Link>
+                <Link to="/found" className="btn btn-secondary">Report Found Item</Link>
               </div>
             </div>
-          </div>
+          ) : (
+            <div className="auth-buttons">
+              <Link to="/login" className="btn btn-primary">Get Started</Link>
+              <Link to="/signup" className="btn btn-outline">Join Community</Link>
+            </div>
+          )}
         </div>
-      </div>
+      </section>
 
       {/* Features Section */}
-      {user && (
-        <div className="features-section">
-          <div className="container">
-            <div className="row">
-              <div className="col-12 text-center mb-5">
-                <h2 className="section-title">Quick Actions</h2>
-                <p className="section-subtitle">What would you like to do today?</p>
-              </div>
-            </div>
-            <div className="row g-4">
-              <div className="col-md-6 col-lg-4">
-                <div className="feature-card lost-feature">
-                  <div className="feature-icon">
-                    <i className="bi bi-exclamation-triangle"></i>
-                  </div>
-                  <h4>Report Lost Item</h4>
-                  <p>Help others find your lost belongings by providing detailed information.</p>
-                  <Link to="/lost" className="btn btn-outline-danger">
-                    <i className="bi bi-plus-circle"></i> Report Lost
-                  </Link>
-                </div>
-              </div>
-              <div className="col-md-6 col-lg-4">
-                <div className="feature-card found-feature">
-                  <div className="feature-icon">
-                    <i className="bi bi-check-circle"></i>
-                  </div>
-                  <h4>Report Found Item</h4>
-                  <p>Help reunite found items with their rightful owners.</p>
-                  <Link to="/found" className="btn btn-outline-success">
-                    <i className="bi bi-plus-circle"></i> Report Found
-                  </Link>
-                </div>
-              </div>
-              {user.role === 'admin' && (
-                <div className="col-md-6 col-lg-4">
-                  <div className="feature-card admin-feature">
-                    <div className="feature-icon">
-                      <i className="bi bi-shield-check"></i>
-                    </div>
-                    <h4>Admin Dashboard</h4>
-                    <p>Manage the system, view all items, and run matching algorithms.</p>
-                    <Link to="/admin" className="btn btn-outline-warning">
-                      <i className="bi bi-speedometer2"></i> Admin Panel
-                    </Link>
-                  </div>
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* How It Works Section */}
-      <div className="how-it-works-section">
+      <section className="features-section">
         <div className="container">
           <div className="row">
-            <div className="col-12 text-center mb-5">
-              <h2 className="section-title">How It Works</h2>
-              <p className="section-subtitle">Simple steps to reunite lost items with their owners</p>
-            </div>
-          </div>
-          <div className="row g-4">
             <div className="col-md-4">
-              <div className="step-card">
-                <div className="step-number">1</div>
-                <div className="step-icon">
-                  <i className="bi bi-file-earmark-text"></i>
-                </div>
-                <h4>Report</h4>
-                <p>Submit detailed information about your lost or found item through our easy-to-use forms.</p>
+              <div className="feature-card">
+                <div className="feature-icon">🔍</div>
+                <h3>Smart Matching</h3>
+                <p>AI-powered system matches lost and found items automatically</p>
               </div>
             </div>
             <div className="col-md-4">
-              <div className="step-card">
-                <div className="step-number">2</div>
-                <div className="step-icon">
-                  <i className="bi bi-search-heart"></i>
-                </div>
-                <h4>Match</h4>
-                <p>Our intelligent system automatically matches lost and found items using advanced algorithms.</p>
+              <div className="feature-card">
+                <div className="feature-icon">📧</div>
+                <h3>Instant Alerts</h3>
+                <p>Get notified immediately when your item is found</p>
               </div>
             </div>
             <div className="col-md-4">
-              <div className="step-card">
-                <div className="step-number">3</div>
-                <div className="step-icon">
-                  <i className="bi bi-heart-fill"></i>
-                </div>
-                <h4>Reunite</h4>
-                <p>Get notified when matches are found and help reunite items with their rightful owners.</p>
+              <div className="feature-card">
+                <div className="feature-icon">🤝</div>
+                <h3>Community Driven</h3>
+                <p>Built by students, for students and the community</p>
               </div>
             </div>
           </div>
         </div>
+      </section>
+    {/* Modern Footer */}
+    <footer className="modern-footer">
+      <div>
+        &copy; {new Date().getFullYear()} Lost &amp; Found | Made with <span style={{color:'#00bcd4'}}>♥</span> by Your Team
       </div>
-
-      {/* Stats Section */}
-      <div className="stats-section">
-        <div className="container">
-          <div className="row text-center">
-            <div className="col-md-3">
-              <div className="stat-item">
-                <div className="stat-number">100+</div>
-                <div className="stat-label">Items Recovered</div>
-              </div>
-            </div>
-            <div className="col-md-3">
-              <div className="stat-item">
-                <div className="stat-number">500+</div>
-                <div className="stat-label">Happy Users</div>
-              </div>
-            </div>
-            <div className="col-md-3">
-              <div className="stat-item">
-                <div className="stat-number">95%</div>
-                <div className="stat-label">Success Rate</div>
-              </div>
-            </div>
-            <div className="col-md-3">
-              <div className="stat-item">
-                <div className="stat-number">24/7</div>
-                <div className="stat-label">Support</div>
-              </div>
-            </div>
-          </div>
-        </div>
+      <div style={{marginTop:'0.5rem'}}>
+        <a href="/about">About</a>|
+        <a href="/blog">Blog</a>|
+        <a href="/contact">Contact</a>
       </div>
-    </div>
+    </footer>
+  </div>
   );
 };
 

@@ -68,20 +68,64 @@ app.post('/api/matches/match', (req, res) => {
 
 const PORT = process.env.PORT || 3001;
 
-// Use a fallback MongoDB URI if not provided
+// MongoDB connection configuration
+// Supports both local MongoDB and MongoDB Atlas (cloud)
+// For MongoDB Atlas: Use connection string from Atlas dashboard
+// For local MongoDB: mongodb://localhost:27017/lostfound
+// For MongoDB Compass: Use the same connection string
 const MONGO_URI = process.env.MONGO_URI || 'mongodb://localhost:27017/lostfound';
 
 console.log('Attempting to connect to MongoDB...');
-console.log('MongoDB URI:', MONGO_URI);
+console.log('MongoDB URI:', MONGO_URI.replace(/\/\/[^:]+:[^@]+@/, '//***:***@')); // Hide credentials in logs
 
-mongoose
-  .connect(MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
-  .then(() => {
-    console.log('Connected to MongoDB successfully');
-    app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
-  })
-  .catch((err) => {
-    console.error('MongoDB connection error:', err.message);
-    console.log('Starting server without MongoDB for testing...');
-    app.listen(PORT, () => console.log(`Server running on port ${PORT} (without MongoDB)`));
-  });
+// MongoDB connection options (updated for Mongoose 8.x)
+const mongooseOptions = {
+  // These options are no longer needed in Mongoose 8.x but kept for compatibility
+  // The new default behavior handles these automatically
+};
+
+// Connect to MongoDB
+const connectDB = async () => {
+  try {
+    await mongoose.connect(MONGO_URI, mongooseOptions);
+    console.log('✅ Connected to MongoDB successfully');
+    console.log(`📊 Database: ${mongoose.connection.name}`);
+    console.log(`🌐 Host: ${mongoose.connection.host}`);
+    
+    // Start server after successful connection
+    app.listen(PORT, () => {
+      console.log(`🚀 Server running on port ${PORT}`);
+      console.log(`📡 API available at http://localhost:${PORT}/api`);
+    });
+  } catch (err) {
+    console.error('❌ MongoDB connection error:', err.message);
+    console.error('Full error:', err);
+    console.log('\n💡 Troubleshooting tips:');
+    console.log('   1. Make sure MongoDB is running (if using local MongoDB)');
+    console.log('   2. Check your MONGO_URI in .env file');
+    console.log('   3. For MongoDB Atlas: Verify your connection string and network access');
+    console.log('   4. For MongoDB Compass: Use the same connection string\n');
+    
+    // Exit process if MongoDB connection fails (optional - remove if you want server to run without DB)
+    process.exit(1);
+  }
+};
+
+// Handle MongoDB connection events
+mongoose.connection.on('disconnected', () => {
+  console.log('⚠️  MongoDB disconnected');
+});
+
+mongoose.connection.on('error', (err) => {
+  console.error('❌ MongoDB connection error:', err);
+});
+
+// Handle app termination
+process.on('SIGINT', async () => {
+  await mongoose.connection.close();
+  console.log('MongoDB connection closed due to app termination');
+  process.exit(0);
+});
+
+// Connect to database
+connectDB();

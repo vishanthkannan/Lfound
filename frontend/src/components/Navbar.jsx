@@ -13,9 +13,9 @@ const Navbar = ({ user, onLogout }) => {
   };
 
   return (
-    <nav className="navbar navbar-expand-lg navbar-dark px-4 shadow-sm" style={{ background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' }}>
+    <nav className="navbar navbar-expand-lg navbar-dark px-4 shadow-sm" style={{ background: '#212529' }}>
       <div className="container-fluid">
-        <Link className="navbar-brand fw-bold" to="/">
+        <Link className="navbar-brand fw-bold text-white" to="/">
           <i className="bi bi-search me-2"></i>
           Lost & Found
         </Link>
@@ -121,3 +121,4 @@ const Navbar = ({ user, onLogout }) => {
 };
 
 export default Navbar;
+
