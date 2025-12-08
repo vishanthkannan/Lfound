@@ -113,13 +113,17 @@ const HomePage = ({ user }) => {
       </section>
     {/* Modern Footer */}
     <footer className="modern-footer">
-      <div>
-        &copy; {new Date().getFullYear()} Lost &amp; Found | Made with <span style={{color:'#00bcd4'}}>♥</span> by Your Team
-      </div>
-      <div style={{marginTop:'0.5rem'}}>
-        <a href="/about">About</a>|
-        <a href="/blog">Blog</a>|
-        <a href="/contact">Contact</a>
+      <div className="footer-content">
+        <p className="footer-text">
+          &copy; {new Date().getFullYear()} Lost &amp; Found | Made with <span className="footer-heart">♥</span> by Your Team
+        </p>
+        <div className="footer-links">
+          <a href="/about">About</a>
+          <span className="footer-separator">|</span>
+          <a href="/blog">Blog</a>
+          <span className="footer-separator">|</span>
+          <a href="/contact">Contact</a>
+        </div>
       </div>
     </footer>
   </div>

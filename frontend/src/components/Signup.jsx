@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { authAPI } from '../api/auth';
+import './Auth.css';
 
 const Signup = ({ onLogin }) => {
   const [formData, setFormData] = useState({
@@ -11,6 +12,8 @@ const Signup = ({ onLogin }) => {
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -18,142 +21,230 @@ const Signup = ({ onLogin }) => {
       ...formData,
       [e.target.name]: e.target.value
     });
+    setError('');
+  };
+
+  const validateForm = () => {
+    if (formData.password !== formData.confirmPassword) {
+      setError('Passwords do not match');
+      return false;
+    }
+
+    if (formData.password.length < 6) {
+      setError('Password must be at least 6 characters long');
+      return false;
+    }
+
+    return true;
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true);
     setError('');
 
-    // Validate passwords match
-    if (formData.password !== formData.confirmPassword) {
-      setError('Passwords do not match');
-      setLoading(false);
+    if (!validateForm()) {
       return;
     }
 
-    // Validate password length
-    if (formData.password.length < 6) {
-      setError('Password must be at least 6 characters long');
-      setLoading(false);
-      return;
-    }
+    setLoading(true);
 
     try {
       const data = await authAPI.register(formData.name, formData.email, formData.password);
 
       if (data.success) {
-        // Store token and user data
         localStorage.setItem('token', data.token);
         localStorage.setItem('user', JSON.stringify(data.user));
         
-        // Call the onLogin callback
         if (onLogin) {
           onLogin(data.user, data.token);
         }
         
-        // Navigate to home page
         navigate('/');
       } else {
-        setError(data.message || 'Registration failed');
+        setError(data.message || 'Registration failed. Please try again.');
       }
     } catch (err) {
-      setError('Network error. Please try again.');
+      setError('Network error. Please check your connection and try again.');
     } finally {
       setLoading(false);
     }
   };
 
+  const getPasswordStrength = () => {
+    const password = formData.password;
+    if (password.length === 0) return { strength: 0, text: '' };
+    if (password.length < 6) return { strength: 1, text: 'Weak', color: 'var(--error)' };
+    if (password.length < 10) return { strength: 2, text: 'Medium', color: 'var(--warning)' };
+    return { strength: 3, text: 'Strong', color: 'var(--success)' };
+  };
+
+  const passwordStrength = getPasswordStrength();
+
   return (
-    <div style={{ minHeight: '100vh', background: '#18191a', color: '#fff', paddingTop: '40px' }}>
-      <div className="d-flex justify-content-center align-items-center" style={{ minHeight: '80vh' }}>
-        <div style={{ maxWidth: 400, width: '100%' }}>
-          <div className="card shadow-lg border-0 p-4" style={{ background: '#232526', borderRadius: '1.5rem', color: '#fff' }}>
-            <div className="card-body p-4">
-              <h3 className="text-center mb-4" style={{ fontSize: '2rem', fontWeight: 'bold', color: '#fff' }}>Sign Up</h3>
-              
-              {error && (
-                <div className="alert alert-danger" role="alert">
-                  {error}
+    <div className="auth-container">
+      <div className="auth-background">
+        <div className="auth-gradient"></div>
+      </div>
+      
+      <div className="auth-content">
+        <div className="auth-card">
+          <div className="auth-header">
+            <div className="auth-icon">
+              <i className="bi bi-person-plus"></i>
+            </div>
+            <h1 className="auth-title">Create Account</h1>
+            <p className="auth-subtitle">Join Lost & Found community today</p>
+          </div>
+
+          {error && (
+            <div className="alert alert-danger animate-fade-in">
+              <i className="bi bi-exclamation-circle"></i>
+              <span>{error}</span>
+            </div>
+          )}
+
+          <form onSubmit={handleSubmit} className="auth-form">
+            <div className="form-group">
+              <label htmlFor="name" className="form-label">
+                <i className="bi bi-person"></i>
+                Full Name
+              </label>
+              <input
+                type="text"
+                className="form-control"
+                id="name"
+                name="name"
+                value={formData.name}
+                onChange={handleChange}
+                placeholder="Enter your full name"
+                required
+                autoComplete="name"
+              />
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="email" className="form-label">
+                <i className="bi bi-envelope"></i>
+                Email Address
+              </label>
+              <input
+                type="email"
+                className="form-control"
+                id="email"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+                placeholder="Enter your email"
+                required
+                autoComplete="email"
+              />
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="password" className="form-label">
+                <i className="bi bi-lock"></i>
+                Password
+              </label>
+              <div className="password-input-wrapper">
+                <input
+                  type={showPassword ? 'text' : 'password'}
+                  className="form-control"
+                  id="password"
+                  name="password"
+                  value={formData.password}
+                  onChange={handleChange}
+                  placeholder="Create a password (min. 6 characters)"
+                  required
+                  minLength="6"
+                  autoComplete="new-password"
+                />
+                <button
+                  type="button"
+                  className="password-toggle"
+                  onClick={() => setShowPassword(!showPassword)}
+                  aria-label="Toggle password visibility"
+                >
+                  <i className={`bi ${showPassword ? 'bi-eye-slash' : 'bi-eye'}`}></i>
+                </button>
+              </div>
+              {formData.password && (
+                <div className="password-strength">
+                  <div className="password-strength-bar">
+                    <div 
+                      className="password-strength-fill"
+                      style={{ 
+                        width: `${(passwordStrength.strength / 3) * 100}%`,
+                        backgroundColor: passwordStrength.color
+                      }}
+                    ></div>
+                  </div>
+                  <span className="password-strength-text" style={{ color: passwordStrength.color }}>
+                    {passwordStrength.text}
+                  </span>
                 </div>
               )}
-
-              <form onSubmit={handleSubmit} style={{ fontSize: '1.08rem' }}>
-                <div className="mb-3">
-                  <label htmlFor="name" className="form-label" style={{ fontWeight: 600, color: '#fff' }}>Full Name</label>
-                  <input
-                    type="text"
-                    className="form-control signup-input"
-                    id="name"
-                    name="name"
-                    value={formData.name}
-                    onChange={handleChange}
-                    required
-                    style={{ background: '#18191a', color: '#fff', border: '1px solid #444' }}
-                  />
-                </div>
-
-                <div className="mb-3">
-                  <label htmlFor="email" className="form-label" style={{ fontWeight: 600, color: '#fff' }}>Email</label>
-                  <input
-                    type="email"
-                    className="form-control signup-input"
-                    id="email"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleChange}
-                    required
-                    style={{ background: '#18191a', color: '#fff', border: '1px solid #444' }}
-                  />
-                </div>
-
-                <div className="mb-3">
-                  <label htmlFor="password" className="form-label" style={{ fontWeight: 600, color: '#fff' }}>Password</label>
-                  <input
-                    type="password"
-                    className="form-control signup-input"
-                    id="password"
-                    name="password"
-                    value={formData.password}
-                    onChange={handleChange}
-                    required
-                    minLength="6"
-                    style={{ background: '#18191a', color: '#fff', border: '1px solid #444' }}
-                  />
-                  <div className="form-text" style={{ color: '#bbb' }}>Password must be at least 6 characters long</div>
-                </div>
-
-                <div className="mb-3">
-                  <label htmlFor="confirmPassword" className="form-label" style={{ fontWeight: 600, color: '#fff' }}>Confirm Password</label>
-                  <input
-                    type="password"
-                    className="form-control signup-input"
-                    id="confirmPassword"
-                    name="confirmPassword"
-                    value={formData.confirmPassword}
-                    onChange={handleChange}
-                    required
-                    style={{ background: '#18191a', color: '#fff', border: '1px solid #444' }}
-                  />
-                </div>
-
-                <button
-                  type="submit"
-                  className="btn btn-primary w-100 btn-lg"
-                  style={{ borderRadius: '2rem', fontWeight: 600, fontSize: '1.1rem', letterSpacing: '1px' }}
-                  disabled={loading}
-                >
-                  {loading ? 'Creating Account...' : 'Sign Up'}
-                </button>
-              </form>
-
-              <div className="text-center mt-3">
-                <p className="mb-0" style={{ color: '#bbb' }}>
-                  Already have an account?{' '}
-                  <a href="/login" style={{ color: '#0d6efd', textDecoration: 'underline' }}>Login</a>
-                </p>
-              </div>
+              <div className="form-text">Password must be at least 6 characters long</div>
             </div>
+
+            <div className="form-group">
+              <label htmlFor="confirmPassword" className="form-label">
+                <i className="bi bi-lock-fill"></i>
+                Confirm Password
+              </label>
+              <div className="password-input-wrapper">
+                <input
+                  type={showConfirmPassword ? 'text' : 'password'}
+                  className="form-control"
+                  id="confirmPassword"
+                  name="confirmPassword"
+                  value={formData.confirmPassword}
+                  onChange={handleChange}
+                  placeholder="Confirm your password"
+                  required
+                  autoComplete="new-password"
+                />
+                <button
+                  type="button"
+                  className="password-toggle"
+                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                  aria-label="Toggle password visibility"
+                >
+                  <i className={`bi ${showConfirmPassword ? 'bi-eye-slash' : 'bi-eye'}`}></i>
+                </button>
+              </div>
+              {formData.confirmPassword && formData.password !== formData.confirmPassword && (
+                <div className="form-text text-danger">
+                  <i className="bi bi-x-circle"></i> Passwords do not match
+                </div>
+              )}
+            </div>
+
+            <button
+              type="submit"
+              className="btn btn-primary btn-lg w-100"
+              disabled={loading}
+            >
+              {loading ? (
+                <>
+                  <span className="spinner spinner-sm"></span>
+                  <span>Creating account...</span>
+                </>
+              ) : (
+                <>
+                  <span>Create Account</span>
+                  <i className="bi bi-arrow-right"></i>
+                </>
+              )}
+            </button>
+          </form>
+
+          <div className="auth-footer">
+            <p>
+              Already have an account?{' '}
+              <Link to="/login" className="auth-link">
+                Sign in
+              </Link>
+            </p>
           </div>
         </div>
       </div>
@@ -161,4 +252,4 @@ const Signup = ({ onLogin }) => {
   );
 };
 
-export default Signup; 
+export default Signup;

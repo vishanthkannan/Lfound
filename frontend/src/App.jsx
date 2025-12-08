@@ -54,6 +54,7 @@ function App() {
   return (
     <Router>
       <Navbar user={user} onLogout={handleLogout} />
+      <div style={{ paddingTop: '75px', minHeight: '100vh' }}>
       <Routes>
         <Route path="/" element={<HomePage user={user} />} />
         <Route 
@@ -77,6 +78,7 @@ function App() {
           element={user ? <Navigate to="/" /> : <SignupPage onLogin={handleLogin} />} 
         />
       </Routes>
+      </div>
     </Router>
   );
 }

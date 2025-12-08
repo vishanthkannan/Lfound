@@ -1,26 +1,5 @@
-/* Animated Button Effects */
-.btn-primary, .btn-secondary, .btn-outline {
-  transition: background 0.3s, color 0.3s, box-shadow 0.3s;
-  border-radius: 2rem;
-  font-weight: 600;
-  font-size: 1.1rem;
-  letter-spacing: 1px;
-  box-shadow: 0 2px 12px 0 rgba(0,188,212,0.08);
-}
-.btn-primary:hover, .btn-secondary:hover, .btn-outline:hover {
-  background: var(--primary-teal);
-  color: #fff;
-  box-shadow: 0 4px 24px 0 rgba(0,188,212,0.18);
-}
-.btn-outline {
-  background: transparent;
-  color: var(--primary-teal);
-  border: 2px solid var(--primary-teal);
-}
-.btn-outline:hover {
-  background: var(--primary-teal);
-  color: #fff;
-}
+/* Import Design System */
+@import './styles/design-system.css';
 
 /* Glassmorphism for Feature Cards */
 .feature-card {
@@ -45,22 +24,55 @@
 
 /* Modern Footer */
 .modern-footer {
-  background: #18191a;
-  color: #bbb;
-  padding: 2rem 0 1rem 0;
+  background: var(--bg-secondary);
+  color: var(--text-secondary);
+  padding: var(--spacing-2xl) 0 var(--spacing-xl);
   text-align: center;
-  font-size: 1rem;
-  border-top: 1px solid #232526;
-  margin-top: 3rem;
+  font-size: 0.9375rem;
+  border-top: 1px solid var(--border-primary);
+  margin-top: var(--spacing-3xl);
+  position: relative;
+  z-index: 1;
 }
-.modern-footer a {
-  color: var(--primary-teal);
-  margin: 0 0.5rem;
+
+.footer-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 var(--spacing-lg);
+}
+
+.footer-text {
+  margin-bottom: var(--spacing-md);
+  color: var(--text-secondary);
+}
+
+.footer-heart {
+  color: var(--primary);
+  animation: pulse 2s ease-in-out infinite;
+}
+
+.footer-links {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-sm);
+  flex-wrap: wrap;
+}
+
+.footer-links a {
+  color: var(--text-secondary);
   text-decoration: none;
-  transition: color 0.2s;
+  transition: color var(--transition-fast);
+  font-weight: 500;
 }
-.modern-footer a:hover {
-  color: #fff;
+
+.footer-links a:hover {
+  color: var(--primary);
+}
+
+.footer-separator {
+  color: var(--text-muted);
+  margin: 0 var(--spacing-xs);
 }
 /* Modern Lost & Found Homepage Styles */
 

@@ -1,10 +1,11 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import './UserDropdown.css';
 
 const UserDropdown = ({ user, onLogout }) => {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef(null);
 
-  // Close dropdown when clicking outside
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -12,11 +13,13 @@ const UserDropdown = ({ user, onLogout }) => {
       }
     };
 
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, []);
+    if (isOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+      return () => {
+        document.removeEventListener('mousedown', handleClickOutside);
+      };
+    }
+  }, [isOpen]);
 
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
@@ -28,32 +31,72 @@ const UserDropdown = ({ user, onLogout }) => {
   };
 
   return (
-    <div className="nav-item dropdown" ref={dropdownRef}>
+    <div className="user-dropdown" ref={dropdownRef}>
       <button 
-        className="nav-link dropdown-toggle" 
+        className="user-dropdown-toggle"
         onClick={toggleDropdown}
-        style={{ background: 'none', border: 'none', color: 'inherit' }}
+        aria-expanded={isOpen}
+        aria-haspopup="true"
       >
-        <i className="bi bi-person-circle me-1"></i>
-        {user.name}
+        <div className="user-avatar">
+          {user.name.charAt(0).toUpperCase()}
+        </div>
+        <div className="user-info">
+          <span className="user-name">{user.name}</span>
+          <span className="user-role">{user.role === 'admin' ? 'Admin' : 'User'}</span>
+        </div>
+        <i className={`bi bi-chevron-down dropdown-arrow ${isOpen ? 'open' : ''}`}></i>
       </button>
+      
       {isOpen && (
-        <ul className="dropdown-menu dropdown-menu-end show" style={{ display: 'block' }}>
-          <li><span className="dropdown-item-text text-muted">Signed in as {user.email}</span></li>
-          <li><hr className="dropdown-divider" /></li>
-          <li>
-            <button 
-              className="dropdown-item" 
-              onClick={handleLogout}
-              style={{ background: 'none', border: 'none', width: '100%', textAlign: 'left', padding: '0.25rem 1rem' }}
+        <div className="user-dropdown-menu animate-fade-in">
+          <div className="dropdown-header">
+            <div className="dropdown-user-avatar">
+              {user.name.charAt(0).toUpperCase()}
+            </div>
+            <div className="dropdown-user-details">
+              <div className="dropdown-user-name">{user.name}</div>
+              <div className="dropdown-user-email">{user.email}</div>
+            </div>
+          </div>
+          
+          <div className="dropdown-divider"></div>
+          
+          <div className="dropdown-menu-items">
+            <Link 
+              to="/" 
+              className="dropdown-item"
+              onClick={() => setIsOpen(false)}
             >
-              Logout
+              <i className="bi bi-house"></i>
+              <span>Home</span>
+            </Link>
+            
+            {user.role === 'admin' && (
+              <Link 
+                to="/admin" 
+                className="dropdown-item"
+                onClick={() => setIsOpen(false)}
+              >
+                <i className="bi bi-speedometer2"></i>
+                <span>Admin Dashboard</span>
+              </Link>
+            )}
+            
+            <div className="dropdown-divider"></div>
+            
+            <button 
+              className="dropdown-item dropdown-item-danger"
+              onClick={handleLogout}
+            >
+              <i className="bi bi-box-arrow-right"></i>
+              <span>Logout</span>
             </button>
-          </li>
-        </ul>
+          </div>
+        </div>
       )}
     </div>
   );
 };
 
-export default UserDropdown; 
+export default UserDropdown;

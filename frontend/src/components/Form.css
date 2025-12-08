@@ -1,0 +1,323 @@
+/* Modern Form Styles */
+.form-card {
+  background: var(--bg-card);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--border-primary);
+  border-radius: var(--radius-2xl);
+  padding: var(--spacing-2xl);
+  box-shadow: var(--shadow-xl);
+  animation: fadeIn 0.5s ease-out;
+}
+
+.modern-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg);
+}
+
+.form-section {
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-primary);
+  border-radius: var(--radius-xl);
+  padding: var(--spacing-lg);
+  margin-bottom: var(--spacing-md);
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+.form-label {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  font-weight: 600;
+  font-size: 0.9375rem;
+  color: var(--text-primary);
+}
+
+.form-label i {
+  color: var(--primary);
+  font-size: 1.125rem;
+}
+
+.required {
+  color: var(--error);
+  margin-left: 0.25rem;
+}
+
+.form-control,
+.form-select {
+  width: 100%;
+  padding: 0.875rem 1rem;
+  font-size: 0.9375rem;
+  font-family: var(--font-primary);
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-primary);
+  border-radius: var(--radius-md);
+  color: var(--text-primary);
+  transition: all var(--transition-base);
+}
+
+.form-control:focus,
+.form-select:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(0, 188, 212, 0.1);
+  background: var(--bg-card);
+}
+
+.form-control::placeholder {
+  color: var(--text-muted);
+}
+
+textarea.form-control {
+  resize: vertical;
+  min-height: 100px;
+}
+
+/* Denomination List */
+.denomination-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+  margin-bottom: var(--spacing-md);
+}
+
+.denomination-item {
+  display: flex;
+  gap: var(--spacing-sm);
+  align-items: center;
+}
+
+.denomination-item .form-select {
+  flex: 2;
+}
+
+.denomination-item .form-control {
+  flex: 1;
+}
+
+.btn-remove {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-primary);
+  border-radius: var(--radius-md);
+  color: var(--error);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  flex-shrink: 0;
+}
+
+.btn-remove:hover {
+  background: rgba(239, 68, 68, 0.1);
+  border-color: var(--error);
+}
+
+.total-amount {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  margin-top: var(--spacing-md);
+  padding: var(--spacing-md);
+  background: rgba(16, 185, 129, 0.1);
+  border: 1px solid var(--success);
+  border-radius: var(--radius-md);
+  color: var(--success-light);
+  font-size: 1.125rem;
+}
+
+.total-amount i {
+  font-size: 1.5rem;
+}
+
+/* Image Upload */
+.image-upload-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.file-input {
+  display: none;
+}
+
+.file-label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-sm);
+  padding: 2rem;
+  background: var(--bg-tertiary);
+  border: 2px dashed var(--border-primary);
+  border-radius: var(--radius-lg);
+  cursor: pointer;
+  transition: all var(--transition-base);
+  color: var(--text-secondary);
+}
+
+.file-label:hover {
+  border-color: var(--primary);
+  background: var(--bg-card);
+  color: var(--primary);
+}
+
+.file-label i {
+  font-size: 1.5rem;
+}
+
+.image-preview {
+  position: relative;
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  border: 1px solid var(--border-primary);
+}
+
+.image-preview img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.remove-image {
+  position: absolute;
+  top: var(--spacing-sm);
+  right: var(--spacing-sm);
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.7);
+  border: none;
+  border-radius: var(--radius-full);
+  color: white;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.remove-image:hover {
+  background: var(--error);
+  transform: scale(1.1);
+}
+
+/* Form Actions */
+.form-actions {
+  display: flex;
+  gap: var(--spacing-md);
+  margin-top: var(--spacing-lg);
+}
+
+.form-actions .btn {
+  flex: 1;
+}
+
+/* Success State */
+.success-state {
+  text-align: center;
+  padding: var(--spacing-3xl);
+}
+
+.success-icon {
+  width: 100px;
+  height: 100px;
+  margin: 0 auto var(--spacing-lg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--success);
+  border-radius: var(--radius-full);
+  font-size: 4rem;
+  color: white;
+  animation: scaleIn 0.5s ease-out;
+}
+
+@keyframes scaleIn {
+  from {
+    transform: scale(0);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.success-state h3 {
+  font-size: 2rem;
+  margin-bottom: var(--spacing-lg);
+  color: var(--text-primary);
+}
+
+.submitted-id {
+  margin: var(--spacing-xl) 0;
+}
+
+.submitted-id p {
+  margin-bottom: var(--spacing-sm);
+  color: var(--text-secondary);
+}
+
+.id-badge {
+  display: inline-block;
+  padding: var(--spacing-md) var(--spacing-xl);
+  background: var(--primary-gradient);
+  color: white;
+  border-radius: var(--radius-lg);
+  font-size: 1.5rem;
+  font-weight: 700;
+  font-family: var(--font-heading);
+  letter-spacing: 2px;
+  box-shadow: var(--shadow-primary);
+}
+
+.success-message {
+  color: var(--text-secondary);
+  font-size: 1.125rem;
+  margin-bottom: var(--spacing-xl);
+  line-height: 1.6;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .form-card {
+    padding: var(--spacing-xl);
+  }
+
+  .denomination-item {
+    flex-direction: column;
+  }
+
+  .denomination-item .form-select,
+  .denomination-item .form-control {
+    width: 100%;
+  }
+
+  .form-actions {
+    flex-direction: column;
+  }
+
+  .success-state {
+    padding: var(--spacing-xl);
+  }
+
+  .success-icon {
+    width: 80px;
+    height: 80px;
+    font-size: 3rem;
+  }
+
+  .success-state h3 {
+    font-size: 1.5rem;
+  }
+}
+

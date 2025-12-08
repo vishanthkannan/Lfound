@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import 'bootstrap/dist/css/bootstrap.min.css';
+import './Form.css';
 
 const FoundForm = ({ user, token }) => {
   const [submitted, setSubmitted] = useState(false);
   const [submittedItem, setSubmittedItem] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [imagePreview, setImagePreview] = useState(null);
   const [formData, setFormData] = useState({
     category: '',
     itemName: '',
@@ -31,10 +32,21 @@ const FoundForm = ({ user, token }) => {
   const handleChange = (e) => {
     const { name, value, files } = e.target;
     if (name === 'image') {
-      setFormData({ ...formData, image: files[0] });
+      const file = files[0];
+      setFormData({ ...formData, image: file });
+      if (file) {
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          setImagePreview(reader.result);
+        };
+        reader.readAsDataURL(file);
+      } else {
+        setImagePreview(null);
+      }
     } else {
       setFormData({ ...formData, [name]: value });
     }
+    setError('');
   };
 
   const handleCategoryChange = (e) => {
@@ -49,8 +61,10 @@ const FoundForm = ({ user, token }) => {
       rollNumber: '',
       name: '',
       moneyDenominations: [],
-      totalAmount: 0
+      totalAmount: 0,
+      image: null
     }));
+    setImagePreview(null);
     if (category !== 'Money') {
       setDenominationInputs([{ denomination: '', count: '' }]);
     }
@@ -107,6 +121,7 @@ const FoundForm = ({ user, token }) => {
       foundDateTime: '',
     });
     setDenominationInputs([{ denomination: '', count: '' }]);
+    setImagePreview(null);
   };
 
   const handleSubmit = async (e) => {
@@ -184,7 +199,7 @@ const FoundForm = ({ user, token }) => {
         data.append('image', formData.image);
       }
 
-      const response = await fetch('http://localhost:5000/api/found', {
+      const response = await fetch('http://localhost:3001/api/found', {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`
@@ -209,9 +224,12 @@ const FoundForm = ({ user, token }) => {
     switch (formData.category) {
       case 'Money':
         return (
-          <>
-            <div className="mb-3">
-              <label className="form-label">Item Name (e.g., Wallet, Purse) <span className="text-danger">*</span></label>
+          <div className="form-section">
+            <div className="form-group">
+              <label className="form-label">
+                <i className="bi bi-wallet2"></i>
+                Item Name (e.g., Wallet, Purse) <span className="required">*</span>
+              </label>
               <input
                 type="text"
                 name="itemName"
@@ -223,18 +241,21 @@ const FoundForm = ({ user, token }) => {
               />
             </div>
             
-            <div className="mb-3">
-              <label className="form-label">Money Denominations <span className="text-danger">*</span></label>
-              {denominationInputs.map((input, index) => (
-                <div key={index} className="row mb-2">
-                  <div className="col-6">
+            <div className="form-group">
+              <label className="form-label">
+                <i className="bi bi-cash-coin"></i>
+                Money Denominations <span className="required">*</span>
+              </label>
+              <div className="denomination-list">
+                {denominationInputs.map((input, index) => (
+                  <div key={index} className="denomination-item">
                     <select
                       className="form-select"
                       value={input.denomination}
                       onChange={(e) => handleDenominationChange(index, 'denomination', e.target.value)}
                       required
                     >
-                      <option value="">Select</option>
+                      <option value="">Select Denomination</option>
                       <option value="₹2000">₹2000</option>
                       <option value="₹500">₹500</option>
                       <option value="₹200">₹200</option>
@@ -246,8 +267,6 @@ const FoundForm = ({ user, token }) => {
                       <option value="₹2">₹2</option>
                       <option value="₹1">₹1</option>
                     </select>
-                  </div>
-                  <div className="col-4">
                     <input
                       type="number"
                       className="form-control"
@@ -257,41 +276,45 @@ const FoundForm = ({ user, token }) => {
                       min="1"
                       required
                     />
-                  </div>
-                  <div className="col-2">
                     {denominationInputs.length > 1 && (
                       <button
                         type="button"
-                        className="btn btn-outline-danger btn-sm"
+                        className="btn-remove"
                         onClick={() => removeDenominationInput(index)}
+                        aria-label="Remove denomination"
                       >
-                        ×
+                        <i className="bi bi-x-lg"></i>
                       </button>
                     )}
                   </div>
-                </div>
-              ))}
+                ))}
+              </div>
               <button
                 type="button"
-                className="btn btn-outline-primary btn-sm"
+                className="btn btn-outline btn-sm"
                 onClick={addDenominationInput}
               >
-                + Add Denomination
+                <i className="bi bi-plus-circle"></i>
+                Add Denomination
               </button>
               {formData.totalAmount > 0 && (
-                <div className="mt-2">
-                  <strong>Total Amount: ₹{formData.totalAmount}</strong>
+                <div className="total-amount">
+                  <i className="bi bi-calculator"></i>
+                  <strong>Total Amount: ₹{formData.totalAmount.toLocaleString()}</strong>
                 </div>
               )}
             </div>
-          </>
+          </div>
         );
 
       case 'Electronics':
         return (
-          <>
-            <div className="mb-3">
-              <label className="form-label">Item Name <span className="text-danger">*</span></label>
+          <div className="form-section">
+            <div className="form-group">
+              <label className="form-label">
+                <i className="bi bi-device-ssd"></i>
+                Item Name <span className="required">*</span>
+              </label>
               <input
                 type="text"
                 name="itemName"
@@ -302,8 +325,11 @@ const FoundForm = ({ user, token }) => {
                 required
               />
             </div>
-            <div className="mb-3">
-              <label className="form-label">Brand <span className="text-danger">*</span></label>
+            <div className="form-group">
+              <label className="form-label">
+                <i className="bi bi-tag"></i>
+                Brand <span className="required">*</span>
+              </label>
               <input
                 type="text"
                 name="brand"
@@ -314,8 +340,11 @@ const FoundForm = ({ user, token }) => {
                 required
               />
             </div>
-            <div className="mb-3">
-              <label className="form-label">Model (Optional)</label>
+            <div className="form-group">
+              <label className="form-label">
+                <i className="bi bi-upc-scan"></i>
+                Model (Optional)
+              </label>
               <input
                 type="text"
                 name="model"
@@ -325,14 +354,17 @@ const FoundForm = ({ user, token }) => {
                 placeholder="e.g., A2482, Galaxy S23"
               />
             </div>
-          </>
+          </div>
         );
 
       case 'Books':
         return (
-          <>
-            <div className="mb-3">
-              <label className="form-label">Book Title <span className="text-danger">*</span></label>
+          <div className="form-section">
+            <div className="form-group">
+              <label className="form-label">
+                <i className="bi bi-book"></i>
+                Book Title <span className="required">*</span>
+              </label>
               <input
                 type="text"
                 name="bookTitle"
@@ -343,8 +375,11 @@ const FoundForm = ({ user, token }) => {
                 required
               />
             </div>
-            <div className="mb-3">
-              <label className="form-label">Author <span className="text-danger">*</span></label>
+            <div className="form-group">
+              <label className="form-label">
+                <i className="bi bi-person"></i>
+                Author <span className="required">*</span>
+              </label>
               <input
                 type="text"
                 name="author"
@@ -355,14 +390,17 @@ const FoundForm = ({ user, token }) => {
                 required
               />
             </div>
-          </>
+          </div>
         );
 
       case 'ID Cards':
         return (
-          <>
-            <div className="mb-3">
-              <label className="form-label">Roll Number <span className="text-danger">*</span></label>
+          <div className="form-section">
+            <div className="form-group">
+              <label className="form-label">
+                <i className="bi bi-123"></i>
+                Roll Number <span className="required">*</span>
+              </label>
               <input
                 type="text"
                 name="rollNumber"
@@ -373,8 +411,11 @@ const FoundForm = ({ user, token }) => {
                 required
               />
             </div>
-            <div className="mb-3">
-              <label className="form-label">Name <span className="text-danger">*</span></label>
+            <div className="form-group">
+              <label className="form-label">
+                <i className="bi bi-person-badge"></i>
+                Name <span className="required">*</span>
+              </label>
               <input
                 type="text"
                 name="name"
@@ -385,128 +426,199 @@ const FoundForm = ({ user, token }) => {
                 required
               />
             </div>
-          </>
+          </div>
         );
 
       default:
         return (
-          <div className="mb-3">
-            <label className="form-label">Item Name <span className="text-danger">*</span></label>
-            <input
-              type="text"
-              name="itemName"
-              className="form-control"
-              value={formData.itemName}
-              onChange={handleChange}
-              placeholder="e.g., Black backpack, Water bottle"
-              required
-            />
+          <div className="form-section">
+            <div className="form-group">
+              <label className="form-label">
+                <i className="bi bi-box"></i>
+                Item Name <span className="required">*</span>
+              </label>
+              <input
+                type="text"
+                name="itemName"
+                className="form-control"
+                value={formData.itemName}
+                onChange={handleChange}
+                placeholder="e.g., Black backpack, Water bottle"
+                required
+              />
+            </div>
           </div>
         );
     }
   };
 
+  if (submitted) {
+    return (
+      <div className="form-card success-state animate-fade-in">
+        <div className="success-icon">
+          <i className="bi bi-check-circle-fill"></i>
+        </div>
+        <h3>Form Submitted Successfully!</h3>
+        {submittedItem && submittedItem.customId && (
+          <div className="submitted-id">
+            <p>Your Found Item ID:</p>
+            <div className="id-badge">{submittedItem.customId}</div>
+          </div>
+        )}
+        <p className="success-message">
+          Thank you for reporting! Our system will match this item with lost items.
+        </p>
+        <button
+          className="btn btn-primary"
+          onClick={() => {
+            setSubmitted(false);
+            setSubmittedItem(null);
+            resetForm();
+          }}
+        >
+          Report Another Item
+        </button>
+      </div>
+    );
+  }
+
   return (
-    <div className="card shadow p-4" style={{ maxWidth: 600, width: '100%' }}>
-        <h3 className="mb-3 text-primary text-center">Report Found Item</h3>
-        {submitted && (
-          <div className="alert alert-success">
-            <h5>Form submitted successfully!</h5>
-            {submittedItem && submittedItem.customId && (
-              <p className="mb-0">
-                <strong>Your Found Item ID:</strong> 
-                <span className="badge bg-success ms-2 fs-6">{submittedItem.customId}</span>
-              </p>
-            )}
-            <p className="mb-0 mt-2">
-              <small>Please keep this ID for future reference.</small>
-            </p>
-          </div>
-        )}
-        {error && (
-          <div className="alert alert-danger">{error}</div>
-        )}
-        <form onSubmit={handleSubmit}>
-          <div className="mb-3">
-            <label className="form-label">Category <span className="text-danger">*</span></label>
-            <select
-              name="category"
-              className="form-select"
-              value={formData.category}
-              onChange={handleCategoryChange}
-              required
-            >
-              <option value="">Select Category</option>
-              <option value="Money">Money</option>
-              <option value="Electronics">Electronics</option>
-              <option value="Books">Books</option>
-              <option value="ID Cards">ID Cards</option>
-              <option value="Accessories">Accessories</option>
-              <option value="Others">Others</option>
-            </select>
-          </div>
+    <div className="form-card animate-fade-in">
+      {error && (
+        <div className="alert alert-danger animate-fade-in">
+          <i className="bi bi-exclamation-circle"></i>
+          <span>{error}</span>
+        </div>
+      )}
 
-          {formData.category && renderCategoryFields()}
+      <form onSubmit={handleSubmit} className="modern-form">
+        <div className="form-group">
+          <label className="form-label">
+            <i className="bi bi-folder"></i>
+            Category <span className="required">*</span>
+          </label>
+          <select
+            name="category"
+            className="form-select"
+            value={formData.category}
+            onChange={handleCategoryChange}
+            required
+          >
+            <option value="">Select Category</option>
+            <option value="Money">💰 Money</option>
+            <option value="Electronics">📱 Electronics</option>
+            <option value="Books">📚 Books</option>
+            <option value="ID Cards">🪪 ID Cards</option>
+            <option value="Accessories">👓 Accessories</option>
+            <option value="Others">📦 Others</option>
+          </select>
+        </div>
 
-          <div className="mb-3">
-            <label className="form-label">Found Place <span className="text-danger">*</span></label>
-            <input
-              type="text"
-              name="foundPlace"
-              className="form-control"
-              value={formData.foundPlace}
-              onChange={handleChange}
-              placeholder="e.g., Library Building, Cafeteria"
-              required
-            />
-          </div>
+        {formData.category && renderCategoryFields()}
 
-          <div className="mb-3">
-            <label className="form-label">Date & Time Found</label>
-            <input
-              type="datetime-local"
-              name="foundDateTime"
-              className="form-control"
-              value={formData.foundDateTime}
-              onChange={handleChange}
-            />
-          </div>
+        <div className="form-group">
+          <label className="form-label">
+            <i className="bi bi-geo-alt"></i>
+            Found Place <span className="required">*</span>
+          </label>
+          <input
+            type="text"
+            name="foundPlace"
+            className="form-control"
+            value={formData.foundPlace}
+            onChange={handleChange}
+            placeholder="e.g., Library Building, Cafeteria"
+            required
+          />
+        </div>
 
-          <div className="mb-3">
-            <label className="form-label">Description</label>
-            <textarea
-              name="description"
-              className="form-control"
-              rows="3"
-              value={formData.description}
-              onChange={handleChange}
-              placeholder="Additional details about the item..."
-            />
-          </div>
+        <div className="form-group">
+          <label className="form-label">
+            <i className="bi bi-calendar-event"></i>
+            Date & Time Found
+          </label>
+          <input
+            type="datetime-local"
+            name="foundDateTime"
+            className="form-control"
+            value={formData.foundDateTime}
+            onChange={handleChange}
+          />
+        </div>
 
-          {formData.category && formData.category !== 'Money' && (
-            <div className="mb-3">
-              <label className="form-label">Upload Image (Optional)</label>
+        <div className="form-group">
+          <label className="form-label">
+            <i className="bi bi-card-text"></i>
+            Description
+          </label>
+          <textarea
+            name="description"
+            className="form-control"
+            rows="4"
+            value={formData.description}
+            onChange={handleChange}
+            placeholder="Additional details about the item (color, size, condition, etc.)..."
+          />
+        </div>
+
+        {formData.category && formData.category !== 'Money' && (
+          <div className="form-group">
+            <label className="form-label">
+              <i className="bi bi-image"></i>
+              Upload Image (Optional)
+            </label>
+            <div className="image-upload-wrapper">
               <input
                 type="file"
                 name="image"
-                className="form-control"
+                className="form-control file-input"
                 accept="image/*"
                 onChange={handleChange}
+                id="image-upload"
               />
+              <label htmlFor="image-upload" className="file-label">
+                <i className="bi bi-cloud-upload"></i>
+                <span>Choose Image</span>
+              </label>
+              {imagePreview && (
+                <div className="image-preview">
+                  <img src={imagePreview} alt="Preview" />
+                  <button
+                    type="button"
+                    className="remove-image"
+                    onClick={() => {
+                      setFormData({ ...formData, image: null });
+                      setImagePreview(null);
+                    }}
+                  >
+                    <i className="bi bi-x-lg"></i>
+                  </button>
+                </div>
+              )}
             </div>
-          )}
-
-          <div className="d-grid">
-            <button
-              type="submit"
-              className="btn btn-success"
-              disabled={loading}
-            >
-              {loading ? 'Submitting...' : 'Submit Found Item Report'}
-            </button>
           </div>
-        </form>
+        )}
+
+        <div className="form-actions">
+          <button
+            type="submit"
+            className="btn btn-success btn-lg"
+            disabled={loading}
+          >
+            {loading ? (
+              <>
+                <span className="spinner spinner-sm"></span>
+                <span>Submitting...</span>
+              </>
+            ) : (
+              <>
+                <i className="bi bi-check-circle"></i>
+                <span>Submit Found Item Report</span>
+              </>
+            )}
+          </button>
+        </div>
+      </form>
     </div>
   );
 };

@@ -1,10 +1,20 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import UserDropdown from './UserDropdown';
+import './Navbar.css';
 
 const Navbar = ({ user, onLogout }) => {
   const [isNavCollapsed, setIsNavCollapsed] = useState(true);
+  const [scrolled, setScrolled] = useState(false);
   const location = useLocation();
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 20);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   const handleNavCollapse = () => setIsNavCollapsed(!isNavCollapsed);
 
@@ -13,36 +23,39 @@ const Navbar = ({ user, onLogout }) => {
   };
 
   return (
-    <nav className="navbar navbar-expand-lg navbar-dark px-4 shadow-sm" style={{ background: '#212529' }}>
-      <div className="container-fluid">
-        <Link className="navbar-brand fw-bold text-white" to="/">
-          <i className="bi bi-search me-2"></i>
-          Lost & Found
+    <nav className={`navbar-modern ${scrolled ? 'scrolled' : ''}`}>
+      <div className="navbar-container">
+        <Link className="navbar-brand" to="/">
+          <div className="brand-icon">
+            <i className="bi bi-search-heart"></i>
+          </div>
+          <div className="brand-text">
+            <span className="brand-title">Lost & Found</span>
+            <span className="brand-subtitle">Reuniting People</span>
+          </div>
         </Link>
         
         <button
-          className="navbar-toggler"
+          className={`navbar-toggler ${!isNavCollapsed ? 'active' : ''}`}
           type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarNav"
-          aria-controls="navbarNav"
-          aria-expanded={!isNavCollapsed ? true : false}
-          aria-label="Toggle navigation"
           onClick={handleNavCollapse}
+          aria-label="Toggle navigation"
         >
-          <span className="navbar-toggler-icon"></span>
+          <span></span>
+          <span></span>
+          <span></span>
         </button>
 
-        <div className={`${isNavCollapsed ? 'collapse' : ''} navbar-collapse`} id="navbarNav">
-          <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+        <div className={`navbar-menu ${!isNavCollapsed ? 'show' : ''}`}>
+          <ul className="navbar-nav">
             <li className="nav-item">
               <Link 
                 className={`nav-link ${isActive('/')}`} 
                 to="/"
                 onClick={() => setIsNavCollapsed(true)}
               >
-                <i className="bi bi-house me-1"></i>
-                Home
+                <i className="bi bi-house-door"></i>
+                <span>Home</span>
               </Link>
             </li>
             
@@ -54,8 +67,8 @@ const Navbar = ({ user, onLogout }) => {
                     to="/lost"
                     onClick={() => setIsNavCollapsed(true)}
                   >
-                    <i className="bi bi-exclamation-triangle me-1"></i>
-                    Report Lost
+                    <i className="bi bi-exclamation-triangle"></i>
+                    <span>Report Lost</span>
                   </Link>
                 </li>
                 
@@ -65,8 +78,8 @@ const Navbar = ({ user, onLogout }) => {
                     to="/found"
                     onClick={() => setIsNavCollapsed(true)}
                   >
-                    <i className="bi bi-heart me-1"></i>
-                    Report Found
+                    <i className="bi bi-heart"></i>
+                    <span>Report Found</span>
                   </Link>
                 </li>
                 
@@ -77,8 +90,8 @@ const Navbar = ({ user, onLogout }) => {
                       to="/admin"
                       onClick={() => setIsNavCollapsed(true)}
                     >
-                      <i className="bi bi-graph-up me-1"></i>
-                      Admin Dashboard
+                      <i className="bi bi-speedometer2"></i>
+                      <span>Dashboard</span>
                     </Link>
                   </li>
                 )}
@@ -86,34 +99,30 @@ const Navbar = ({ user, onLogout }) => {
             )}
           </ul>
           
-          <ul className="navbar-nav">
+          <div className="navbar-actions">
             {user ? (
               <UserDropdown user={user} onLogout={onLogout} />
             ) : (
-              <>
-                <li className="nav-item">
-                  <Link 
-                    className={`nav-link ${isActive('/login')}`} 
-                    to="/login"
-                    onClick={() => setIsNavCollapsed(true)}
-                  >
-                    <i className="bi bi-box-arrow-in-right me-1"></i>
-                    Login
-                  </Link>
-                </li>
-                <li className="nav-item">
-                  <Link 
-                    className={`nav-link ${isActive('/signup')}`} 
-                    to="/signup"
-                    onClick={() => setIsNavCollapsed(true)}
-                  >
-                    <i className="bi bi-person-plus me-1"></i>
-                    Sign Up
-                  </Link>
-                </li>
-              </>
+              <div className="auth-buttons">
+                <Link 
+                  className={`btn btn-outline ${isActive('/login')}`} 
+                  to="/login"
+                  onClick={() => setIsNavCollapsed(true)}
+                >
+                  <i className="bi bi-box-arrow-in-right"></i>
+                  <span>Login</span>
+                </Link>
+                <Link 
+                  className={`btn btn-primary ${isActive('/signup')}`} 
+                  to="/signup"
+                  onClick={() => setIsNavCollapsed(true)}
+                >
+                  <i className="bi bi-person-plus"></i>
+                  <span>Sign Up</span>
+                </Link>
+              </div>
             )}
-          </ul>
+          </div>
         </div>
       </div>
     </nav>
@@ -121,4 +130,3 @@ const Navbar = ({ user, onLogout }) => {
 };
 
 export default Navbar;
-

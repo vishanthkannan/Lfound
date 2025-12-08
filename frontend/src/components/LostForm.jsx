@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import 'bootstrap/dist/css/bootstrap.min.css';
+import './Form.css';
 
 const LostForm = ({ user, token }) => {
   const [submitted, setSubmitted] = useState(false);
   const [submittedItem, setSubmittedItem] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [imagePreview, setImagePreview] = useState(null);
   const [formData, setFormData] = useState({
     category: '',
     lostPlace: '',
@@ -31,10 +32,21 @@ const LostForm = ({ user, token }) => {
   const handleChange = (e) => {
     const { name, value, files } = e.target;
     if (name === 'image') {
-      setFormData({ ...formData, image: files[0] });
+      const file = files[0];
+      setFormData({ ...formData, image: file });
+      if (file) {
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          setImagePreview(reader.result);
+        };
+        reader.readAsDataURL(file);
+      } else {
+        setImagePreview(null);
+      }
     } else {
       setFormData({ ...formData, [name]: value });
     }
+    setError('');
   };
 
   const handleCategoryChange = (e) => {
@@ -49,8 +61,10 @@ const LostForm = ({ user, token }) => {
       rollNumber: '',
       name: '',
       moneyDenominations: [],
-      totalAmount: 0
+      totalAmount: 0,
+      image: null
     }));
+    setImagePreview(null);
     if (category !== 'Money') {
       setDenominationInputs([{ denomination: '', count: '' }]);
     }
@@ -107,6 +121,7 @@ const LostForm = ({ user, token }) => {
       lostDateTime: ''
     });
     setDenominationInputs([{ denomination: '', count: '' }]);
+    setImagePreview(null);
   };
 
   const handleSubmit = async (e) => {
@@ -184,7 +199,7 @@ const LostForm = ({ user, token }) => {
         data.append('image', formData.image);
       }
 
-      const response = await fetch('http://localhost:5000/api/lost', {
+      const response = await fetch('http://localhost:3001/api/lost', {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`
@@ -209,9 +224,12 @@ const LostForm = ({ user, token }) => {
     switch (formData.category) {
       case 'Money':
         return (
-          <>
-            <div className="mb-3">
-              <label className="form-label">Item Name (e.g., Wallet, Purse) <span className="text-danger">*</span></label>
+          <div className="form-section">
+            <div className="form-group">
+              <label className="form-label">
+                <i className="bi bi-wallet2"></i>
+                Item Name (e.g., Wallet, Purse) <span className="required">*</span>
+              </label>
               <input
                 type="text"
                 name="itemName"
@@ -223,18 +241,21 @@ const LostForm = ({ user, token }) => {
               />
             </div>
             
-            <div className="mb-3">
-              <label className="form-label">Money Denominations <span className="text-danger">*</span></label>
-              {denominationInputs.map((input, index) => (
-                <div key={index} className="row mb-2">
-                  <div className="col-6">
+            <div className="form-group">
+              <label className="form-label">
+                <i className="bi bi-cash-coin"></i>
+                Money Denominations <span className="required">*</span>
+              </label>
+              <div className="denomination-list">
+                {denominationInputs.map((input, index) => (
+                  <div key={index} className="denomination-item">
                     <select
                       className="form-select"
                       value={input.denomination}
                       onChange={(e) => handleDenominationChange(index, 'denomination', e.target.value)}
                       required
                     >
-                      <option value="">Select</option>
+                      <option value="">Select Denomination</option>
                       <option value="₹2000">₹2000</option>
                       <option value="₹500">₹500</option>
                       <option value="₹200">₹200</option>
@@ -246,8 +267,6 @@ const LostForm = ({ user, token }) => {
                       <option value="₹2">₹2</option>
                       <option value="₹1">₹1</option>
                     </select>
-                  </div>
-                  <div className="col-4">
                     <input
                       type="number"
                       className="form-control"
@@ -257,41 +276,45 @@ const LostForm = ({ user, token }) => {
                       min="1"
                       required
                     />
-                  </div>
-                  <div className="col-2">
                     {denominationInputs.length > 1 && (
                       <button
                         type="button"
-                        className="btn btn-outline-danger btn-sm"
+                        className="btn-remove"
                         onClick={() => removeDenominationInput(index)}
+                        aria-label="Remove denomination"
                       >
-                        ×
+                        <i className="bi bi-x-lg"></i>
                       </button>
                     )}
                   </div>
-                </div>
-              ))}
+                ))}
+              </div>
               <button
                 type="button"
-                className="btn btn-outline-primary btn-sm"
+                className="btn btn-outline btn-sm"
                 onClick={addDenominationInput}
               >
-                + Add Denomination
+                <i className="bi bi-plus-circle"></i>
+                Add Denomination
               </button>
               {formData.totalAmount > 0 && (
-                <div className="mt-2">
-                  <strong>Total Amount: ₹{formData.totalAmount}</strong>
+                <div className="total-amount">
+                  <i className="bi bi-calculator"></i>
+                  <strong>Total Amount: ₹{formData.totalAmount.toLocaleString()}</strong>
                 </div>
               )}
             </div>
-          </>
+          </div>
         );
 
       case 'Electronics':
         return (
-          <>
-            <div className="mb-3">
-              <label className="form-label">Item Name <span className="text-danger">*</span></label>
+          <div className="form-section">
+            <div className="form-group">
+              <label className="form-label">
+                <i className="bi bi-device-ssd"></i>
+                Item Name <span className="required">*</span>
+              </label>
               <input
                 type="text"
                 name="itemName"
@@ -302,8 +325,11 @@ const LostForm = ({ user, token }) => {
                 required
               />
             </div>
-            <div className="mb-3">
-              <label className="form-label">Brand <span className="text-danger">*</span></label>
+            <div className="form-group">
+              <label className="form-label">
+                <i className="bi bi-tag"></i>
+                Brand <span className="required">*</span>
+              </label>
               <input
                 type="text"
                 name="brand"
@@ -314,8 +340,11 @@ const LostForm = ({ user, token }) => {
                 required
               />
             </div>
-            <div className="mb-3">
-              <label className="form-label">Model (Optional)</label>
+            <div className="form-group">
+              <label className="form-label">
+                <i className="bi bi-upc-scan"></i>
+                Model (Optional)
+              </label>
               <input
                 type="text"
                 name="model"
@@ -325,14 +354,17 @@ const LostForm = ({ user, token }) => {
                 placeholder="e.g., A2482, Galaxy S23"
               />
             </div>
-          </>
+          </div>
         );
 
       case 'Books':
         return (
-          <>
-            <div className="mb-3">
-              <label className="form-label">Book Title <span className="text-danger">*</span></label>
+          <div className="form-section">
+            <div className="form-group">
+              <label className="form-label">
+                <i className="bi bi-book"></i>
+                Book Title <span className="required">*</span>
+              </label>
               <input
                 type="text"
                 name="bookTitle"
@@ -343,8 +375,11 @@ const LostForm = ({ user, token }) => {
                 required
               />
             </div>
-            <div className="mb-3">
-              <label className="form-label">Author <span className="text-danger">*</span></label>
+            <div className="form-group">
+              <label className="form-label">
+                <i className="bi bi-person"></i>
+                Author <span className="required">*</span>
+              </label>
               <input
                 type="text"
                 name="author"
@@ -355,14 +390,17 @@ const LostForm = ({ user, token }) => {
                 required
               />
             </div>
-          </>
+          </div>
         );
 
       case 'ID Cards':
         return (
-          <>
-            <div className="mb-3">
-              <label className="form-label">Roll Number <span className="text-danger">*</span></label>
+          <div className="form-section">
+            <div className="form-group">
+              <label className="form-label">
+                <i className="bi bi-123"></i>
+                Roll Number <span className="required">*</span>
+              </label>
               <input
                 type="text"
                 name="rollNumber"
@@ -373,8 +411,11 @@ const LostForm = ({ user, token }) => {
                 required
               />
             </div>
-            <div className="mb-3">
-              <label className="form-label">Name <span className="text-danger">*</span></label>
+            <div className="form-group">
+              <label className="form-label">
+                <i className="bi bi-person-badge"></i>
+                Name <span className="required">*</span>
+              </label>
               <input
                 type="text"
                 name="name"
@@ -385,127 +426,199 @@ const LostForm = ({ user, token }) => {
                 required
               />
             </div>
-          </>
+          </div>
         );
 
       default:
         return (
-          <div className="mb-3">
-            <label className="form-label">Item Name <span className="text-danger">*</span></label>
-            <input
-              type="text"
-              name="itemName"
-              className="form-control"
-              value={formData.itemName}
-              onChange={handleChange}
-              placeholder="e.g., Black backpack, Water bottle"
-              required
-            />
+          <div className="form-section">
+            <div className="form-group">
+              <label className="form-label">
+                <i className="bi bi-box"></i>
+                Item Name <span className="required">*</span>
+              </label>
+              <input
+                type="text"
+                name="itemName"
+                className="form-control"
+                value={formData.itemName}
+                onChange={handleChange}
+                placeholder="e.g., Black backpack, Water bottle"
+                required
+              />
+            </div>
           </div>
         );
     }
   };
 
+  if (submitted) {
+    return (
+      <div className="form-card success-state animate-fade-in">
+        <div className="success-icon">
+          <i className="bi bi-check-circle-fill"></i>
+        </div>
+        <h3>Form Submitted Successfully!</h3>
+        {submittedItem && submittedItem.customId && (
+          <div className="submitted-id">
+            <p>Your Lost Item ID:</p>
+            <div className="id-badge">{submittedItem.customId}</div>
+          </div>
+        )}
+        <p className="success-message">
+          Don't worry! Our smart matching system will notify you when your item is found.
+        </p>
+        <button
+          className="btn btn-primary"
+          onClick={() => {
+            setSubmitted(false);
+            setSubmittedItem(null);
+            resetForm();
+          }}
+        >
+          Report Another Item
+        </button>
+      </div>
+    );
+  }
+
   return (
-  <div className="card shadow-lg border-0 p-4" style={{ maxWidth: 600, width: '100%', background: '#232526', borderRadius: '1.5rem', color: '#fff' }}>
-    <h3 className="mb-4 text-center" style={{ fontSize: '2.2rem', fontWeight: 'bold', letterSpacing: '1.5px', color: '#fff' }}>Report Lost Item</h3>
-        {submitted && (
-          <div className="alert alert-success text-center" style={{ borderRadius: '1rem', fontSize: '1.1rem' }}>
-            <h5 style={{ color: '#198754', fontWeight: 700 }}>Form submitted successfully!</h5>
-            {submittedItem && submittedItem.customId && (
-              <p className="mb-0">
-                <strong>Your Lost Item ID:</strong>
-                <span className="badge bg-success ms-2 fs-6">{submittedItem.customId}</span>
-              </p>
-            )}
-            <p className="mb-0 mt-2">
-              <small style={{ color: '#222' }}>Please keep this ID for future reference.</small>
-            </p>
-          </div>
-        )}
-        {error && (
-          <div className="alert alert-danger text-center" style={{ borderRadius: '1rem' }}>{error}</div>
-        )}
-  <form onSubmit={handleSubmit} style={{ fontSize: '1.08rem' }}>
-          <div className="mb-3">
-            <label className="form-label" style={{ fontWeight: 600, color: '#fff' }}>Category <span className="text-danger">*</span></label>
-            <select name="category" className="form-select" style={{ background: '#18191a', color: '#fff', border: '1px solid #444' }} value={formData.category} onChange={handleCategoryChange} required>
-              <option value="">Select Category</option>
-              <option value="Money">Money</option>
-              <option value="Electronics">Electronics</option>
-              <option value="Books">Books</option>
-              <option value="ID Cards">ID Cards</option>
-              <option value="Accessories">Accessories</option>
-              <option value="Others">Others</option>
-            </select>
-          </div>
+    <div className="form-card animate-fade-in">
+      {error && (
+        <div className="alert alert-danger animate-fade-in">
+          <i className="bi bi-exclamation-circle"></i>
+          <span>{error}</span>
+        </div>
+      )}
 
-          {formData.category && renderCategoryFields()}
+      <form onSubmit={handleSubmit} className="modern-form">
+        <div className="form-group">
+          <label className="form-label">
+            <i className="bi bi-folder"></i>
+            Category <span className="required">*</span>
+          </label>
+          <select
+            name="category"
+            className="form-select"
+            value={formData.category}
+            onChange={handleCategoryChange}
+            required
+          >
+            <option value="">Select Category</option>
+            <option value="Money">💰 Money</option>
+            <option value="Electronics">📱 Electronics</option>
+            <option value="Books">📚 Books</option>
+            <option value="ID Cards">🪪 ID Cards</option>
+            <option value="Accessories">👓 Accessories</option>
+            <option value="Others">📦 Others</option>
+          </select>
+        </div>
 
-          <div className="mb-3">
-            <label className="form-label" style={{ fontWeight: 600, color: '#fff' }}>Lost Place <span className="text-danger">*</span></label>
-            <input
-              type="text"
-              name="lostPlace"
-              className="form-control"
-              style={{ background: '#18191a', color: '#fff', border: '1px solid #444' }}
-              value={formData.lostPlace}
-              onChange={handleChange}
-              placeholder="e.g., Library Building, Cafeteria"
-              required
-            />
-          </div>
+        {formData.category && renderCategoryFields()}
 
-          <div className="mb-3">
-            <label className="form-label" style={{ fontWeight: 600, color: '#fff' }}>Date & Time Lost</label>
-            <input
-              type="datetime-local"
-              name="lostDateTime"
-              className="form-control"
-              style={{ background: '#18191a', color: '#fff', border: '1px solid #444' }}
-              value={formData.lostDateTime}
-              onChange={handleChange}
-            />
-          </div>
+        <div className="form-group">
+          <label className="form-label">
+            <i className="bi bi-geo-alt"></i>
+            Lost Place <span className="required">*</span>
+          </label>
+          <input
+            type="text"
+            name="lostPlace"
+            className="form-control"
+            value={formData.lostPlace}
+            onChange={handleChange}
+            placeholder="e.g., Library Building, Cafeteria"
+            required
+          />
+        </div>
 
-          <div className="mb-3">
-            <label className="form-label" style={{ fontWeight: 600, color: '#fff' }}>Description</label>
-            <textarea
-              name="description"
-              className="form-control"
-              style={{ background: '#18191a', color: '#fff', border: '1px solid #444' }}
-              rows="3"
-              value={formData.description}
-              onChange={handleChange}
-              placeholder="Additional details about the item..."
-            />
-          </div>
+        <div className="form-group">
+          <label className="form-label">
+            <i className="bi bi-calendar-event"></i>
+            Date & Time Lost
+          </label>
+          <input
+            type="datetime-local"
+            name="lostDateTime"
+            className="form-control"
+            value={formData.lostDateTime}
+            onChange={handleChange}
+          />
+        </div>
 
-          {formData.category && formData.category !== 'Money' && (
-            <div className="mb-3">
-              <label className="form-label" style={{ fontWeight: 600, color: '#fff' }}>Upload Image (Optional)</label>
+        <div className="form-group">
+          <label className="form-label">
+            <i className="bi bi-card-text"></i>
+            Description
+          </label>
+          <textarea
+            name="description"
+            className="form-control"
+            rows="4"
+            value={formData.description}
+            onChange={handleChange}
+            placeholder="Additional details about the item (color, size, condition, etc.)..."
+          />
+        </div>
+
+        {formData.category && formData.category !== 'Money' && (
+          <div className="form-group">
+            <label className="form-label">
+              <i className="bi bi-image"></i>
+              Upload Image (Optional)
+            </label>
+            <div className="image-upload-wrapper">
               <input
                 type="file"
                 name="image"
-                className="form-control"
-                style={{ background: '#18191a', color: '#fff', border: '1px solid #444' }}
+                className="form-control file-input"
                 accept="image/*"
                 onChange={handleChange}
+                id="image-upload-lost"
               />
+              <label htmlFor="image-upload-lost" className="file-label">
+                <i className="bi bi-cloud-upload"></i>
+                <span>Choose Image</span>
+              </label>
+              {imagePreview && (
+                <div className="image-preview">
+                  <img src={imagePreview} alt="Preview" />
+                  <button
+                    type="button"
+                    className="remove-image"
+                    onClick={() => {
+                      setFormData({ ...formData, image: null });
+                      setImagePreview(null);
+                    }}
+                  >
+                    <i className="bi bi-x-lg"></i>
+                  </button>
+                </div>
+              )}
             </div>
-          )}
-
-          <div className="d-grid mt-4">
-            <button
-              type="submit"
-              className="btn btn-primary btn-lg"
-              style={{ borderRadius: '2rem', fontWeight: 600, fontSize: '1.1rem', letterSpacing: '1px' }}
-              disabled={loading}
-            >
-              {loading ? 'Submitting...' : 'Submit Lost Item Report'}
-            </button>
           </div>
-        </form>
+        )}
+
+        <div className="form-actions">
+          <button
+            type="submit"
+            className="btn btn-primary btn-lg"
+            disabled={loading}
+          >
+            {loading ? (
+              <>
+                <span className="spinner spinner-sm"></span>
+                <span>Submitting...</span>
+              </>
+            ) : (
+              <>
+                <i className="bi bi-exclamation-triangle"></i>
+                <span>Submit Lost Item Report</span>
+              </>
+            )}
+          </button>
+        </div>
+      </form>
     </div>
   );
 };
