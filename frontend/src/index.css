@@ -1,5 +1,6 @@
 /* Import Design System */
 @import './styles/design-system.css';
+@import './styles/global-theme.css';
 
 /* Glassmorphism for Feature Cards */
 .feature-card {

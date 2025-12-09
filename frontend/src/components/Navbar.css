@@ -204,6 +204,33 @@
   white-space: nowrap;
 }
 
+/* Theme Toggle Button */
+.theme-toggle-btn {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid var(--border-primary);
+  border-radius: var(--radius-md);
+  color: var(--text-primary);
+  font-size: 1.5rem;
+  padding: 0.5rem 0.75rem;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 45px;
+  height: 45px;
+}
+
+.theme-toggle-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: scale(1.1);
+  border-color: var(--primary);
+}
+
+.theme-toggle-btn:active {
+  transform: scale(0.95);
+}
+
 /* Responsive - Mobile Menu */
 @media (max-width: 992px) {
   .navbar-toggler {

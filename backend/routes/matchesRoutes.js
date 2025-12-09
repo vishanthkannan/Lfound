@@ -194,6 +194,43 @@ router.post('/match', async (req, res) => {
   }
 });
 
+// Send email notification for a match
+router.post('/send-email', async (req, res) => {
+  try {
+    const { lostItemId, foundItemId } = req.body;
+    
+    if (!lostItemId || !foundItemId) {
+      return res.status(400).json({
+        success: false,
+        message: 'Lost item ID and Found item ID are required'
+      });
+    }
+
+    console.log(`Sending email for match: LostItem ${lostItemId}, FoundItem ${foundItemId}`);
+
+    // Try to send email using the email service
+    const emailSent = await sendFoundItemNotification(lostItemId, foundItemId);
+    
+    if (emailSent) {
+      res.json({
+        success: true,
+        message: 'Email notification sent successfully'
+      });
+    } else {
+      res.status(500).json({
+        success: false,
+        message: 'Failed to send email notification. Please check email configuration or ensure items have associated user emails.'
+      });
+    }
+  } catch (error) {
+    console.error('Error sending email notification:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to send email notification: ' + error.message
+    });
+  }
+});
+
 // Test email configuration
 router.get('/test-email', async (req, res) => {
   try {

@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import UserDropdown from './UserDropdown';
+import { useTheme } from '../contexts/ThemeContext';
 import './Navbar.css';
 
 const Navbar = ({ user, onLogout }) => {
   const [isNavCollapsed, setIsNavCollapsed] = useState(true);
   const [scrolled, setScrolled] = useState(false);
   const location = useLocation();
+  const { isDarkTheme, toggleTheme } = useTheme();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -100,6 +102,13 @@ const Navbar = ({ user, onLogout }) => {
           </ul>
           
           <div className="navbar-actions">
+            <button
+              className="theme-toggle-btn"
+              onClick={toggleTheme}
+              title={isDarkTheme ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
+            >
+              {isDarkTheme ? '☀️' : '🌙'}
+            </button>
             {user ? (
               <UserDropdown user={user} onLogout={onLogout} />
             ) : (

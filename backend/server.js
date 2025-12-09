@@ -49,24 +49,7 @@ app.post('/api/match-test', async (req, res) => {
   }
 });
 
-// Test endpoints that don't require MongoDB
-app.get('/api/lost', (req, res) => {
-  res.json([]);
-});
-
-app.get('/api/found', (req, res) => {
-  res.json([]);
-});
-
-app.post('/api/matches/match', (req, res) => {
-  res.json({
-    success: true,
-    totalMatches: 0,
-    matches: []
-  });
-});
-
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 5000;
 
 // MongoDB connection configuration
 // Supports both local MongoDB and MongoDB Atlas (cloud)

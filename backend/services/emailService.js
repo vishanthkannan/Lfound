@@ -81,25 +81,66 @@ Team Lfound
 // Send email notification
 export const sendFoundItemNotification = async (lostItemId, foundItemId) => {
   try {
-    // Get the lost item with user details
-    const lostItem = await LostItem.findById(lostItemId).populate('createdBy');
+    // Get the lost and found items
+    const lostItem = await LostItem.findById(lostItemId);
     const foundItem = await FoundItem.findById(foundItemId);
     
-    if (!lostItem || !foundItem || !lostItem.createdBy) {
-      console.error('Missing data for email notification');
+    if (!lostItem || !foundItem) {
+      console.error('Missing data for email notification: Items not found');
       return false;
     }
 
-    const { subject, body } = createFoundItemEmail(
-      lostItem.createdBy.name,
-      lostItem,
-      foundItem
-    );
+    // Try to get user data if available
+    let userName = 'User';
+    let userEmail = process.env.ADMIN_EMAIL || 'admin@lostfound.com';
+    
+    if (lostItem.createdBy) {
+      try {
+        const user = await User.findById(lostItem.createdBy);
+        if (user) {
+          userName = user.name || 'User';
+          userEmail = user.email || userEmail;
+        }
+      } catch (err) {
+        console.log('Could not fetch user data, using default email');
+      }
+    }
+
+    // Create email content
+    const itemName = lostItem.itemName || lostItem.bookTitle || 'Your Item';
+    const subject = `Lost Item Found: ${itemName}`;
+    
+    const body = `
+Hi ${userName},
+
+Good news! We have found an item that matches your lost item.
+
+Lost Item Details:
+• Item Name: ${lostItem.itemName || 'Not specified'}
+• Lost at: ${lostItem.lostPlace || 'Unknown location'}
+• Date Lost: ${lostItem.lostDateTime ? new Date(lostItem.lostDateTime).toLocaleDateString() : 'Unknown'}
+${lostItem.description ? `• Description: ${lostItem.description}` : ''}
+${lostItem.moneyNoteType ? `• Note Type: ${lostItem.moneyNoteType}` : ''}
+${lostItem.moneyNotes ? `• Note Count: ${lostItem.moneyNotes}` : ''}
+
+Found Item Details:
+• Item Name: ${foundItem.itemName || 'Not specified'}
+• Found at: ${foundItem.foundPlace || 'Unknown location'}
+• Date Found: ${foundItem.foundDateTime ? new Date(foundItem.foundDateTime).toLocaleDateString() : 'Unknown'}
+${foundItem.description ? `• Description: ${foundItem.description}` : ''}
+${foundItem.noteType ? `• Note Type: ${foundItem.noteType}` : ''}
+${foundItem.noteCount ? `• Note Count: ${foundItem.noteCount}` : ''}
+
+Please visit the campus Lost & Found office or contact us if you'd like to claim your item.
+
+Regards,
+Team Lost & Found
+`;
 
     // Send email
     const mailOptions = {
-      from: process.env.EMAIL_USER || 'your-email@gmail.com',
-      to: lostItem.createdBy.email,
+      from: process.env.EMAIL_USER || emailConfig.auth.user,
+      to: userEmail,
       subject: subject,
       text: body
     };

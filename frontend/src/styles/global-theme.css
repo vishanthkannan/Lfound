@@ -1,0 +1,40 @@
+/* Global Theme Styles */
+body.dark-theme {
+  background-color: #1a1a1a !important;
+  color: #ffffff !important;
+}
+
+body.light-theme {
+  background-color: #f8f9fa !important;
+  color: #212529 !important;
+}
+
+/* Dark Theme Variables */
+.dark-theme {
+  --theme-bg: #1a1a1a;
+  --theme-card-bg: #2a2a2a;
+  --theme-text: #ffffff;
+  --theme-text-muted: #b0b0b0;
+  --theme-border: #404040;
+}
+
+/* Light Theme Variables */
+.light-theme {
+  --theme-bg: #f8f9fa;
+  --theme-card-bg: #ffffff;
+  --theme-text: #212529;
+  --theme-text-muted: #6c757d;
+  --theme-border: #dee2e6;
+}
+
+/* Apply theme to main content area */
+body.dark-theme > #root > div {
+  background-color: #1a1a1a;
+  color: #ffffff;
+}
+
+body.light-theme > #root > div {
+  background-color: #f8f9fa;
+  color: #212529;
+}
+

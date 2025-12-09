@@ -1,5 +1,6 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
+import { ThemeProvider } from './contexts/ThemeContext';
 import HomePage from './pages/HomePage';
 import LostPage from './pages/LostPage';
 import FoundPage from './pages/FoundPage';
@@ -52,34 +53,36 @@ function App() {
   }
 
   return (
-    <Router>
-      <Navbar user={user} onLogout={handleLogout} />
-      <div style={{ paddingTop: '75px', minHeight: '100vh' }}>
-      <Routes>
-        <Route path="/" element={<HomePage user={user} />} />
-        <Route 
-          path="/lost" 
-          element={user ? <LostPage user={user} token={token} /> : <Navigate to="/login" />} 
-        />
-        <Route 
-          path="/found" 
-          element={user ? <FoundPage user={user} token={token} /> : <Navigate to="/login" />} 
-        />
-        <Route 
-          path="/admin" 
-          element={user && user.role === 'admin' ? <AdminDashboard user={user} token={token} /> : <Navigate to="/login" />} 
-        />
-        <Route 
-          path="/login" 
-          element={user ? <Navigate to="/" /> : <LoginPage onLogin={handleLogin} />} 
-        />
-        <Route 
-          path="/signup" 
-          element={user ? <Navigate to="/" /> : <SignupPage onLogin={handleLogin} />} 
-        />
-      </Routes>
-      </div>
-    </Router>
+    <ThemeProvider>
+      <Router>
+        <Navbar user={user} onLogout={handleLogout} />
+        <div style={{ paddingTop: '75px', minHeight: '100vh' }}>
+        <Routes>
+          <Route path="/" element={<HomePage user={user} />} />
+          <Route 
+            path="/lost" 
+            element={user ? <LostPage user={user} token={token} /> : <Navigate to="/login" />} 
+          />
+          <Route 
+            path="/found" 
+            element={user ? <FoundPage user={user} token={token} /> : <Navigate to="/login" />} 
+          />
+          <Route 
+            path="/admin" 
+            element={user && user.role === 'admin' ? <AdminDashboard user={user} token={token} /> : <Navigate to="/login" />} 
+          />
+          <Route 
+            path="/login" 
+            element={user ? <Navigate to="/" /> : <LoginPage onLogin={handleLogin} />} 
+          />
+          <Route 
+            path="/signup" 
+            element={user ? <Navigate to="/" /> : <SignupPage onLogin={handleLogin} />} 
+          />
+        </Routes>
+        </div>
+      </Router>
+    </ThemeProvider>
   );
 }
 

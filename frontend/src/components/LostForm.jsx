@@ -199,11 +199,8 @@ const LostForm = ({ user, token }) => {
         data.append('image', formData.image);
       }
 
-      const response = await fetch('http://localhost:3001/api/lost', {
+      const response = await fetch('http://localhost:5000/api/lost', {
         method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${token}`
-        },
         body: data,
       });
 

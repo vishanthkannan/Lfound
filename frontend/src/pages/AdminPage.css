@@ -1,0 +1,239 @@
+/* Admin Page Theme Styles with CSS Variables */
+:root {
+  --admin-bg: #1a1a1a;
+  --admin-card-bg: #2a2a2a;
+  --admin-text: #ffffff;
+  --admin-text-muted: #b0b0b0;
+  --admin-border: #404040;
+  --admin-table-header-bg: #1a1a1a;
+  --admin-table-row-bg: #2a2a2a;
+  --admin-table-row-hover: #333333;
+}
+
+.admin-page.light-theme {
+  --admin-bg: #f8f9fa;
+  --admin-card-bg: #ffffff;
+  --admin-text: #212529;
+  --admin-text-muted: #6c757d;
+  --admin-border: #dee2e6;
+  --admin-table-header-bg: #f8f9fa;
+  --admin-table-row-bg: #ffffff;
+  --admin-table-row-hover: #f8f9fa;
+}
+
+/* Admin Page Base */
+.admin-page {
+  min-height: 100vh;
+  padding-top: 20px;
+  padding-bottom: 40px;
+  background-color: var(--admin-bg) !important;
+  color: var(--admin-text) !important;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Body theme classes */
+body.dark-theme {
+  background-color: #1a1a1a !important;
+  color: #ffffff !important;
+}
+
+body.light-theme {
+  background-color: #f8f9fa !important;
+  color: #212529 !important;
+}
+
+/* Dark Theme */
+.admin-page.dark-theme {
+  background-color: #1a1a1a !important;
+  color: #ffffff !important;
+}
+
+.admin-page.dark-theme .admin-card,
+.admin-page.dark-theme .card-body.admin-card {
+  background-color: #2a2a2a !important;
+  border-color: #404040 !important;
+  color: #ffffff !important;
+}
+
+.admin-page.dark-theme .admin-card-header,
+.admin-page.dark-theme .card-header.admin-card-header {
+  background-color: #333333 !important;
+  border-color: #404040 !important;
+  color: #ffffff !important;
+}
+
+.admin-page.dark-theme .admin-table,
+.admin-page.dark-theme table.admin-table {
+  background-color: #2a2a2a !important;
+  color: #ffffff !important;
+}
+
+.admin-page.dark-theme .admin-table thead,
+.admin-page.dark-theme table.admin-table thead {
+  background-color: #1a1a1a !important;
+  color: #ffffff !important;
+}
+
+.admin-page.dark-theme .admin-table thead th,
+.admin-page.dark-theme table.admin-table thead th {
+  background-color: #1a1a1a !important;
+  color: #ffffff !important;
+  border-color: #404040 !important;
+}
+
+.admin-page.dark-theme .admin-table tbody tr,
+.admin-page.dark-theme table.admin-table tbody tr {
+  background-color: #2a2a2a !important;
+  color: #ffffff !important;
+  border-color: #404040 !important;
+}
+
+.admin-page.dark-theme .admin-table tbody tr:hover,
+.admin-page.dark-theme table.admin-table tbody tr:hover {
+  background-color: #333333 !important;
+}
+
+.admin-page.dark-theme .admin-table td,
+.admin-page.dark-theme .admin-table th,
+.admin-page.dark-theme table.admin-table td,
+.admin-page.dark-theme table.admin-table th {
+  border-color: #404040 !important;
+  color: #ffffff !important;
+}
+
+.admin-page.dark-theme .admin-text,
+.admin-page.dark-theme .admin-text * {
+  color: #ffffff !important;
+}
+
+.admin-page.dark-theme .admin-text-muted,
+.admin-page.dark-theme .admin-text-muted *,
+.admin-page.dark-theme small.admin-text-muted {
+  color: #b0b0b0 !important;
+}
+
+.admin-page.dark-theme .admin-border,
+.admin-page.dark-theme .border-bottom.admin-border {
+  border-color: #404040 !important;
+}
+
+/* Light Theme */
+.admin-page.light-theme {
+  background-color: #f8f9fa !important;
+  color: #212529 !important;
+}
+
+.admin-page.light-theme .admin-card,
+.admin-page.light-theme .card-body.admin-card {
+  background-color: #ffffff !important;
+  border-color: #dee2e6 !important;
+  color: #212529 !important;
+}
+
+.admin-page.light-theme .admin-card-header,
+.admin-page.light-theme .card-header.admin-card-header {
+  background-color: #f8f9fa !important;
+  border-color: #dee2e6 !important;
+  color: #212529 !important;
+}
+
+.admin-page.light-theme .admin-table,
+.admin-page.light-theme table.admin-table {
+  background-color: #ffffff !important;
+  color: #212529 !important;
+}
+
+.admin-page.light-theme .admin-table thead,
+.admin-page.light-theme table.admin-table thead {
+  background-color: #f8f9fa !important;
+  color: #212529 !important;
+}
+
+.admin-page.light-theme .admin-table thead th,
+.admin-page.light-theme table.admin-table thead th {
+  background-color: #f8f9fa !important;
+  color: #212529 !important;
+  border-color: #dee2e6 !important;
+}
+
+.admin-page.light-theme .admin-table tbody tr,
+.admin-page.light-theme table.admin-table tbody tr {
+  background-color: #ffffff !important;
+  color: #212529 !important;
+  border-color: #dee2e6 !important;
+}
+
+.admin-page.light-theme .admin-table tbody tr:hover,
+.admin-page.light-theme table.admin-table tbody tr:hover {
+  background-color: #f8f9fa !important;
+}
+
+.admin-page.light-theme .admin-table td,
+.admin-page.light-theme .admin-table th,
+.admin-page.light-theme table.admin-table td,
+.admin-page.light-theme table.admin-table th {
+  border-color: #dee2e6 !important;
+  color: #212529 !important;
+}
+
+.admin-page.light-theme .admin-text,
+.admin-page.light-theme .admin-text * {
+  color: #212529 !important;
+}
+
+.admin-page.light-theme .admin-text-muted,
+.admin-page.light-theme .admin-text-muted *,
+.admin-page.light-theme small.admin-text-muted {
+  color: #6c757d !important;
+}
+
+.admin-page.light-theme .admin-border,
+.admin-page.light-theme .border-bottom.admin-border {
+  border-color: #dee2e6 !important;
+}
+
+/* Match Results Card Header - Special styling */
+.admin-page.dark-theme .match-results-header {
+  background-color: #333333 !important;
+  color: #ffffff !important;
+}
+
+.admin-page.light-theme .match-results-header {
+  background-color: #ffc107 !important;
+  color: #000000 !important;
+}
+
+/* Summary card */
+.admin-page.dark-theme .summary-card {
+  background-color: #2a2a2a !important;
+  border-color: #404040 !important;
+}
+
+.admin-page.light-theme .summary-card {
+  background-color: #ffffff !important;
+  border-color: #dee2e6 !important;
+}
+
+/* Override Bootstrap table styles */
+.admin-page.dark-theme .table,
+.admin-page.dark-theme .table-bordered {
+  border-color: #404040 !important;
+}
+
+.admin-page.light-theme .table,
+.admin-page.light-theme .table-bordered {
+  border-color: #dee2e6 !important;
+}
+
+/* Ensure card styles override Bootstrap */
+.admin-page.dark-theme .card {
+  background-color: #2a2a2a !important;
+  border-color: #404040 !important;
+  color: #ffffff !important;
+}
+
+.admin-page.light-theme .card {
+  background-color: #ffffff !important;
+  border-color: #dee2e6 !important;
+  color: #212529 !important;
+}

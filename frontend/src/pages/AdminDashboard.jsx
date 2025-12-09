@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
+import { useTheme } from '../contexts/ThemeContext';
 import './AdminDashboard.css';
 
 const AdminDashboard = ({ user, token }) => {
@@ -21,6 +22,9 @@ const AdminDashboard = ({ user, token }) => {
   const [emailSuccess, setEmailSuccess] = useState('');
   const [matchesLoading, setMatchesLoading] = useState(false);
   const [usersLoading, setUsersLoading] = useState(false);
+  
+  // Use global theme
+  const { isDarkTheme, themeStyles } = useTheme();
 
   useEffect(() => {
     if (user && token) {
@@ -33,8 +37,9 @@ const AdminDashboard = ({ user, token }) => {
     setLoading(true);
     setError('');
     try {
+      const backendUrl = 'http://localhost:5000';
       // Load stats
-      const statsResponse = await fetch('http://localhost:3001/api/admin/stats', {
+      const statsResponse = await fetch(`${backendUrl}/api/admin/stats`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       if (statsResponse.ok) {
@@ -42,7 +47,7 @@ const AdminDashboard = ({ user, token }) => {
         setStats(statsData);
       }
       // Load first 10 lost items
-      const lostResponse = await fetch('http://localhost:3001/api/lost?limit=10', {
+      const lostResponse = await fetch(`${backendUrl}/api/lost`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       if (lostResponse.ok) {
@@ -50,7 +55,7 @@ const AdminDashboard = ({ user, token }) => {
         setLostItems(lostData.items || lostData || []);
       }
       // Load first 10 found items
-      const foundResponse = await fetch('http://localhost:3001/api/found?limit=10', {
+      const foundResponse = await fetch(`${backendUrl}/api/found`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       if (foundResponse.ok) {
@@ -69,7 +74,8 @@ const AdminDashboard = ({ user, token }) => {
     setUsersLoading(true);
     setError('');
     try {
-      const usersResponse = await fetch('http://localhost:3001/api/admin/users', {
+      const backendUrl = 'http://localhost:5000';
+      const usersResponse = await fetch(`${backendUrl}/api/admin/users`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       if (usersResponse.ok) {
@@ -88,7 +94,8 @@ const AdminDashboard = ({ user, token }) => {
     setMatchesLoading(true);
     setError('');
     try {
-      const matchesResponse = await fetch('http://localhost:3001/api/matches/match', {
+      const backendUrl = 'http://localhost:5000';
+      const matchesResponse = await fetch(`${backendUrl}/api/matches/match`, {
         method: 'POST',
         headers: { 
           'Authorization': `Bearer ${token}`,
@@ -145,7 +152,8 @@ const AdminDashboard = ({ user, token }) => {
     setError('');
     
     try {
-      const response = await fetch('http://localhost:3001/api/admin/match-details', {
+      const backendUrl = 'http://localhost:5000';
+      const response = await fetch(`${backendUrl}/api/admin/match-details`, {
         method: 'POST',
         headers: { 
           'Authorization': `Bearer ${token}`,
@@ -179,10 +187,10 @@ const AdminDashboard = ({ user, token }) => {
     setError('');
     
     try {
-      const response = await fetch('http://localhost:3001/api/admin/send-email-notification', {
+      const backendUrl = 'http://localhost:5000';
+      const response = await fetch(`${backendUrl}/api/matches/send-email`, {
         method: 'POST',
         headers: { 
-          'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
@@ -286,45 +294,84 @@ const AdminDashboard = ({ user, token }) => {
   );
 
   const renderMatches = () => (
-    <div className="card">
-      <div className="card-header">
+    <div 
+      className="card" 
+      style={{
+        backgroundColor: themeStyles.cardBackground,
+        borderColor: themeStyles.border,
+        color: themeStyles.text
+      }}
+    >
+      <div 
+        className="card-header d-flex justify-content-between align-items-center"
+        style={{
+          backgroundColor: isDarkTheme ? '#333333' : '#ffc107',
+          color: isDarkTheme ? '#ffffff' : '#000000',
+          borderColor: themeStyles.border
+        }}
+      >
         <h5 className="mb-0">Match Results</h5>
       </div>
-      <div className="card-body">
+      <div 
+        className="card-body"
+        style={{
+          backgroundColor: themeStyles.cardBackground,
+          color: themeStyles.text
+        }}
+      >
         {matches.length === 0 ? (
-          <p className="text-muted">No matches found. Run the matching algorithm to see results.</p>
+          <p style={{ color: themeStyles.textMuted }}>No matches found. Run the matching algorithm to see results.</p>
         ) : (
           <div className="table-responsive">
-            <table className="table table-striped">
-              <thead>
+            <table 
+              className="table table-striped"
+              style={{
+                backgroundColor: themeStyles.cardBackground,
+                color: themeStyles.text
+              }}
+            >
+              <thead style={{ backgroundColor: themeStyles.tableHeaderBg }}>
                 <tr>
-                  <th>Match %</th>
-                  <th>Lost Item</th>
-                  <th>Found Item</th>
-                  <th>Category</th>
-                  <th>Classification</th>
-                  <th>Actions</th>
+                  <th style={{ color: themeStyles.text, borderColor: themeStyles.border }}>Match %</th>
+                  <th style={{ color: themeStyles.text, borderColor: themeStyles.border }}>Lost Item</th>
+                  <th style={{ color: themeStyles.text, borderColor: themeStyles.border }}>Found Item</th>
+                  <th style={{ color: themeStyles.text, borderColor: themeStyles.border }}>Category</th>
+                  <th style={{ color: themeStyles.text, borderColor: themeStyles.border }}>Classification</th>
+                  <th style={{ color: themeStyles.text, borderColor: themeStyles.border }}>Actions</th>
                 </tr>
               </thead>
               <tbody>
                 {matches.map((match, index) => (
-                  <tr key={index}>
-                    <td>
+                  <tr 
+                    key={index}
+                    style={{
+                      backgroundColor: themeStyles.tableRowBg,
+                      color: themeStyles.text,
+                      borderColor: themeStyles.border
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.backgroundColor = themeStyles.tableRowHover;
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.backgroundColor = themeStyles.tableRowBg;
+                    }}
+                  >
+                    <td style={{ borderColor: themeStyles.border }}>
                       <span className={getMatchBadgeClass(match.matchPercentage)}>
                         {match.matchPercentage}%
                       </span>
                     </td>
-                    <td>
-                      <strong>{match.lostItem.customId}</strong><br/>
-                      <small>{match.lostItem.itemName || match.lostItem.bookTitle || 'N/A'}</small>
+                    <td style={{ borderColor: themeStyles.border }}>
+                      <strong style={{ color: themeStyles.text }}>{match.lostItem.customId}</strong><br/>
+                      <small style={{ color: themeStyles.textMuted }}>{match.lostItem.itemName || match.lostItem.bookTitle || 'N/A'}</small>
                     </td>
-                    <td>
-                      <strong>{match.foundItem.customId}</strong><br/>
-                      <small>{match.foundItem.itemName || match.foundItem.bookTitle || 'N/A'}</small>
+                    <td style={{ borderColor: themeStyles.border }}>
+                      <strong style={{ color: themeStyles.text }}>{match.foundItem.customId}</strong><br/>
+                      <small style={{ color: themeStyles.textMuted }}>{match.foundItem.itemName || match.foundItem.bookTitle || 'N/A'}</small>
                     </td>
-                    <td>{match.lostItem.category}</td>
-                    <td>{match.classification}</td>
-                    <td>
+                    <td style={{ borderColor: themeStyles.border, color: themeStyles.text }}>{match.lostItem.category}</td>
+                    <td style={{ borderColor: themeStyles.border, color: themeStyles.text }}>{match.classification}</td>
+                    <td style={{ borderColor: themeStyles.border }}>
                       <button 
                         className="btn btn-sm btn-outline-primary me-1" 
                         onClick={() => handleViewDetails(match)}
