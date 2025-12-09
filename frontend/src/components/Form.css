@@ -185,6 +185,53 @@ input[type="datetime-local"]:focus {
 textarea.form-control {
   resize: vertical;
   min-height: 100px;
+  background-color: var(--theme-input-bg) !important;
+  border: 2px solid var(--theme-input-border) !important;
+  color: var(--theme-text) !important;
+}
+
+textarea.form-control:focus {
+  background-color: var(--theme-input-bg) !important;
+  border-color: var(--primary) !important;
+  color: var(--theme-text) !important;
+}
+
+textarea.form-control::placeholder {
+  color: var(--theme-text-muted) !important;
+  opacity: 0.7;
+}
+
+/* Alert Styles */
+.alert {
+  padding: var(--spacing-md) var(--spacing-lg);
+  border-radius: var(--radius-md);
+  margin-bottom: var(--spacing-lg);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  font-weight: 500;
+}
+
+.alert-danger {
+  background-color: rgba(239, 68, 68, 0.15) !important;
+  border: 1px solid var(--error) !important;
+  color: var(--error-light) !important;
+}
+
+.alert-danger i,
+.alert-danger span {
+  color: var(--error-light) !important;
+}
+
+.alert-success {
+  background-color: rgba(16, 185, 129, 0.15) !important;
+  border: 1px solid var(--success) !important;
+  color: var(--success-light) !important;
+}
+
+.alert-success i,
+.alert-success span {
+  color: var(--success-light) !important;
 }
 
 /* Denomination List */
