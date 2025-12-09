@@ -24,7 +24,7 @@ const AdminDashboard = ({ user, token }) => {
   const [usersLoading, setUsersLoading] = useState(false);
   
   // Use global theme
-  const { isDarkTheme, themeStyles } = useTheme();
+  const { isDarkTheme } = useTheme();
 
   useEffect(() => {
     if (user && token) {
@@ -294,84 +294,45 @@ const AdminDashboard = ({ user, token }) => {
   );
 
   const renderMatches = () => (
-    <div 
-      className="card" 
-      style={{
-        backgroundColor: themeStyles.cardBackground,
-        borderColor: themeStyles.border,
-        color: themeStyles.text
-      }}
-    >
-      <div 
-        className="card-header d-flex justify-content-between align-items-center"
-        style={{
-          backgroundColor: isDarkTheme ? '#333333' : '#ffc107',
-          color: isDarkTheme ? '#ffffff' : '#000000',
-          borderColor: themeStyles.border
-        }}
-      >
-        <h5 className="mb-0">Match Results</h5>
+    <div className="card theme-card">
+      <div className={`card-header d-flex justify-content-between align-items-center ${isDarkTheme ? 'bg-dark' : 'bg-warning'}`}>
+        <h5 className="mb-0 theme-text">Match Results</h5>
       </div>
-      <div 
-        className="card-body"
-        style={{
-          backgroundColor: themeStyles.cardBackground,
-          color: themeStyles.text
-        }}
-      >
+      <div className="card-body theme-card">
         {matches.length === 0 ? (
-          <p style={{ color: themeStyles.textMuted }}>No matches found. Run the matching algorithm to see results.</p>
+          <p className="theme-text-muted">No matches found. Run the matching algorithm to see results.</p>
         ) : (
           <div className="table-responsive">
-            <table 
-              className="table table-striped"
-              style={{
-                backgroundColor: themeStyles.cardBackground,
-                color: themeStyles.text
-              }}
-            >
-              <thead style={{ backgroundColor: themeStyles.tableHeaderBg }}>
+            <table className="table table-striped theme-table">
+              <thead>
                 <tr>
-                  <th style={{ color: themeStyles.text, borderColor: themeStyles.border }}>Match %</th>
-                  <th style={{ color: themeStyles.text, borderColor: themeStyles.border }}>Lost Item</th>
-                  <th style={{ color: themeStyles.text, borderColor: themeStyles.border }}>Found Item</th>
-                  <th style={{ color: themeStyles.text, borderColor: themeStyles.border }}>Category</th>
-                  <th style={{ color: themeStyles.text, borderColor: themeStyles.border }}>Classification</th>
-                  <th style={{ color: themeStyles.text, borderColor: themeStyles.border }}>Actions</th>
+                  <th className="theme-text theme-border">Match %</th>
+                  <th className="theme-text theme-border">Lost Item</th>
+                  <th className="theme-text theme-border">Found Item</th>
+                  <th className="theme-text theme-border">Category</th>
+                  <th className="theme-text theme-border">Classification</th>
+                  <th className="theme-text theme-border">Actions</th>
                 </tr>
               </thead>
               <tbody>
                 {matches.map((match, index) => (
-                  <tr 
-                    key={index}
-                    style={{
-                      backgroundColor: themeStyles.tableRowBg,
-                      color: themeStyles.text,
-                      borderColor: themeStyles.border
-                    }}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.backgroundColor = themeStyles.tableRowHover;
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.backgroundColor = themeStyles.tableRowBg;
-                    }}
-                  >
-                    <td style={{ borderColor: themeStyles.border }}>
+                  <tr key={index} className="theme-table-row">
+                    <td className="theme-border">
                       <span className={getMatchBadgeClass(match.matchPercentage)}>
                         {match.matchPercentage}%
                       </span>
                     </td>
-                    <td style={{ borderColor: themeStyles.border }}>
-                      <strong style={{ color: themeStyles.text }}>{match.lostItem.customId}</strong><br/>
-                      <small style={{ color: themeStyles.textMuted }}>{match.lostItem.itemName || match.lostItem.bookTitle || 'N/A'}</small>
+                    <td className="theme-border">
+                      <strong className="theme-text">{match.lostItem.customId}</strong><br/>
+                      <small className="theme-text-muted">{match.lostItem.itemName || match.lostItem.bookTitle || 'N/A'}</small>
                     </td>
-                    <td style={{ borderColor: themeStyles.border }}>
-                      <strong style={{ color: themeStyles.text }}>{match.foundItem.customId}</strong><br/>
-                      <small style={{ color: themeStyles.textMuted }}>{match.foundItem.itemName || match.foundItem.bookTitle || 'N/A'}</small>
+                    <td className="theme-border">
+                      <strong className="theme-text">{match.foundItem.customId}</strong><br/>
+                      <small className="theme-text-muted">{match.foundItem.itemName || match.foundItem.bookTitle || 'N/A'}</small>
                     </td>
-                    <td style={{ borderColor: themeStyles.border, color: themeStyles.text }}>{match.lostItem.category}</td>
-                    <td style={{ borderColor: themeStyles.border, color: themeStyles.text }}>{match.classification}</td>
-                    <td style={{ borderColor: themeStyles.border }}>
+                    <td className="theme-border theme-text">{match.lostItem.category}</td>
+                    <td className="theme-border theme-text">{match.classification}</td>
+                    <td className="theme-border">
                       <button 
                         className="btn btn-sm btn-outline-primary me-1" 
                         onClick={() => handleViewDetails(match)}

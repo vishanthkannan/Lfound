@@ -4,6 +4,12 @@
   padding: var(--spacing-3xl) var(--spacing-lg) var(--spacing-xl);
   position: relative;
   overflow-x: hidden;
+  background-color: var(--theme-bg) !important;
+  color: var(--theme-text) !important;
+}
+
+.form-page-container * {
+  color: inherit;
 }
 
 .form-page-background {
@@ -72,13 +78,13 @@
   font-size: 2.5rem;
   font-weight: 700;
   margin-bottom: var(--spacing-md);
-  color: var(--text-primary);
+  color: var(--theme-text);
   font-family: var(--font-heading);
 }
 
 .form-page-subtitle {
   font-size: 1.125rem;
-  color: var(--text-secondary);
+  color: var(--theme-text-muted);
   line-height: 1.6;
   max-width: 600px;
   margin: 0 auto var(--spacing-lg);
@@ -89,11 +95,11 @@
   align-items: center;
   gap: var(--spacing-sm);
   padding: 0.625rem 1.25rem;
-  background: var(--bg-tertiary);
-  border: 1px solid var(--border-primary);
+  background: var(--theme-card-bg);
+  border: 1px solid var(--theme-border);
   border-radius: var(--radius-full);
   font-size: 0.875rem;
-  color: var(--text-secondary);
+  color: var(--theme-text-muted);
 }
 
 .form-page-user-badge i {
@@ -102,7 +108,7 @@
 }
 
 .form-page-user-badge strong {
-  color: var(--text-primary);
+  color: var(--theme-text);
   font-weight: 600;
 }
 

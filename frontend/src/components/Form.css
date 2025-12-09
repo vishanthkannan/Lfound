@@ -1,12 +1,62 @@
 /* Modern Form Styles */
 .form-card {
-  background: var(--bg-card);
+  background: var(--theme-card-bg) !important;
   backdrop-filter: blur(20px);
-  border: 1px solid var(--border-primary);
+  border: 2px solid var(--theme-border) !important;
   border-radius: var(--radius-2xl);
   padding: var(--spacing-2xl);
   box-shadow: var(--shadow-xl);
   animation: fadeIn 0.5s ease-out;
+  color: var(--theme-text) !important;
+}
+
+/* Override Bootstrap form styles */
+.form-card .form-control,
+.form-card .form-select,
+.form-card input,
+.form-card select,
+.form-card textarea {
+  background-color: var(--theme-input-bg) !important;
+  border: 2px solid var(--theme-input-border) !important;
+  color: var(--theme-text) !important;
+}
+
+.form-card .form-control:focus,
+.form-card .form-select:focus,
+.form-card input:focus,
+.form-card select:focus,
+.form-card textarea:focus {
+  background-color: var(--theme-input-bg) !important;
+  border-color: var(--primary) !important;
+  color: var(--theme-text) !important;
+  box-shadow: 0 0 0 3px rgba(0, 188, 212, 0.2) !important;
+}
+
+.form-card .form-control::placeholder,
+.form-card input::placeholder,
+.form-card textarea::placeholder {
+  color: var(--theme-text-muted) !important;
+  opacity: 0.7;
+}
+
+.form-card label,
+.form-card .form-label {
+  color: var(--theme-text) !important;
+}
+
+.form-card .form-section {
+  background-color: var(--theme-card-bg) !important;
+  color: var(--theme-text) !important;
+}
+
+.form-card p,
+.form-card span,
+.form-card small {
+  color: var(--theme-text) !important;
+}
+
+.form-card .text-muted {
+  color: var(--theme-text-muted) !important;
 }
 
 .modern-form {
@@ -16,11 +66,28 @@
 }
 
 .form-section {
-  background: var(--bg-tertiary);
-  border: 1px solid var(--border-primary);
+  background: var(--theme-card-bg) !important;
+  border: 2px solid var(--theme-border) !important;
   border-radius: var(--radius-xl);
   padding: var(--spacing-lg);
   margin-bottom: var(--spacing-md);
+  color: var(--theme-text) !important;
+}
+
+.form-section * {
+  color: inherit;
+}
+
+.form-section .form-label,
+.form-section label {
+  color: var(--theme-text) !important;
+  font-weight: 600;
+}
+
+.form-section p,
+.form-section span,
+.form-section small {
+  color: var(--theme-text-muted) !important;
 }
 
 .form-group {
@@ -35,7 +102,7 @@
   gap: var(--spacing-sm);
   font-weight: 600;
   font-size: 0.9375rem;
-  color: var(--text-primary);
+  color: var(--theme-text);
 }
 
 .form-label i {
@@ -54,23 +121,65 @@
   padding: 0.875rem 1rem;
   font-size: 0.9375rem;
   font-family: var(--font-primary);
-  background: var(--bg-tertiary);
-  border: 1px solid var(--border-primary);
+  background: var(--theme-input-bg) !important;
+  border: 2px solid var(--theme-input-border) !important;
   border-radius: var(--radius-md);
-  color: var(--text-primary);
+  color: var(--theme-text) !important;
   transition: all var(--transition-base);
 }
 
 .form-control:focus,
 .form-select:focus {
-  outline: none;
-  border-color: var(--primary);
-  box-shadow: 0 0 0 3px rgba(0, 188, 212, 0.1);
-  background: var(--bg-card);
+  outline: none !important;
+  border-color: var(--primary) !important;
+  box-shadow: 0 0 0 3px rgba(0, 188, 212, 0.2) !important;
+  background: var(--theme-input-bg) !important;
+  color: var(--theme-text) !important;
 }
 
 .form-control::placeholder {
-  color: var(--text-muted);
+  color: var(--theme-text-muted) !important;
+  opacity: 0.7;
+}
+
+.form-select {
+  background-color: var(--theme-input-bg) !important;
+  color: var(--theme-text) !important;
+}
+
+.form-select option {
+  background-color: var(--theme-card-bg) !important;
+  color: var(--theme-text) !important;
+}
+
+/* Ensure all form text is visible */
+.form-card * {
+  color: inherit;
+}
+
+.form-card .form-label,
+.form-card label {
+  color: var(--theme-text) !important;
+  font-weight: 600;
+}
+
+.form-card .form-group p,
+.form-card .form-group span,
+.form-card .form-group small {
+  color: var(--theme-text-muted) !important;
+}
+
+/* Better contrast for datetime inputs */
+input[type="datetime-local"] {
+  background-color: var(--theme-input-bg) !important;
+  border: 2px solid var(--theme-input-border) !important;
+  color: var(--theme-text) !important;
+}
+
+input[type="datetime-local"]:focus {
+  background-color: var(--theme-input-bg) !important;
+  border-color: var(--primary) !important;
+  color: var(--theme-text) !important;
 }
 
 textarea.form-control {
@@ -106,8 +215,8 @@ textarea.form-control {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--bg-tertiary);
-  border: 1px solid var(--border-primary);
+  background: var(--theme-card-bg);
+  border: 1px solid var(--theme-border);
   border-radius: var(--radius-md);
   color: var(--error);
   cursor: pointer;
@@ -154,17 +263,17 @@ textarea.form-control {
   justify-content: center;
   gap: var(--spacing-sm);
   padding: 2rem;
-  background: var(--bg-tertiary);
-  border: 2px dashed var(--border-primary);
+  background: var(--theme-card-bg);
+  border: 2px dashed var(--theme-border);
   border-radius: var(--radius-lg);
   cursor: pointer;
   transition: all var(--transition-base);
-  color: var(--text-secondary);
+  color: var(--theme-text-muted);
 }
 
 .file-label:hover {
   border-color: var(--primary);
-  background: var(--bg-card);
+  background: var(--theme-card-bg);
   color: var(--primary);
 }
 
@@ -179,7 +288,7 @@ textarea.form-control {
   margin: 0 auto;
   border-radius: var(--radius-lg);
   overflow: hidden;
-  border: 1px solid var(--border-primary);
+  border: 1px solid var(--theme-border);
 }
 
 .image-preview img {
@@ -255,7 +364,7 @@ textarea.form-control {
 .success-state h3 {
   font-size: 2rem;
   margin-bottom: var(--spacing-lg);
-  color: var(--text-primary);
+  color: var(--theme-text);
 }
 
 .submitted-id {
@@ -264,7 +373,7 @@ textarea.form-control {
 
 .submitted-id p {
   margin-bottom: var(--spacing-sm);
-  color: var(--text-secondary);
+  color: var(--theme-text-muted);
 }
 
 .id-badge {
@@ -281,7 +390,7 @@ textarea.form-control {
 }
 
 .success-message {
-  color: var(--text-secondary);
+  color: var(--theme-text-muted);
   font-size: 1.125rem;
   margin-bottom: var(--spacing-xl);
   line-height: 1.6;

@@ -1,21 +1,16 @@
-/* Global Theme Styles */
-body.dark-theme {
-  background-color: #1a1a1a !important;
-  color: #ffffff !important;
-}
-
-body.light-theme {
-  background-color: #f8f9fa !important;
-  color: #212529 !important;
-}
-
-/* Dark Theme Variables */
-.dark-theme {
+/* Global Theme CSS Variables - Applied to root element */
+:root {
+  /* Default (Dark Theme) */
   --theme-bg: #1a1a1a;
   --theme-card-bg: #2a2a2a;
   --theme-text: #ffffff;
   --theme-text-muted: #b0b0b0;
   --theme-border: #404040;
+  --theme-input-bg: #2a2a2a;
+  --theme-input-border: #404040;
+  --theme-table-header-bg: #1a1a1a;
+  --theme-table-row-bg: #2a2a2a;
+  --theme-table-row-hover: #333333;
 }
 
 /* Light Theme Variables */
@@ -25,16 +20,207 @@ body.light-theme {
   --theme-text: #212529;
   --theme-text-muted: #6c757d;
   --theme-border: #dee2e6;
+  --theme-input-bg: #ffffff;
+  --theme-input-border: #ced4da;
+  --theme-table-header-bg: #f8f9fa;
+  --theme-table-row-bg: #ffffff;
+  --theme-table-row-hover: #e9ecef;
 }
 
-/* Apply theme to main content area */
-body.dark-theme > #root > div {
-  background-color: #1a1a1a;
-  color: #ffffff;
+/* Dark Theme Variables (explicit for clarity) */
+.dark-theme {
+  --theme-bg: #1a1a1a;
+  --theme-card-bg: #2a2a2a;
+  --theme-text: #ffffff;
+  --theme-text-muted: #b0b0b0;
+  --theme-border: #404040;
+  --theme-input-bg: #333333;
+  --theme-input-border: #505050;
+  --theme-table-header-bg: #1a1a1a;
+  --theme-table-row-bg: #2a2a2a;
+  --theme-table-row-hover: #333333;
 }
 
-body.light-theme > #root > div {
-  background-color: #f8f9fa;
-  color: #212529;
+/* Apply theme to body */
+body {
+  background-color: var(--theme-bg);
+  color: var(--theme-text);
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
+/* Theme-aware components */
+.theme-bg {
+  background-color: var(--theme-bg);
+}
+
+.theme-card {
+  background-color: var(--theme-card-bg);
+  border-color: var(--theme-border);
+  color: var(--theme-text);
+}
+
+.theme-text {
+  color: var(--theme-text);
+}
+
+.theme-text-muted {
+  color: var(--theme-text-muted);
+}
+
+.theme-border {
+  border-color: var(--theme-border);
+}
+
+.theme-input {
+  background-color: var(--theme-input-bg);
+  border-color: var(--theme-input-border);
+  color: var(--theme-text);
+}
+
+.theme-table {
+  background-color: var(--theme-card-bg);
+  color: var(--theme-text);
+}
+
+.theme-table thead {
+  background-color: var(--theme-table-header-bg);
+}
+
+.theme-table tbody tr {
+  background-color: var(--theme-table-row-bg);
+  border-color: var(--theme-border);
+}
+
+.theme-table tbody tr:hover {
+  background-color: var(--theme-table-row-hover);
+}
+
+.theme-table td,
+.theme-table th {
+  border-color: var(--theme-border);
+  color: var(--theme-text);
+}
+
+.theme-table-row {
+  background-color: var(--theme-table-row-bg);
+  color: var(--theme-text);
+  border-color: var(--theme-border);
+  transition: background-color 0.2s ease;
+}
+
+.theme-table-row:hover {
+  background-color: var(--theme-table-row-hover);
+}
+
+/* Bootstrap Form Overrides for Better Contrast */
+.dark-theme .form-control,
+.dark-theme .form-select,
+.dark-theme input,
+.dark-theme select,
+.dark-theme textarea {
+  background-color: #333333 !important;
+  border-color: #505050 !important;
+  color: #ffffff !important;
+}
+
+.dark-theme .form-control:focus,
+.dark-theme .form-select:focus,
+.dark-theme input:focus,
+.dark-theme select:focus,
+.dark-theme textarea:focus {
+  background-color: #333333 !important;
+  border-color: var(--primary) !important;
+  color: #ffffff !important;
+}
+
+.dark-theme .form-control::placeholder,
+.dark-theme input::placeholder,
+.dark-theme textarea::placeholder {
+  color: #b0b0b0 !important;
+  opacity: 0.8;
+}
+
+.light-theme .form-control,
+.light-theme .form-select,
+.light-theme input,
+.light-theme select,
+.light-theme textarea {
+  background-color: #ffffff !important;
+  border-color: #ced4da !important;
+  color: #212529 !important;
+}
+
+.light-theme .form-control:focus,
+.light-theme .form-select:focus,
+.light-theme input:focus,
+.light-theme select:focus,
+.light-theme textarea:focus {
+  background-color: #ffffff !important;
+  border-color: var(--primary) !important;
+  color: #212529 !important;
+}
+
+.light-theme .form-control::placeholder,
+.light-theme input::placeholder,
+.light-theme textarea::placeholder {
+  color: #6c757d !important;
+  opacity: 0.8;
+}
+
+/* Ensure labels are visible */
+.dark-theme label,
+.dark-theme .form-label {
+  color: #ffffff !important;
+}
+
+.light-theme label,
+.light-theme .form-label {
+  color: #212529 !important;
+}
+
+/* Card and section visibility */
+.dark-theme .card,
+.dark-theme .form-section {
+  background-color: #2a2a2a !important;
+  border-color: #404040 !important;
+  color: #ffffff !important;
+}
+
+.light-theme .card,
+.light-theme .form-section {
+  background-color: #ffffff !important;
+  border-color: #dee2e6 !important;
+  color: #212529 !important;
+}
+
+/* Ensure select dropdowns are visible */
+.dark-theme select option {
+  background-color: #2a2a2a !important;
+  color: #ffffff !important;
+}
+
+.light-theme select option {
+  background-color: #ffffff !important;
+  color: #212529 !important;
+}
+
+/* Fix datetime-local input visibility */
+.dark-theme input[type="datetime-local"] {
+  background-color: #333333 !important;
+  border-color: #505050 !important;
+  color: #ffffff !important;
+}
+
+.dark-theme input[type="datetime-local"]::-webkit-calendar-picker-indicator {
+  filter: invert(1);
+}
+
+.light-theme input[type="datetime-local"] {
+  background-color: #ffffff !important;
+  border-color: #ced4da !important;
+  color: #212529 !important;
+}
+
+.light-theme input[type="datetime-local"]::-webkit-calendar-picker-indicator {
+  filter: none;
+}

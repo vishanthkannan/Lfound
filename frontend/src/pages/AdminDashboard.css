@@ -1,9 +1,9 @@
 /* Admin Dashboard Styles */
 .admin-dashboard {
   min-height: 100vh;
-  background: var(--bg-primary);
+  background: var(--theme-bg);
   padding: var(--spacing-xl);
-  color: var(--text-primary);
+  color: var(--theme-text);
 }
 
 .admin-dashboard .container-fluid {
@@ -12,42 +12,42 @@
 }
 
 .admin-dashboard h2 {
-  color: var(--text-primary);
+  color: var(--theme-text);
   font-weight: 700;
   margin-bottom: var(--spacing-xl);
 }
 
 /* Cards */
 .admin-dashboard .card {
-  background: var(--bg-card);
-  border: 1px solid var(--border-primary);
+  background: var(--theme-card-bg);
+  border: 1px solid var(--theme-border);
   border-radius: var(--radius-xl);
-  color: var(--text-primary);
+  color: var(--theme-text);
   box-shadow: var(--shadow-md);
   margin-bottom: var(--spacing-lg);
 }
 
 .admin-dashboard .card-header {
-  background: var(--bg-tertiary);
-  border-bottom: 1px solid var(--border-primary);
+  background: var(--theme-card-bg);
+  border-bottom: 1px solid var(--theme-border);
   padding: var(--spacing-lg);
-  color: var(--text-primary);
+  color: var(--theme-text);
 }
 
 .admin-dashboard .card-header h5,
 .admin-dashboard .card-header h6 {
-  color: var(--text-primary);
+  color: var(--theme-text);
   font-weight: 600;
   margin: 0;
 }
 
 .admin-dashboard .card-body {
   padding: var(--spacing-lg);
-  color: var(--text-primary);
+  color: var(--theme-text);
 }
 
 .admin-dashboard .card-body h6 {
-  color: var(--text-primary);
+  color: var(--theme-text);
   font-weight: 600;
   margin-bottom: var(--spacing-md);
   font-size: 1.125rem;
@@ -55,7 +55,7 @@
 
 .admin-dashboard .card-body p,
 .admin-dashboard .card-body li {
-  color: var(--text-secondary);
+  color: var(--theme-text-muted);
   margin-bottom: var(--spacing-sm);
 }
 
@@ -67,13 +67,13 @@
 
 .admin-dashboard .card-body ul li {
   padding: var(--spacing-sm) 0;
-  color: var(--text-secondary);
+  color: var(--theme-text-muted);
   font-size: 0.9375rem;
   line-height: 1.6;
 }
 
 .admin-dashboard .card-body ul li strong {
-  color: var(--text-primary);
+  color: var(--theme-text);
   font-weight: 600;
 }
 
@@ -108,12 +108,12 @@
 
 /* Tabs */
 .admin-dashboard .nav-tabs {
-  border-bottom: 2px solid var(--border-primary);
+  border-bottom: 2px solid var(--theme-border);
   margin-bottom: var(--spacing-xl);
 }
 
 .admin-dashboard .nav-tabs .nav-link {
-  color: var(--text-secondary);
+  color: var(--theme-text-muted);
   background: transparent;
   border: none;
   border-bottom: 2px solid transparent;
@@ -124,9 +124,9 @@
 }
 
 .admin-dashboard .nav-tabs .nav-link:hover {
-  color: var(--text-primary);
-  border-bottom-color: var(--border-primary);
-  background: var(--bg-tertiary);
+  color: var(--theme-text);
+  border-bottom-color: var(--theme-border);
+  background: var(--theme-table-row-hover);
 }
 
 .admin-dashboard .nav-tabs .nav-link.active {
@@ -138,42 +138,42 @@
 
 /* Tables */
 .admin-dashboard .table {
-  color: var(--text-primary);
-  background: var(--bg-card);
+  color: var(--theme-text);
+  background: var(--theme-card-bg);
 }
 
 .admin-dashboard .table thead {
-  background: var(--bg-tertiary);
+  background: var(--theme-table-header-bg);
 }
 
 .admin-dashboard .table th {
-  color: var(--text-primary);
+  color: var(--theme-text);
   font-weight: 600;
-  border-bottom: 2px solid var(--border-primary);
+  border-bottom: 2px solid var(--theme-border);
   padding: var(--spacing-md);
 }
 
 .admin-dashboard .table td {
-  color: var(--text-secondary);
-  border-bottom: 1px solid var(--border-secondary);
+  color: var(--theme-text-muted);
+  border-bottom: 1px solid var(--theme-border);
   padding: var(--spacing-md);
   vertical-align: middle;
 }
 
 .admin-dashboard .table tbody tr:hover {
-  background: var(--bg-tertiary);
+  background: var(--theme-table-row-hover);
 }
 
 .admin-dashboard .table-striped tbody tr:nth-of-type(odd) {
-  background: var(--bg-secondary);
+  background: var(--theme-table-row-bg);
 }
 
 .admin-dashboard .table tbody tr td strong {
-  color: var(--text-primary);
+  color: var(--theme-text);
 }
 
 .admin-dashboard .table tbody tr td small {
-  color: var(--text-muted);
+  color: var(--theme-text-muted);
   font-size: 0.875rem;
 }
 
@@ -195,9 +195,9 @@
 }
 
 .admin-dashboard .badge.bg-secondary {
-  background: var(--bg-tertiary) !important;
-  color: var(--text-secondary);
-  border: 1px solid var(--border-primary);
+  background: var(--theme-table-row-hover) !important;
+  color: var(--theme-text-muted);
+  border: 1px solid var(--theme-border);
 }
 
 .admin-dashboard .badge.bg-danger {
@@ -226,7 +226,7 @@
 
 /* Text Colors */
 .admin-dashboard .text-muted {
-  color: var(--text-muted) !important;
+  color: var(--theme-text-muted) !important;
 }
 
 .admin-dashboard .text-center {
@@ -274,66 +274,66 @@
 }
 
 .admin-dashboard .btn-secondary {
-  background: var(--bg-tertiary);
-  border: 1px solid var(--border-primary);
-  color: var(--text-primary);
+  background: var(--theme-table-row-hover);
+  border: 1px solid var(--theme-border);
+  color: var(--theme-text);
 }
 
 .admin-dashboard .btn-secondary:hover {
-  background: var(--bg-card);
+  background: var(--theme-card-bg);
   border-color: var(--primary);
 }
 
 /* Modal */
 .admin-dashboard .modal-content {
-  background: var(--bg-card);
-  border: 1px solid var(--border-primary);
-  color: var(--text-primary);
+  background: var(--theme-card-bg);
+  border: 1px solid var(--theme-border);
+  color: var(--theme-text);
 }
 
 .admin-dashboard .modal-header {
-  border-bottom: 1px solid var(--border-primary);
-  background: var(--bg-tertiary);
+  border-bottom: 1px solid var(--theme-border);
+  background: var(--theme-table-header-bg);
 }
 
 .admin-dashboard .modal-title {
-  color: var(--text-primary);
+  color: var(--theme-text);
   font-weight: 600;
 }
 
 .admin-dashboard .modal-body {
-  color: var(--text-primary);
+  color: var(--theme-text);
 }
 
 .admin-dashboard .modal-body h6 {
-  color: var(--text-primary);
+  color: var(--theme-text);
   font-weight: 600;
   margin-bottom: var(--spacing-md);
 }
 
 .admin-dashboard .modal-body p {
-  color: var(--text-secondary);
+  color: var(--theme-text-muted);
   margin-bottom: var(--spacing-sm);
 }
 
 .admin-dashboard .modal-body p strong {
-  color: var(--text-primary);
+  color: var(--theme-text);
   font-weight: 600;
 }
 
 .admin-dashboard .modal-body ul {
-  color: var(--text-secondary);
+  color: var(--theme-text-muted);
   padding-left: var(--spacing-lg);
 }
 
 .admin-dashboard .modal-body ul li {
-  color: var(--text-secondary);
+  color: var(--theme-text-muted);
   margin-bottom: var(--spacing-xs);
 }
 
 .admin-dashboard .modal-footer {
-  border-top: 1px solid var(--border-primary);
-  background: var(--bg-tertiary);
+  border-top: 1px solid var(--theme-border);
+  background: var(--theme-table-header-bg);
 }
 
 .admin-dashboard .modal-backdrop {

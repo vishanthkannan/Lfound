@@ -25,12 +25,12 @@
 
 /* Modern Footer */
 .modern-footer {
-  background: var(--bg-secondary);
-  color: var(--text-secondary);
+  background: var(--theme-card-bg);
+  color: var(--theme-text-muted);
   padding: var(--spacing-2xl) 0 var(--spacing-xl);
   text-align: center;
   font-size: 0.9375rem;
-  border-top: 1px solid var(--border-primary);
+  border-top: 1px solid var(--theme-border);
   margin-top: var(--spacing-3xl);
   position: relative;
   z-index: 1;
@@ -44,7 +44,7 @@
 
 .footer-text {
   margin-bottom: var(--spacing-md);
-  color: var(--text-secondary);
+  color: var(--theme-text-muted);
 }
 
 .footer-heart {
@@ -61,7 +61,7 @@
 }
 
 .footer-links a {
-  color: var(--text-secondary);
+  color: var(--theme-text-muted);
   text-decoration: none;
   transition: color var(--transition-fast);
   font-weight: 500;
@@ -72,7 +72,7 @@
 }
 
 .footer-separator {
-  color: var(--text-muted);
+  color: var(--theme-text-muted);
   margin: 0 var(--spacing-xs);
 }
 /* Modern Lost & Found Homepage Styles */
@@ -99,8 +99,8 @@
 
 /* Global Overrides */
 body {
-  background: var(--dark-bg) !important;
-  color: var(--text-primary) !important;
+  background: var(--theme-bg) !important;
+  color: var(--theme-text) !important;
   font-family: 'Inter', 'Roboto', sans-serif !important;
   overflow-x: hidden;
 }
@@ -108,8 +108,9 @@ body {
 /* Modern Homepage Container */
 .modern-homepage {
   min-height: 100vh;
-  background: var(--dark-bg);
+  background: var(--theme-bg);
   position: relative;
+  color: var(--theme-text);
 }
 
 .modern-homepage::before {
@@ -147,7 +148,7 @@ body {
 .hero-tagline {
   font-size: 1.2rem;
   font-weight: 300;
-  color: var(--text-secondary);
+  color: var(--theme-text-muted);
   margin-bottom: 2rem;
   letter-spacing: 0.5px;
   animation: fadeInUp 1s ease-out 0.2s both;
@@ -177,7 +178,7 @@ body {
   font-size: 4rem;
   font-weight: 800;
   font-family: 'Poppins', sans-serif;
-  color: var(--text-primary);
+  color: var(--theme-text);
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   padding: 1rem 0.5rem;
@@ -213,7 +214,7 @@ body {
 .hero-subtitle {
   font-size: 1.3rem;
   font-weight: 400;
-  color: var(--text-secondary);
+  color: var(--theme-text-muted);
   line-height: 1.6;
   margin-bottom: 3rem;
   animation: fadeInUp 1s ease-out 0.6s both;
@@ -225,9 +226,9 @@ body {
 }
 
 .welcome-card {
-  background: rgba(255, 255, 255, 0.1);
+  background: var(--theme-card-bg);
   backdrop-filter: blur(20px);
-  border: var(--border-glass);
+  border: 1px solid var(--theme-border);
   border-radius: 20px;
   padding: 2.5rem;
   margin-bottom: 2rem;
@@ -235,6 +236,7 @@ body {
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
   overflow: hidden;
+  opacity: 0.9;
 }
 
 .welcome-card::before {
@@ -260,14 +262,14 @@ body {
 }
 
 .welcome-card h3 {
-  color: var(--text-primary);
+  color: var(--theme-text);
   font-weight: 600;
   margin-bottom: 1rem;
   font-size: 1.5rem;
 }
 
 .welcome-card p {
-  color: var(--text-secondary);
+  color: var(--theme-text-muted);
   margin-bottom: 1.5rem;
   font-size: 1.1rem;
 }
@@ -386,9 +388,9 @@ body {
 }
 
 .feature-card {
-  background: rgba(255, 255, 255, 0.05);
+  background: var(--theme-card-bg);
   backdrop-filter: blur(20px);
-  border: var(--border-glass);
+  border: 1px solid var(--theme-border);
   border-radius: 20px;
   padding: 3rem 2rem;
   text-align: center;
@@ -400,6 +402,7 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  opacity: 0.95;
 }
 
 .feature-card::before {
@@ -437,7 +440,7 @@ body {
 }
 
 .feature-card h3 {
-  color: var(--text-primary);
+  color: var(--theme-text);
   font-weight: 600;
   margin-bottom: 1rem;
   font-size: 1.4rem;
@@ -449,7 +452,7 @@ body {
 }
 
 .feature-card p {
-  color: var(--text-secondary);
+  color: var(--theme-text-muted);
   line-height: 1.6;
   font-size: 1rem;
 }
