@@ -107,7 +107,8 @@ const Navbar = ({ user, onLogout }) => {
               onClick={toggleTheme}
               title={isDarkTheme ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
             >
-              {isDarkTheme ? '☀️' : '🌙'}
+              <i className={`bi ${isDarkTheme ? 'bi-sun' : 'bi-moon'}`}></i>
+              <span>{isDarkTheme ? 'Light' : 'Dark'}</span>
             </button>
             {user ? (
               <UserDropdown user={user} onLogout={onLogout} />

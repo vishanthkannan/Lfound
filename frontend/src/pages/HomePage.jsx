@@ -4,129 +4,120 @@ import { Link } from 'react-router-dom';
 const HomePage = ({ user }) => {
   return (
     <div className="modern-homepage">
-      {/* Hero Section */}
       <section className="hero-section">
-        <div className="hero-content">
-          <div className="hero-tagline">
-            We reunite people through
-          </div>
-          
-          <div className="hero-title-container">
-            <div className="creative-text">
-              <span className="letter letter-l">
-                <div className="letter-icon">📱</div>
-                L
-              </span>
-              <span className="letter letter-o">
-                <div className="letter-icon">🔍</div>
-                o
-              </span>
-              <span className="letter letter-s">
-                <div className="letter-icon">👤</div>
-                s
-              </span>
-              <span className="letter letter-t">
-                <div className="letter-icon">✨</div>
-                t
-              </span>
-              <span className="letter letter-space">&</span>
-              <span className="letter letter-f">
-                <div className="letter-icon">🎯</div>
-                F
-              </span>
-              <span className="letter letter-o2">
-                <div className="letter-icon">👥</div>
-                o
-              </span>
-              <span className="letter letter-u">
-                <div className="letter-icon">🏠</div>
-                u
-              </span>
-              <span className="letter letter-n">
-                <div className="letter-icon">💝</div>
-                n
-              </span>
-              <span className="letter letter-d">
-                <div className="letter-icon">🔄</div>
-                d
-              </span>
+        <div className="hero-grid">
+          <div className="hero-copy">
+            <span className="eyebrow">Campus Lost &amp; Found</span>
+            <h1>Find what matters, faster.</h1>
+            <p className="hero-lead">
+              A streamlined, trustworthy hub to report, track, and reunite lost items with their owners.
+              Clear steps, instant status, and a community verified by your campus.
+            </p>
+
+            <div className="cta-buttons">
+              {user ? (
+                <>
+                  <Link to="/lost" className="btn btn-primary">Report Lost Item</Link>
+                  <Link to="/found" className="btn btn-secondary">Report Found Item</Link>
+                </>
+              ) : (
+                <>
+                  <Link to="/login" className="btn btn-primary">Sign in</Link>
+                  <Link to="/signup" className="btn btn-outline">Create account</Link>
+                </>
+              )}
             </div>
-          </div>
-          
-          <div className="hero-subtitle">
-            Exceptional results for students and communities through
-            <br />
-            smart matching, instant notifications and seamless technology.
+
+            <div className="hero-meta">
+              <div className="meta-card">
+                <span className="meta-value">3k+</span>
+                <span className="meta-label">Items matched</span>
+              </div>
+              <div className="meta-card">
+                <span className="meta-value">24/7</span>
+                <span className="meta-label">Status updates</span>
+              </div>
+              <div className="meta-card">
+                <span className="meta-value">Secure</span>
+                <span className="meta-label">Verified community</span>
+              </div>
+            </div>
           </div>
 
-          {user ? (
-            <div className="user-welcome">
-              <div className="welcome-card">
-                <div className="welcome-icon">👋</div>
-                <h3>Welcome back, {user.name}!</h3>
-                <p>Ready to help reunite people with their belongings?</p>
-                {user.role === 'admin' && (
-                  <span className="admin-badge">Admin Access</span>
-                )}
-              </div>
-              <div className="action-buttons">
-                <Link to="/lost" className="btn btn-primary">Report Lost Item</Link>
-                <Link to="/found" className="btn btn-secondary">Report Found Item</Link>
-              </div>
+          <div className="hero-panel">
+            <div className="panel-card">
+              <h3>How it works</h3>
+              <ul className="panel-list">
+                <li>
+                  <div className="icon-circle"><i className="bi bi-pencil-square"></i></div>
+                  <div>
+                    <span className="panel-label">Log a lost or found item</span>
+                    <p>Structured forms capture the details that matter.</p>
+                  </div>
+                </li>
+                <li>
+                  <div className="icon-circle"><i className="bi bi-lightning-charge"></i></div>
+                  <div>
+                    <span className="panel-label">Smart matching</span>
+                    <p>We surface likely matches immediately after submission.</p>
+                  </div>
+                </li>
+                <li>
+                  <div className="icon-circle"><i className="bi bi-shield-check"></i></div>
+                  <div>
+                    <span className="panel-label">Verified handover</span>
+                    <p>Admins and owners confirm before closing the case.</p>
+                  </div>
+                </li>
+              </ul>
             </div>
-          ) : (
-            <div className="auth-buttons">
-              <Link to="/login" className="btn btn-primary">Get Started</Link>
-              <Link to="/signup" className="btn btn-outline">Join Community</Link>
-            </div>
-          )}
+          </div>
         </div>
       </section>
 
-      {/* Features Section */}
       <section className="features-section">
         <div className="container">
           <div className="row">
             <div className="col-md-4">
               <div className="feature-card">
-                <div className="feature-icon">🔍</div>
-                <h3>Smart Matching</h3>
-                <p>AI-powered system matches lost and found items automatically</p>
+                <div className="feature-icon"><i className="bi bi-magic"></i></div>
+                <h3>Smart matching</h3>
+                <p>Detailed tags and filters ensure lost and found reports connect quickly.</p>
               </div>
             </div>
             <div className="col-md-4">
               <div className="feature-card">
-                <div className="feature-icon">📧</div>
-                <h3>Instant Alerts</h3>
-                <p>Get notified immediately when your item is found</p>
+                <div className="feature-icon"><i className="bi bi-bell"></i></div>
+                <h3>Instant alerts</h3>
+                <p>Stay informed with timely updates every time a new match is detected.</p>
               </div>
             </div>
             <div className="col-md-4">
               <div className="feature-card">
-                <div className="feature-icon">🤝</div>
-                <h3>Community Driven</h3>
-                <p>Built by students, for students and the community</p>
+                <div className="feature-icon"><i className="bi bi-people"></i></div>
+                <h3>Built for campus</h3>
+                <p>Role-aware access, admin oversight, and a trustworthy community workflow.</p>
               </div>
             </div>
           </div>
         </div>
       </section>
-    {/* Modern Footer */}
-    <footer className="modern-footer">
-      <div className="footer-content">
-        <p className="footer-text">
-          &copy; {new Date().getFullYear()} Lost &amp; Found | Made with <span className="footer-heart">♥</span> by Your Team
-        </p>
-        <div className="footer-links">
-          <a href="/about">About</a>
-          <span className="footer-separator">|</span>
-          <a href="/blog">Blog</a>
-          <span className="footer-separator">|</span>
-          <a href="/contact">Contact</a>
+
+      <footer className="modern-footer">
+        <div className="footer-content">
+          <p className="footer-text">
+            &copy; {new Date().getFullYear()} Lost &amp; Found | Purpose-built for your campus community
+          </p>
+          <div className="footer-links">
+            <a href="/about">About</a>
+            <span className="footer-separator">|</span>
+            <a href="/blog">Blog</a>
+            <span className="footer-separator">|</span>
+            <a href="/contact">Contact</a>
+          </div>
         </div>
-      </div>
-    </footer>
-  </div>
+      </footer>
+    </div>
   );
 };
 
