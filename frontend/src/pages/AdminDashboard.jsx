@@ -18,13 +18,32 @@ const AdminDashboard = ({ user, token }) => {
   const [showDetailsModal, setShowDetailsModal] = useState(false);
   const [selectedMatch, setSelectedMatch] = useState(null);
   const [matchDetails, setMatchDetails] = useState(null);
-  const [emailLoading, setEmailLoading] = useState(false);
-  const [emailSuccess, setEmailSuccess] = useState('');
+  const [emailLoading, setEmailLoading] = useState({});
+  const [emailStatus, setEmailStatus] = useState({});
   const [matchesLoading, setMatchesLoading] = useState(false);
   const [usersLoading, setUsersLoading] = useState(false);
   
   // Use global theme
   const { isDarkTheme } = useTheme();
+  const themeStyles = isDarkTheme ? {
+    background: '#1a1a1a',
+    cardBackground: '#2a2a2a',
+    text: '#ffffff',
+    textMuted: '#b0b0b0',
+    border: '#404040',
+    tableHeaderBg: '#1a1a1a',
+    tableRowBg: '#2a2a2a',
+    tableRowHover: '#333333'
+  } : {
+    background: '#f8f9fa',
+    cardBackground: '#ffffff',
+    text: '#212529',
+    textMuted: '#6c757d',
+    border: '#dee2e6',
+    tableHeaderBg: '#f8f9fa',
+    tableRowBg: '#ffffff',
+    tableRowHover: '#f8f9fa'
+  };
 
   useEffect(() => {
     if (user && token) {
@@ -106,6 +125,8 @@ const AdminDashboard = ({ user, token }) => {
       if (matchesResponse.ok) {
         const matchesData = await matchesResponse.json();
         setMatches(matchesData.matches || []);
+        setEmailLoading({});
+        setEmailStatus({});
         setActiveTab('matches');
         alert(`Matching completed! Found ${matchesData.totalMatches} matches.`);
       } else {
@@ -145,6 +166,8 @@ const AdminDashboard = ({ user, token }) => {
     });
   };
 
+  const getMatchKey = (match) => `${match?.lostItem?._id || ''}-${match?.foundItem?._id || ''}`;
+
   // Handle view details button click
   const handleViewDetails = async (match) => {
     setSelectedMatch(match);
@@ -182,8 +205,9 @@ const AdminDashboard = ({ user, token }) => {
 
   // Handle send email button click
   const handleSendEmail = async (match) => {
-    setEmailLoading(true);
-    setEmailSuccess('');
+    const matchKey = getMatchKey(match);
+    setEmailLoading(prev => ({ ...prev, [matchKey]: true }));
+    setEmailStatus(prev => ({ ...prev, [matchKey]: null }));
     setError('');
     
     try {
@@ -200,17 +224,17 @@ const AdminDashboard = ({ user, token }) => {
       });
 
       if (response.ok) {
-        const data = await response.json();
-        setEmailSuccess('Email notification sent successfully!');
-        setTimeout(() => setEmailSuccess(''), 3000);
+        await response.json();
+        setEmailStatus(prev => ({ ...prev, [matchKey]: 'success' }));
       } else {
         throw new Error('Failed to send email');
       }
     } catch (err) {
       setError('Failed to send email notification');
+      setEmailStatus(prev => ({ ...prev, [matchKey]: 'error' }));
       console.error('Send email error:', err);
     } finally {
-      setEmailLoading(false);
+      setEmailLoading(prev => ({ ...prev, [matchKey]: false }));
     }
   };
 
@@ -224,32 +248,32 @@ const AdminDashboard = ({ user, token }) => {
   const renderOverview = () => (
     <div className="row">
       <div className="col-md-3 mb-4">
-        <div className="card bg-primary text-white">
-          <div className="card-body">
+        <div className="card theme-card" style={{ backgroundColor: themeStyles.cardBackground, color: themeStyles.text, borderColor: themeStyles.border }}>
+          <div className="card-body" style={{ backgroundColor: themeStyles.cardBackground, color: themeStyles.text }}>
             <h5 className="card-title">Total Lost Items</h5>
             <h2 className="card-text">{stats.totalLostItems || 0}</h2>
           </div>
         </div>
       </div>
       <div className="col-md-3 mb-4">
-        <div className="card bg-success text-white">
-          <div className="card-body">
+        <div className="card theme-card" style={{ backgroundColor: themeStyles.cardBackground, color: themeStyles.text, borderColor: themeStyles.border }}>
+          <div className="card-body" style={{ backgroundColor: themeStyles.cardBackground, color: themeStyles.text }}>
             <h5 className="card-title">Total Found Items</h5>
             <h2 className="card-text">{stats.totalFoundItems || 0}</h2>
           </div>
         </div>
       </div>
       <div className="col-md-3 mb-4">
-        <div className="card bg-info text-white">
-          <div className="card-body">
+        <div className="card theme-card" style={{ backgroundColor: themeStyles.cardBackground, color: themeStyles.text, borderColor: themeStyles.border }}>
+          <div className="card-body" style={{ backgroundColor: themeStyles.cardBackground, color: themeStyles.text }}>
             <h5 className="card-title">Total Matches</h5>
             <h2 className="card-text">{stats.totalMatches || 0}</h2>
           </div>
         </div>
       </div>
       <div className="col-md-3 mb-4">
-        <div className="card bg-warning text-white">
-          <div className="card-body">
+        <div className="card theme-card" style={{ backgroundColor: themeStyles.cardBackground, color: themeStyles.text, borderColor: themeStyles.border }}>
+          <div className="card-body" style={{ backgroundColor: themeStyles.cardBackground, color: themeStyles.text }}>
             <h5 className="card-title">Registered Users</h5>
             <h2 className="card-text">{stats.totalUsers || 0}</h2>
           </div>
@@ -257,8 +281,8 @@ const AdminDashboard = ({ user, token }) => {
       </div>
 
       <div className="col-12 mb-4">
-        <div className="card">
-          <div className="card-header d-flex justify-content-between align-items-center">
+        <div className="card theme-card" style={{ backgroundColor: themeStyles.cardBackground, color: themeStyles.text, borderColor: themeStyles.border }}>
+          <div className="card-header d-flex justify-content-between align-items-center" style={{ backgroundColor: themeStyles.cardBackground, color: themeStyles.text, borderColor: themeStyles.border }}>
             <h5 className="mb-0">Quick Actions</h5>
             <button 
               className="btn btn-primary" 
@@ -268,7 +292,7 @@ const AdminDashboard = ({ user, token }) => {
               {loading ? 'Running...' : 'Run Matching Algorithm'}
             </button>
           </div>
-          <div className="card-body">
+          <div className="card-body" style={{ backgroundColor: themeStyles.cardBackground, color: themeStyles.text }}>
             <div className="row">
               <div className="col-md-6">
                 <h6>Recent Activity</h6>
@@ -294,45 +318,51 @@ const AdminDashboard = ({ user, token }) => {
   );
 
   const renderMatches = () => (
-    <div className="card theme-card">
-      <div className={`card-header d-flex justify-content-between align-items-center ${isDarkTheme ? 'bg-dark' : 'bg-warning'}`}>
+    <div className="card theme-card" style={{ backgroundColor: themeStyles.cardBackground, color: themeStyles.text, borderColor: themeStyles.border }}>
+      <div className="card-header d-flex justify-content-between align-items-center" style={{ backgroundColor: themeStyles.cardBackground, color: themeStyles.text, borderColor: themeStyles.border }}>
         <h5 className="mb-0 theme-text">Match Results</h5>
       </div>
-      <div className="card-body theme-card">
+      <div className="card-body theme-card" style={{ backgroundColor: themeStyles.cardBackground, color: themeStyles.text }}>
         {matches.length === 0 ? (
           <p className="theme-text-muted">No matches found. Run the matching algorithm to see results.</p>
         ) : (
           <div className="table-responsive">
-            <table className="table table-striped theme-table">
-              <thead>
-                <tr>
-                  <th className="theme-text theme-border">Match %</th>
-                  <th className="theme-text theme-border">Lost Item</th>
-                  <th className="theme-text theme-border">Found Item</th>
-                  <th className="theme-text theme-border">Category</th>
-                  <th className="theme-text theme-border">Classification</th>
-                  <th className="theme-text theme-border">Actions</th>
+            <table className="table theme-table" style={{ backgroundColor: themeStyles.cardBackground, color: themeStyles.text }}>
+              <thead style={{ backgroundColor: themeStyles.tableHeaderBg, color: themeStyles.text }}>
+                <tr style={{ backgroundColor: themeStyles.tableHeaderBg }}>
+                  <th className="theme-text theme-border" style={{ backgroundColor: themeStyles.tableHeaderBg, color: themeStyles.text }}>Match %</th>
+                  <th className="theme-text theme-border" style={{ backgroundColor: themeStyles.tableHeaderBg, color: themeStyles.text }}>Lost Item</th>
+                  <th className="theme-text theme-border" style={{ backgroundColor: themeStyles.tableHeaderBg, color: themeStyles.text }}>Found Item</th>
+                  <th className="theme-text theme-border" style={{ backgroundColor: themeStyles.tableHeaderBg, color: themeStyles.text }}>Category</th>
+                  <th className="theme-text theme-border" style={{ backgroundColor: themeStyles.tableHeaderBg, color: themeStyles.text }}>Classification</th>
+                  <th className="theme-text theme-border" style={{ backgroundColor: themeStyles.tableHeaderBg, color: themeStyles.text }}>Actions</th>
                 </tr>
               </thead>
               <tbody>
                 {matches.map((match, index) => (
-                  <tr key={index} className="theme-table-row">
-                    <td className="theme-border">
+                  <tr
+                    key={index}
+                    className="theme-table-row"
+                    style={{ backgroundColor: themeStyles.tableRowBg, color: themeStyles.text }}
+                    onMouseEnter={(e) => e.currentTarget.style.backgroundColor = themeStyles.tableRowHover}
+                    onMouseLeave={(e) => e.currentTarget.style.backgroundColor = themeStyles.tableRowBg}
+                  >
+                    <td className="theme-border" style={{ backgroundColor: 'transparent', color: themeStyles.text }}>
                       <span className={getMatchBadgeClass(match.matchPercentage)}>
                         {match.matchPercentage}%
                       </span>
                     </td>
-                    <td className="theme-border">
+                    <td className="theme-border" style={{ backgroundColor: 'transparent', color: themeStyles.text }}>
                       <strong className="theme-text">{match.lostItem.customId}</strong><br/>
                       <small className="theme-text-muted">{match.lostItem.itemName || match.lostItem.bookTitle || 'N/A'}</small>
                     </td>
-                    <td className="theme-border">
+                    <td className="theme-border" style={{ backgroundColor: 'transparent', color: themeStyles.text }}>
                       <strong className="theme-text">{match.foundItem.customId}</strong><br/>
                       <small className="theme-text-muted">{match.foundItem.itemName || match.foundItem.bookTitle || 'N/A'}</small>
                     </td>
-                    <td className="theme-border theme-text">{match.lostItem.category}</td>
-                    <td className="theme-border theme-text">{match.classification}</td>
-                    <td className="theme-border">
+                    <td className="theme-border theme-text" style={{ backgroundColor: 'transparent', color: themeStyles.text }}>{match.lostItem.category}</td>
+                    <td className="theme-border theme-text" style={{ backgroundColor: 'transparent', color: themeStyles.text }}>{match.classification}</td>
+                    <td className="theme-border" style={{ backgroundColor: 'transparent', color: themeStyles.text }}>
                       <button 
                         className="btn btn-sm btn-outline-primary me-1" 
                         onClick={() => handleViewDetails(match)}
@@ -344,9 +374,9 @@ const AdminDashboard = ({ user, token }) => {
                         <button 
                           className="btn btn-sm btn-outline-success"
                           onClick={() => handleSendEmail(match)}
-                          disabled={emailLoading}
+                          disabled={emailLoading[getMatchKey(match)]}
                         >
-                          {emailLoading ? 'Sending...' : 'Send Email'}
+                          {emailLoading[getMatchKey(match)] ? 'Sending...' : (emailStatus[getMatchKey(match)] === 'success' ? 'Sent' : 'Send Email')}
                         </button>
                       )}
                     </td>
@@ -363,34 +393,40 @@ const AdminDashboard = ({ user, token }) => {
   const renderItems = () => (
     <div className="row">
       <div className="col-md-6">
-        <div className="card">
-          <div className="card-header d-flex justify-content-between align-items-center">
+        <div className="card theme-card" style={{ backgroundColor: themeStyles.cardBackground, color: themeStyles.text, borderColor: themeStyles.border }}>
+          <div className="card-header d-flex justify-content-between align-items-center" style={{ backgroundColor: themeStyles.cardBackground, color: themeStyles.text, borderColor: themeStyles.border }}>
             <h5 className="mb-0">Lost Items ({lostItems.length})</h5>
-            <small className="text-muted">Showing latest 10</small>
+            <small className="theme-text-muted">Showing latest 10</small>
           </div>
-          <div className="card-body">
+          <div className="card-body" style={{ backgroundColor: themeStyles.cardBackground, color: themeStyles.text }}>
             <div className="table-responsive" style={{ maxHeight: '400px' }}>
-              <table className="table table-sm">
+              <table className="table table-sm theme-table" style={{ backgroundColor: themeStyles.cardBackground, color: themeStyles.text }}>
                 <thead>
                   <tr>
-                    <th>ID</th>
-                    <th>Category</th>
-                    <th>Item</th>
-                    <th>Date</th>
+                    <th className="theme-text theme-border" style={{ backgroundColor: themeStyles.tableHeaderBg, color: themeStyles.text }}>ID</th>
+                    <th className="theme-text theme-border" style={{ backgroundColor: themeStyles.tableHeaderBg, color: themeStyles.text }}>Category</th>
+                    <th className="theme-text theme-border" style={{ backgroundColor: themeStyles.tableHeaderBg, color: themeStyles.text }}>Item</th>
+                    <th className="theme-text theme-border" style={{ backgroundColor: themeStyles.tableHeaderBg, color: themeStyles.text }}>Date</th>
                   </tr>
                 </thead>
                 <tbody>
                   {lostItems.length === 0 ? (
                     <tr>
-                      <td colSpan="4" className="text-center text-muted">No lost items found</td>
+                      <td colSpan="4" className="text-center theme-text-muted">No lost items found</td>
                     </tr>
                   ) : (
                     lostItems.slice(0, 10).map((item) => (
-                      <tr key={item._id}>
-                        <td>{item.customId}</td>
-                        <td><span className="badge bg-primary">{item.category}</span></td>
-                        <td>{item.itemName || item.bookTitle || 'N/A'}</td>
-                        <td>{formatDate(item.lostDateTime)}</td>
+                      <tr
+                        key={item._id}
+                        className="theme-table-row"
+                        style={{ backgroundColor: themeStyles.tableRowBg }}
+                        onMouseEnter={(e) => e.currentTarget.style.backgroundColor = themeStyles.tableRowHover}
+                        onMouseLeave={(e) => e.currentTarget.style.backgroundColor = themeStyles.tableRowBg}
+                      >
+                        <td className="theme-border theme-text" style={{ backgroundColor: 'transparent', color: themeStyles.text }}>{item.customId}</td>
+                        <td className="theme-border" style={{ backgroundColor: 'transparent', color: themeStyles.text }}><span className="badge bg-primary">{item.category}</span></td>
+                        <td className="theme-border theme-text" style={{ backgroundColor: 'transparent', color: themeStyles.text }}>{item.itemName || item.bookTitle || 'N/A'}</td>
+                        <td className="theme-border theme-text" style={{ backgroundColor: 'transparent', color: themeStyles.text }}>{formatDate(item.lostDateTime)}</td>
                       </tr>
                     ))
                   )}
@@ -401,34 +437,40 @@ const AdminDashboard = ({ user, token }) => {
         </div>
       </div>
       <div className="col-md-6">
-        <div className="card">
-          <div className="card-header d-flex justify-content-between align-items-center">
+        <div className="card theme-card" style={{ backgroundColor: themeStyles.cardBackground, color: themeStyles.text, borderColor: themeStyles.border }}>
+          <div className="card-header d-flex justify-content-between align-items-center" style={{ backgroundColor: themeStyles.cardBackground, color: themeStyles.text, borderColor: themeStyles.border }}>
             <h5 className="mb-0">Found Items ({foundItems.length})</h5>
-            <small className="text-muted">Showing latest 10</small>
+            <small className="theme-text-muted">Showing latest 10</small>
           </div>
-          <div className="card-body">
+          <div className="card-body" style={{ backgroundColor: themeStyles.cardBackground, color: themeStyles.text }}>
             <div className="table-responsive" style={{ maxHeight: '400px' }}>
-              <table className="table table-sm">
+              <table className="table table-sm theme-table" style={{ backgroundColor: themeStyles.cardBackground, color: themeStyles.text }}>
                 <thead>
                   <tr>
-                    <th>ID</th>
-                    <th>Category</th>
-                    <th>Item</th>
-                    <th>Date</th>
+                    <th className="theme-text theme-border" style={{ backgroundColor: themeStyles.tableHeaderBg, color: themeStyles.text }}>ID</th>
+                    <th className="theme-text theme-border" style={{ backgroundColor: themeStyles.tableHeaderBg, color: themeStyles.text }}>Category</th>
+                    <th className="theme-text theme-border" style={{ backgroundColor: themeStyles.tableHeaderBg, color: themeStyles.text }}>Item</th>
+                    <th className="theme-text theme-border" style={{ backgroundColor: themeStyles.tableHeaderBg, color: themeStyles.text }}>Date</th>
                   </tr>
                 </thead>
                 <tbody>
                   {foundItems.length === 0 ? (
                     <tr>
-                      <td colSpan="4" className="text-center text-muted">No found items found</td>
+                      <td colSpan="4" className="text-center theme-text-muted">No found items found</td>
                     </tr>
                   ) : (
                     foundItems.slice(0, 10).map((item) => (
-                      <tr key={item._id}>
-                        <td>{item.customId}</td>
-                        <td><span className="badge bg-success">{item.category}</span></td>
-                        <td>{item.itemName || item.bookTitle || 'N/A'}</td>
-                        <td>{formatDate(item.foundDateTime)}</td>
+                      <tr
+                        key={item._id}
+                        className="theme-table-row"
+                        style={{ backgroundColor: themeStyles.tableRowBg }}
+                        onMouseEnter={(e) => e.currentTarget.style.backgroundColor = themeStyles.tableRowHover}
+                        onMouseLeave={(e) => e.currentTarget.style.backgroundColor = themeStyles.tableRowBg}
+                      >
+                        <td className="theme-border theme-text" style={{ backgroundColor: 'transparent', color: themeStyles.text }}>{item.customId}</td>
+                        <td className="theme-border" style={{ backgroundColor: 'transparent', color: themeStyles.text }}><span className="badge bg-success">{item.category}</span></td>
+                        <td className="theme-border theme-text" style={{ backgroundColor: 'transparent', color: themeStyles.text }}>{item.itemName || item.bookTitle || 'N/A'}</td>
+                        <td className="theme-border theme-text" style={{ backgroundColor: 'transparent', color: themeStyles.text }}>{formatDate(item.foundDateTime)}</td>
                       </tr>
                     ))
                   )}
@@ -442,34 +484,40 @@ const AdminDashboard = ({ user, token }) => {
   );
 
   const renderUsers = () => (
-    <div className="card">
-      <div className="card-header">
+    <div className="card theme-card" style={{ backgroundColor: themeStyles.cardBackground, color: themeStyles.text, borderColor: themeStyles.border }}>
+      <div className="card-header" style={{ backgroundColor: themeStyles.cardBackground, color: themeStyles.text, borderColor: themeStyles.border }}>
         <h5 className="mb-0">Registered Users</h5>
       </div>
-      <div className="card-body">
+      <div className="card-body" style={{ backgroundColor: themeStyles.cardBackground, color: themeStyles.text }}>
         <div className="table-responsive">
-          <table className="table table-striped">
-            <thead>
+          <table className="table theme-table" style={{ backgroundColor: themeStyles.cardBackground, color: themeStyles.text }}>
+            <thead style={{ backgroundColor: themeStyles.tableHeaderBg, color: themeStyles.text }}>
               <tr>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Role</th>
-                <th>Joined</th>
-                <th>Actions</th>
+                <th className="theme-text theme-border" style={{ backgroundColor: themeStyles.tableHeaderBg, color: themeStyles.text }}>Name</th>
+                <th className="theme-text theme-border" style={{ backgroundColor: themeStyles.tableHeaderBg, color: themeStyles.text }}>Email</th>
+                <th className="theme-text theme-border" style={{ backgroundColor: themeStyles.tableHeaderBg, color: themeStyles.text }}>Role</th>
+                <th className="theme-text theme-border" style={{ backgroundColor: themeStyles.tableHeaderBg, color: themeStyles.text }}>Joined</th>
+                <th className="theme-text theme-border" style={{ backgroundColor: themeStyles.tableHeaderBg, color: themeStyles.text }}>Actions</th>
               </tr>
             </thead>
             <tbody>
               {users.map((user) => (
-                <tr key={user._id}>
-                  <td>{user.name}</td>
-                  <td>{user.email}</td>
-                  <td>
+                <tr
+                  key={user._id}
+                  className="theme-table-row"
+                  style={{ backgroundColor: themeStyles.tableRowBg, color: themeStyles.text }}
+                  onMouseEnter={(e) => e.currentTarget.style.backgroundColor = themeStyles.tableRowHover}
+                  onMouseLeave={(e) => e.currentTarget.style.backgroundColor = themeStyles.tableRowBg}
+                >
+                  <td className="theme-border theme-text" style={{ backgroundColor: 'transparent', color: themeStyles.text }}>{user.name}</td>
+                  <td className="theme-border theme-text" style={{ backgroundColor: 'transparent', color: themeStyles.text }}>{user.email}</td>
+                  <td className="theme-border" style={{ backgroundColor: 'transparent', color: themeStyles.text }}>
                     <span className={`badge ${user.role === 'admin' ? 'bg-danger' : 'bg-secondary'}`}>
                       {user.role}
                     </span>
                   </td>
-                  <td>{formatDate(user.createdAt)}</td>
-                  <td>
+                  <td className="theme-border theme-text" style={{ backgroundColor: 'transparent', color: themeStyles.text }}>{formatDate(user.createdAt)}</td>
+                  <td className="theme-border" style={{ backgroundColor: 'transparent', color: themeStyles.text }}>
                     <button className="btn btn-sm btn-outline-primary">View Profile</button>
                   </td>
                 </tr>
@@ -552,28 +600,25 @@ const AdminDashboard = ({ user, token }) => {
             </>
           )}
 
-          {/* Success Message */}
-          {emailSuccess && (
-            <div className="alert alert-success alert-dismissible fade show" role="alert">
-              {emailSuccess}
-              <button type="button" className="btn-close" onClick={() => setEmailSuccess('')}></button>
-            </div>
-          )}
-
           {/* Match Details Modal */}
           {showDetailsModal && selectedMatch && matchDetails && (
             <div className="modal fade show" style={{ display: 'block', zIndex: 1050 }} tabIndex="-1">
               <div className="modal-dialog modal-lg">
-                <div className="modal-content">
-                  <div className="modal-header">
+                <div 
+                  className="modal-content" 
+                  style={{ backgroundColor: themeStyles.cardBackground, color: themeStyles.text, borderColor: themeStyles.border }}
+                >
+                  <div 
+                    className="modal-header" 
+                    style={{ borderColor: themeStyles.border, backgroundColor: themeStyles.cardBackground, color: themeStyles.text }}
+                  >
                     <h5 className="modal-title">Match Details</h5>
-                    <button type="button" className="btn-close" onClick={handleCloseModal}></button>
                   </div>
-                  <div className="modal-body">
+                  <div className="modal-body" style={{ backgroundColor: themeStyles.cardBackground, color: themeStyles.text }}>
                     <div className="row">
                       <div className="col-md-6">
                         <h6>Lost Item Details</h6>
-                        <div className="card">
+                        <div className="card" style={{ backgroundColor: themeStyles.cardBackground, color: themeStyles.text, borderColor: themeStyles.border }}>
                           <div className="card-body">
                             <p><strong>ID:</strong> {matchDetails.lostItem.customId}</p>
                             <p><strong>Category:</strong> {matchDetails.lostItem.category}</p>
@@ -607,7 +652,7 @@ const AdminDashboard = ({ user, token }) => {
                       </div>
                       <div className="col-md-6">
                         <h6>Found Item Details</h6>
-                        <div className="card">
+                        <div className="card" style={{ backgroundColor: themeStyles.cardBackground, color: themeStyles.text, borderColor: themeStyles.border }}>
                           <div className="card-body">
                             <p><strong>ID:</strong> {matchDetails.foundItem.customId}</p>
                             <p><strong>Category:</strong> {matchDetails.foundItem.category}</p>
@@ -643,7 +688,7 @@ const AdminDashboard = ({ user, token }) => {
                     <div className="row mt-3">
                       <div className="col-12">
                         <h6>Match Analysis</h6>
-                        <div className="card">
+                        <div className="card" style={{ backgroundColor: themeStyles.cardBackground, color: themeStyles.text, borderColor: themeStyles.border }}>
                           <div className="card-body">
                             <p><strong>Match Percentage:</strong> 
                               <span className={`badge ms-2 ${getMatchBadgeClass(matchDetails.matchResult.percentage)}`}>
@@ -666,16 +711,25 @@ const AdminDashboard = ({ user, token }) => {
                       </div>
                     </div>
                   </div>
-                  <div className="modal-footer">
-                    <button type="button" className="btn btn-secondary" onClick={handleCloseModal}>Close</button>
+                  <div className="modal-footer" style={{ borderColor: themeStyles.border, backgroundColor: themeStyles.cardBackground }}>
+                    <button
+                      type="button"
+                      className="btn btn-outline-secondary"
+                      style={{ color: themeStyles.text, borderColor: themeStyles.border, backgroundColor: 'transparent' }}
+                      onClick={handleCloseModal}
+                    >
+                      Close
+                    </button>
                     {matchDetails.matchResult.percentage >= 70 && (
                       <button 
                         type="button" 
                         className="btn btn-success"
                         onClick={() => handleSendEmail(selectedMatch)}
-                        disabled={emailLoading}
+                        disabled={emailLoading[getMatchKey(selectedMatch)]}
                       >
-                        {emailLoading ? 'Sending...' : 'Send Email Notification'}
+                        {emailLoading[getMatchKey(selectedMatch)] 
+                          ? 'Sending...' 
+                          : (emailStatus[getMatchKey(selectedMatch)] === 'success' ? 'Sent' : 'Send Email Notification')}
                       </button>
                     )}
                   </div>
