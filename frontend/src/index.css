@@ -113,6 +113,23 @@ body {
   color: var(--theme-text);
 }
 
+.modern-homepage h1,
+.modern-homepage h2,
+.modern-homepage h3,
+.modern-homepage h4,
+.modern-homepage h5,
+.modern-homepage h6 {
+  color: var(--theme-text);
+}
+
+.modern-homepage p,
+.modern-homepage .hero-lead,
+.modern-homepage .panel-list p,
+.modern-homepage .meta-label,
+.modern-homepage .feature-card p {
+  color: var(--theme-text-muted);
+}
+
 .modern-homepage::before {
   content: '';
   position: absolute;
@@ -265,6 +282,16 @@ body {
 
   .hero-grid {
     gap: var(--spacing-xl);
+  }
+}
+
+@media (max-width: 576px) {
+  .hero-lead {
+    font-size: 1rem;
+  }
+
+  .meta-card {
+    min-width: 140px;
   }
 }
 

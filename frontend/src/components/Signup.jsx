@@ -107,7 +107,7 @@ const Signup = ({ onLogin }) => {
             <div className="form-group">
               <label htmlFor="name" className="form-label">
                 <i className="bi bi-person"></i>
-                Full Name
+                 Full Name
               </label>
               <input
                 type="text"

@@ -48,7 +48,7 @@
 }
 
 .auth-card {
-  background: var(--bg-card);
+  background: var(--theme-card-bg);
   backdrop-filter: blur(20px);
   border: 1px solid var(--theme-border);
   border-radius: var(--radius-2xl);
@@ -80,12 +80,12 @@
   font-size: 1.9rem;
   font-weight: 700;
   margin-bottom: var(--spacing-sm);
-  color: var(--text-primary);
+  color: var(--theme-text);
   font-family: var(--font-heading);
 }
 
 .auth-subtitle {
-  color: var(--text-secondary);
+  color: var(--theme-text-muted);
   font-size: 0.9375rem;
   margin: 0;
 }
@@ -104,7 +104,7 @@
   gap: var(--spacing-sm);
   font-weight: 600;
   font-size: 0.875rem;
-  color: var(--text-primary);
+  color: var(--theme-text);
   margin-bottom: var(--spacing-sm);
 }
 
@@ -124,7 +124,7 @@
   transform: translateY(-50%);
   background: transparent;
   border: none;
-  color: var(--text-muted);
+  color: var(--theme-text-muted);
   cursor: pointer;
   padding: 0.25rem;
   display: flex;
@@ -134,7 +134,7 @@
 }
 
 .password-toggle:hover {
-  color: var(--text-primary);
+  color: var(--theme-text);
 }
 
 .password-strength {
@@ -147,7 +147,7 @@
 .password-strength-bar {
   flex: 1;
   height: 4px;
-  background: var(--bg-tertiary);
+  background: var(--theme-border);
   border-radius: var(--radius-full);
   overflow: hidden;
 }
@@ -163,6 +163,7 @@
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.5px;
+  color: var(--theme-text-muted);
 }
 
 .form-options {
@@ -189,7 +190,7 @@
 }
 
 .form-check-label {
-  color: var(--text-secondary);
+  color: var(--theme-text-muted);
   cursor: pointer;
   user-select: none;
 }
@@ -208,12 +209,12 @@
 .auth-footer {
   text-align: center;
   padding-top: var(--spacing-lg);
-  border-top: 1px solid var(--border-primary);
+  border-top: 1px solid var(--theme-border);
 }
 
 .auth-footer p {
   margin: 0;
-  color: var(--text-secondary);
+  color: var(--theme-text-muted);
   font-size: 0.9375rem;
 }
 

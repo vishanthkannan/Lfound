@@ -85,7 +85,7 @@
 
 .brand-subtitle {
   font-size: 0.75rem;
-  color: var(--text-muted);
+  color: var(--theme-text-muted);
   font-weight: 400;
 }
 
@@ -104,7 +104,7 @@
 .navbar-toggler span {
   width: 25px;
   height: 3px;
-  background: var(--text-primary);
+  background: var(--theme-text);
   border-radius: var(--radius-full);
   transition: all var(--transition-base);
 }

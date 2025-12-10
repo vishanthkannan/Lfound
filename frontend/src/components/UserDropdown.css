@@ -8,16 +8,16 @@
   align-items: center;
   gap: var(--spacing-sm);
   background: transparent;
-  border: 1px solid var(--border-primary);
+  border: 1px solid var(--theme-border);
   border-radius: var(--radius-lg);
   padding: 0.5rem 0.75rem;
   cursor: pointer;
   transition: all var(--transition-fast);
-  color: var(--text-primary);
+  color: var(--theme-text);
 }
 
 .user-dropdown-toggle:hover {
-  background: var(--bg-tertiary);
+  background: var(--theme-card-bg);
   border-color: var(--primary);
 }
 
@@ -46,7 +46,7 @@
 .user-name {
   font-weight: 600;
   font-size: 0.875rem;
-  color: var(--text-primary);
+  color: var(--theme-text);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -55,13 +55,13 @@
 
 .user-role {
   font-size: 0.75rem;
-  color: var(--text-muted);
+  color: var(--theme-text-muted);
   text-transform: capitalize;
 }
 
 .dropdown-arrow {
   font-size: 0.75rem;
-  color: var(--text-muted);
+  color: var(--theme-text-muted);
   transition: transform var(--transition-fast);
   flex-shrink: 0;
 }
@@ -75,8 +75,8 @@
   top: calc(100% + 0.5rem);
   right: 0;
   min-width: 240px;
-  background: var(--bg-card);
-  border: 1px solid var(--border-primary);
+  background: var(--theme-card-bg);
+  border: 1px solid var(--theme-border);
   border-radius: var(--radius-xl);
   box-shadow: var(--shadow-xl);
   z-index: var(--z-dropdown);
@@ -88,7 +88,7 @@
   display: flex;
   align-items: center;
   gap: var(--spacing-md);
-  background: var(--bg-tertiary);
+  background: var(--theme-bg);
 }
 
 .dropdown-user-avatar {
@@ -113,7 +113,7 @@
 .dropdown-user-name {
   font-weight: 600;
   font-size: 0.9375rem;
-  color: var(--text-primary);
+  color: var(--theme-text);
   margin-bottom: 0.25rem;
   white-space: nowrap;
   overflow: hidden;
@@ -122,7 +122,7 @@
 
 .dropdown-user-email {
   font-size: 0.75rem;
-  color: var(--text-muted);
+  color: var(--theme-text-muted);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -130,7 +130,7 @@
 
 .dropdown-divider {
   height: 1px;
-  background: var(--border-primary);
+  background: var(--theme-border);
   margin: var(--spacing-sm) 0;
 }
 
@@ -146,7 +146,7 @@
   padding: 0.75rem var(--spacing-md);
   border: none;
   background: transparent;
-  color: var(--text-secondary);
+  color: var(--theme-text-muted);
   text-decoration: none;
   font-size: 0.9375rem;
   font-weight: 500;
@@ -163,8 +163,8 @@
 }
 
 .dropdown-item:hover {
-  background: var(--bg-tertiary);
-  color: var(--text-primary);
+  background: rgba(0, 188, 212, 0.12);
+  color: var(--theme-text);
 }
 
 .dropdown-item-danger {
