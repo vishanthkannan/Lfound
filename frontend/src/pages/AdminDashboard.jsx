@@ -715,7 +715,20 @@ const AdminDashboard = ({ user, token }) => {
                     <button
                       type="button"
                       className="btn btn-outline-secondary"
-                      style={{ color: themeStyles.text, borderColor: themeStyles.border, backgroundColor: 'transparent' }}
+                      style={{ 
+                        color: themeStyles.text, 
+                        borderColor: themeStyles.border, 
+                        backgroundColor: themeStyles.cardBackground,
+                        boxShadow: 'none'
+                      }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.backgroundColor = themeStyles.tableRowHover;
+                        e.currentTarget.style.color = themeStyles.text;
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.backgroundColor = themeStyles.cardBackground;
+                        e.currentTarget.style.color = themeStyles.text;
+                      }}
                       onClick={handleCloseModal}
                     >
                       Close
