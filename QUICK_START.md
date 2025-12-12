@@ -1,7 +1,5 @@
 # Quick Start Guide - Lost & Found System
 
-## 🚀 Getting Started in 5 Minutes
-
 ### Step 1: Install Dependencies
 
 **Backend:**
