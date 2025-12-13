@@ -132,5 +132,3 @@ db.users.updateOne(
 
 ---
 
-**Happy Coding! 🎉**
-
