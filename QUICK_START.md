@@ -1,7 +1,5 @@
 # Quick Start Guide - Lost & Found System
 
-## 🚀 Getting Started in 5 Minutes
-
 ### Step 1: Install Dependencies
 
 **Backend:**
@@ -133,6 +131,4 @@ db.users.updateOne(
 4. Start customizing for your needs!
 
 ---
-
-**Happy Coding! 🎉**
 
