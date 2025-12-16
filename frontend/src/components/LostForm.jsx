@@ -129,6 +129,13 @@ const LostForm = ({ user, token }) => {
     setError('');
     setLoading(true);
 
+    // Ensure user is authenticated
+    if (!token) {
+      setError('Your session has expired. Please log in again to report a lost item.');
+      setLoading(false);
+      return;
+    }
+
     let isValid = true;
     let errorMessage = '';
 
@@ -199,8 +206,13 @@ const LostForm = ({ user, token }) => {
         data.append('image', formData.image);
       }
 
+      const headers = {
+        Authorization: `Bearer ${token}`
+      };
+
       const response = await fetch('http://localhost:5000/api/lost', {
         method: 'POST',
+        headers,
         body: data,
       });
 
