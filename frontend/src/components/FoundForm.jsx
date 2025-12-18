@@ -129,6 +129,13 @@ const FoundForm = ({ user, token }) => {
     setError('');
     setLoading(true);
 
+    // Ensure user is authenticated
+    if (!token) {
+      setError('Your session has expired. Please log in again to report a found item.');
+      setLoading(false);
+      return;
+    }
+
     let isValid = true;
     let errorMessage = '';
 
@@ -201,6 +208,9 @@ const FoundForm = ({ user, token }) => {
 
       const response = await fetch('http://localhost:5000/api/found', {
         method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
         body: data,
       });
 
