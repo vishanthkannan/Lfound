@@ -6,7 +6,7 @@ A full-stack web application for managing lost and found items, designed primari
 
 ---
 
-## 🎯 Project Purpose
+##  Project Purpose
 
 This system helps:
 - **Students** report lost items (phones, books, ID cards, money, etc.)
