@@ -87,7 +87,7 @@ db.users.updateOne(
 
 ---
 
-## ✅ Verify Installation
+##  Verify Installation
 
 1. **Backend**: Check `http://localhost:3001/api/test`
    - Should return: `{ "message": "Server is working", ... }`
