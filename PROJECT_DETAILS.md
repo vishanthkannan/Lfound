@@ -1,4 +1,4 @@
-# Lost & Found Management System - Project Details
+# Lost & Found Management System
 
 ## 📋 Project Overview
 
